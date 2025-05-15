@@ -1,10 +1,9 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-export default function MotoPark() {
-
+export default function NovaMoto() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pátio</Text>
+      <Text style={styles.title}>Nova Moto</Text>
     </View>
   );
 }
@@ -20,6 +19,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#009B30',
-    marginBottom: 16,
   },
 });

@@ -1,11 +1,14 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 
 import Home from '../pages/Home';
 import MotoPark from '../pages/MotoPark';
 import NovaMoto from '../pages/NovaMoto';
 import Perfil from '../pages/Perfil';
+
+import motoPark from '../assets/icons/moto-park-preto.png';
+import motoParkWhite from '../assets/icons/moto-park-branco.png';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,16 +24,12 @@ export default function Menu() {
           borderTopRightRadius: 20,
           borderTopWidth: 1,
           borderTopColor: '#E0E0E0',
-          height: 70,
+          height: 65,
           position: 'absolute',
         },
         tabBarIcon: ({ focused }) => {
-          let iconName;
-
-          if (route.name === 'Home') iconName = 'chart-bar';
-          else if (route.name === 'MotoPark') iconName = 'parking';
-          else if (route.name === 'NovaMoto') iconName = 'motorbike';
-          else if (route.name === 'Perfil') iconName = 'account';
+          const iconSize = focused ? 28 : 24;
+          const isMotoPark = route.name === 'MotoPark';
 
           return (
             <View
@@ -38,14 +37,32 @@ export default function Menu() {
                 backgroundColor: focused ? '#00B031' : 'transparent',
                 padding: 10,
                 borderRadius: 50,
-              }}>
-
-              {/* verificação, se for motoparking, tras a img ao inves do icones */}
-              <MaterialCommunityIcons
-                name={iconName}
-                size={focused ? 28 : 24}
-                color={focused ? 'white' : '#000F05'}
-              />
+                marginTop: 20,
+                marginBottom: '2%',
+              }}
+            >
+              {isMotoPark ? (
+                <Image
+                  source={focused ? motoParkWhite : motoPark}
+                  style={{
+                    width: iconSize,
+                    height: iconSize,
+                    resizeMode: 'contain',
+                  }}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name={
+                    route.name === 'Home'
+                      ? 'chart-bar'
+                      : route.name === 'NovaMoto'
+                      ? 'motorbike'
+                      : 'account'
+                  }
+                  size={iconSize}
+                  color={focused ? 'white' : '#000F05'}
+                />
+              )}
             </View>
           );
         },
