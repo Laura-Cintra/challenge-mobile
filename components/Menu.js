@@ -1,9 +1,9 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 
-import MotoPark from '../pages/MotoPark';
 import Home from '../pages/Home';
+import MotoPark from '../pages/MotoPark';
 import NovaMoto from '../pages/NovaMoto';
 import Perfil from '../pages/Perfil';
 
@@ -39,6 +39,8 @@ export default function Menu() {
                 padding: 10,
                 borderRadius: 50,
               }}>
+
+              {/* verificação, se for motoparking, tras a img ao inves do icones */}
               <MaterialCommunityIcons
                 name={iconName}
                 size={focused ? 28 : 24}
