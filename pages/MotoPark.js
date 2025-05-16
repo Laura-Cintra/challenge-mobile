@@ -1,23 +1,22 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import PatioZonas from '../components/PatioZonas';
 
 export default function NovaMoto() {
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Nova Moto</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <PatioZonas/>
+        </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F6FFF9',
+  scrollContainer: {
+    flexGrow: 1,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#009B30',
-  },
+  container: { 
+    flex: 1, 
+  }
 });

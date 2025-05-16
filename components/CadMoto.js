@@ -29,8 +29,8 @@ export default function CadMoto() {
   { id: '8', modelo: 'Mottu-E', placa: 'AAA8901', zona: 'Danos Estruturais' },
   { id: '9', modelo: 'Mottu Pop', placa: 'BBB9012', zona: 'Sem Placa' },
   { id: '10', modelo: 'Mottu Sport', placa: 'CCC0123', zona: 'Sem Placa' },
-  { id: '11', modelo: 'Mottu-E', placa: 'DDD1230', zona: 'Sem Placa' },
-  { id: '12', modelo: 'Mottu Sport', placa: 'EEE2341', zona: 'Sem Placa' },
+  { id: '11', modelo: 'Mottu-E', placa: 'DDD1230', zona: 'Motor Defeituoso' },
+  { id: '12', modelo: 'Mottu Sport', placa: 'EEE2341', zona: 'Motor Defeituoso' },
   { id: '13', modelo: 'Mottu Pop', placa: 'FFF3452', zona: 'BO' },
   { id: '14', modelo: 'Mottu Sport', placa: 'GGG4563', zona: 'BO' },
   { id: '15', modelo: 'Mottu-E', placa: 'HHH5674', zona: 'BO' },
@@ -133,6 +133,7 @@ export default function CadMoto() {
             <Picker.Item label="Sem Placa" value="Sem Placa" />
             <Picker.Item label="BO" value="BO" />
             <Picker.Item label="Aluguel" value="Aluguel" />
+            <Picker.Item label="Motor Defeituoso" value="Motor Defeituoso" />
           </Picker>
           </View>
 
@@ -145,6 +146,7 @@ export default function CadMoto() {
             </TouchableOpacity>
           </View>
           
+          {/* Teste - excluindo dados do storage */}
           <TouchableOpacity
               style={[styles.clearButton, { backgroundColor: '#e74c3c', marginTop: 15 }]}
               onPress={async () => {
@@ -162,22 +164,21 @@ export default function CadMoto() {
 
 const styles = StyleSheet.create({
   header: {
-    height: '31%',
+    height: '35%',
     backgroundColor: '#1BA857',
     justifyContent: 'center',
     alignItems: 'center',
   },
   pinIcon: {
     position: 'absolute',
-    top: 40,
-    right: '40%',
-    left: '45%',
+    top: 50,
+    left: '85%',
     width: 40,
     height: 40,
     opacity: 0.4,
   },
   motoImage: {
-    marginTop: 35,
+    marginTop: 55,
     width: 200,
     height: 150,
   },
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     padding: 20,
+    height: '40%',
     justifyContent: 'space-evenly',
   },
   formTitle: {

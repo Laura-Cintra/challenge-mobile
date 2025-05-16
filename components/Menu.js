@@ -7,8 +7,8 @@ import MotoPark from '../pages/MotoPark';
 import NovaMoto from '../pages/NovaMoto';
 import Perfil from '../pages/Perfil';
 
-import motoPark from '../assets/icons/moto-park-preto.png';
-import motoParkWhite from '../assets/icons/moto-park-branco.png';
+import motoPark from '../assets/icons/moto.png';
+import motoParkWhite from '../assets/icons/moto-white.png';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ export default function Menu() {
           position: 'absolute',
         },
         tabBarIcon: ({ focused }) => {
-          const iconSize = focused ? 28 : 24;
+          const iconSize = focused ? 30 : 28;
           const isMotoPark = route.name === 'MotoPark';
 
           return (
