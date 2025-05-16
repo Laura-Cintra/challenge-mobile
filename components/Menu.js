@@ -47,7 +47,6 @@ export default function Menu() {
                   style={{
                     width: iconSize,
                     height: iconSize,
-                    resizeMode: 'contain',
                   }}
                 />
               ) : (
