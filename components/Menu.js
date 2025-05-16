@@ -1,16 +1,29 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Image } from 'react-native';
 
 import Home from '../pages/Home';
 import MotoPark from '../pages/MotoPark';
 import NovaMoto from '../pages/NovaMoto';
 import Perfil from '../pages/Perfil';
 
-import motoPark from '../assets/icons/moto.png';
-import motoParkWhite from '../assets/icons/moto-white.png';
+import TabIcon from '../components/TabIcon';
+
+import home from '../assets/icons/home.png';
+import homeWhite from '../assets/icons/home-white.png';
+import motoPark from '../assets/icons/moto-park.png';
+import motoParkWhite from '../assets/icons/moto-park-white.png';
+import moto from '../assets/icons/moto.png';
+import motoWhite from '../assets/icons/moto-white.png';
+import perfil from '../assets/icons/user.png';
+import perfilWhite from '../assets/icons/user-white.png';
 
 const Tab = createBottomTabNavigator();
+
+const iconMap = {
+  Home: { icon: home, iconFocused: homeWhite },
+  MotoPark: { icon: motoPark, iconFocused: motoParkWhite },
+  NovaMoto: { icon: moto, iconFocused: motoWhite },
+  Perfil: { icon: perfil, iconFocused: perfilWhite },
+};
 
 export default function Menu() {
   return (
@@ -27,44 +40,13 @@ export default function Menu() {
           height: 65,
           position: 'absolute',
         },
-        tabBarIcon: ({ focused }) => {
-          const iconSize = focused ? 30 : 28;
-          const isMotoPark = route.name === 'MotoPark';
-
-          return (
-            <View
-              style={{
-                backgroundColor: focused ? '#00B031' : 'transparent',
-                padding: 10,
-                borderRadius: 50,
-                marginTop: 20,
-                marginBottom: '2%',
-              }}
-            >
-              {isMotoPark ? (
-                <Image
-                  source={focused ? motoParkWhite : motoPark}
-                  style={{
-                    width: iconSize,
-                    height: iconSize,
-                  }}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name={
-                    route.name === 'Home'
-                      ? 'chart-bar'
-                      : route.name === 'NovaMoto'
-                      ? 'motorbike'
-                      : 'account'
-                  }
-                  size={iconSize}
-                  color={focused ? 'white' : '#000F05'}
-                />
-              )}
-            </View>
-          );
-        },
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon={iconMap[route.name].icon}
+            iconFocused={iconMap[route.name].iconFocused}
+          />
+        ),
       })}
     >
       <Tab.Screen name="Home" component={Home} />
