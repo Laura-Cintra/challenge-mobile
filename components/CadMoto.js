@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
+import FeedbackModal from './MessageModal';
 
 export default function CadMoto() {
   const [modelo, setModelo] = useState('');
@@ -18,46 +19,49 @@ export default function CadMoto() {
   const [zona, setZona] = useState('');
   const [motos, setMotos] = useState([]);
 
-  const motosMockadas = [
-  { id: '1', modelo: 'Mottu Pop', placa: 'ABC1234', zona: 'Manutenção Rápida' },
-  { id: '2', modelo: 'Mottu Sport', placa: 'DEF2345', zona: 'Manutenção Rápida' },
-  { id: '3', modelo: 'Mottu-E', placa: 'HIJ3456', zona: 'Manutenção Rápida' },
-  { id: '4', modelo: 'Mottu Pop', placa: 'LMN4567', zona: 'Manutenção Rápida' },
-  { id: '5', modelo: 'Mottu-E', placa: 'PQR5678', zona: 'Danos Estruturais' },
-  { id: '6', modelo: 'Mottu Pop', placa: 'TUV6789', zona: 'Danos Estruturais' },
-  { id: '7', modelo: 'Mottu Sport', placa: 'XYZ7890', zona: 'Danos Estruturais' },
-  { id: '8', modelo: 'Mottu-E', placa: 'AAA8901', zona: 'Danos Estruturais' },
-  { id: '9', modelo: 'Mottu Pop', placa: 'BBB9012', zona: 'Sem Placa' },
-  { id: '10', modelo: 'Mottu Sport', placa: 'CCC0123', zona: 'Sem Placa' },
-  { id: '11', modelo: 'Mottu-E', placa: 'DDD1230', zona: 'Motor Defeituoso' },
-  { id: '12', modelo: 'Mottu Sport', placa: 'EEE2341', zona: 'Motor Defeituoso' },
-  { id: '13', modelo: 'Mottu Pop', placa: 'FFF3452', zona: 'BO' },
-  { id: '14', modelo: 'Mottu Sport', placa: 'GGG4563', zona: 'BO' },
-  { id: '15', modelo: 'Mottu-E', placa: 'HHH5674', zona: 'BO' },
-  { id: '16', modelo: 'Mottu Pop', placa: 'III6785', zona: 'BO' },
-  { id: '17', modelo: 'Mottu-E', placa: 'JJJ7896', zona: 'Aluguel' },
-  { id: '18', modelo: 'Mottu Sport', placa: 'KKK8907', zona: 'Aluguel' },
-  { id: '19', modelo: 'Mottu Pop', placa: 'LLL9018', zona: 'Aluguel' },
-  { id: '20', modelo: 'Mottu-E', placa: 'MMM0129', zona: 'Aluguel' },
-];
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  // Nessa função, ele carrega do AsyncStorage ou insere os mockados caso não haja nenhum dado no app
+  const motosMockadas = [
+    { id: '1', modelo: 'Mottu Pop', placa: 'ABC1234', zona: 'Manutenção Rápida' },
+    { id: '2', modelo: 'Mottu Sport', placa: 'DEF2345', zona: 'Manutenção Rápida' },
+    { id: '3', modelo: 'Mottu-E', placa: 'HIJ3456', zona: 'Manutenção Rápida' },
+    { id: '4', modelo: 'Mottu Pop', placa: 'LMN4567', zona: 'Manutenção Rápida' },
+    { id: '5', modelo: 'Mottu-E', placa: 'PQR5678', zona: 'Danos Estruturais' },
+    { id: '6', modelo: 'Mottu Pop', placa: 'TUV6789', zona: 'Danos Estruturais' },
+    { id: '7', modelo: 'Mottu Sport', placa: 'XYZ7890', zona: 'Danos Estruturais' },
+    { id: '8', modelo: 'Mottu-E', placa: 'AAA8901', zona: 'Danos Estruturais' },
+    { id: '9', modelo: 'Mottu Pop', placa: 'BBB9012', zona: 'Sem Placa' },
+    { id: '10', modelo: 'Mottu Sport', placa: 'CCC0123', zona: 'Sem Placa' },
+    { id: '11', modelo: 'Mottu-E', placa: 'DDD1230', zona: 'Motor Defeituoso' },
+    { id: '12', modelo: 'Mottu Sport', placa: 'EEE2341', zona: 'Motor Defeituoso' },
+    { id: '13', modelo: 'Mottu Pop', placa: 'FFF3452', zona: 'BO' },
+    { id: '14', modelo: 'Mottu Sport', placa: 'GGG4563', zona: 'BO' },
+    { id: '15', modelo: 'Mottu-E', placa: 'HHH5674', zona: 'BO' },
+    { id: '16', modelo: 'Mottu Pop', placa: 'III6785', zona: 'BO' },
+    { id: '17', modelo: 'Mottu-E', placa: 'JJJ7896', zona: 'Aluguel' },
+    { id: '18', modelo: 'Mottu Sport', placa: 'KKK8907', zona: 'Aluguel' },
+    { id: '19', modelo: 'Mottu Pop', placa: 'LLL9018', zona: 'Aluguel' },
+    { id: '20', modelo: 'Mottu-E', placa: 'MMM0129', zona: 'Aluguel' },
+  ];
+
   useEffect(() => {
-  async function carregarMotos() {
-    try {
-      const dados = await AsyncStorage.getItem('lista_motos');
-      if (!dados || JSON.parse(dados).length === 0) {
-        await AsyncStorage.setItem('lista_motos', JSON.stringify(motosMockadas));
-        setMotos(motosMockadas);
-      } else {
-        setMotos(JSON.parse(dados));
+    async function carregarMotos() {
+      try {
+        const dados = await AsyncStorage.getItem('lista_motos');
+        if (!dados || JSON.parse(dados).length === 0) {
+          await AsyncStorage.setItem('lista_motos', JSON.stringify(motosMockadas));
+          setMotos(motosMockadas);
+        } else {
+          setMotos(JSON.parse(dados));
+        }
+      } catch (error) {
+        console.error('Erro ao carregar motos:', error);
       }
-    } catch (error) {
-      console.error('Erro ao carregar motos:', error);
     }
-  };
-  carregarMotos();
-}, []);
+    carregarMotos();
+  }, []);
 
   useEffect(() => {
     AsyncStorage.setItem('lista_motos', JSON.stringify(motos));
@@ -67,7 +71,7 @@ export default function CadMoto() {
     setModelo('');
     setPlaca('');
     setZona('');
-  };
+  }
 
   function salvarMoto() {
     if (modelo && placa.match(/^[A-Z]{3}[0-9]{4}$/) && zona) {
@@ -79,54 +83,60 @@ export default function CadMoto() {
       };
       setMotos([...motos, novaMoto]);
       limparFormulario();
+
+      setModalMessage('Moto cadastrada com sucesso!');
+      setIsSuccess(true);
+      setModalVisible(true);
     } else {
-      alert('Preencha todos os campos corretamente!');
+      setModalMessage('Preencha todos os campos corretamente!');
+      setIsSuccess(false);
+      setModalVisible(true);
     }
-  };
+  }
 
   return (
-      <View>
-        <View style={styles.header}>
-          <Image
-            source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3177/3177361.png' }}
-            style={styles.pinIcon}
-          />
-          <Image
-            source={{ uri: 'https://mottu.com.br/wp-content/uploads/2023/08/moto.webp' }}
-            style={styles.motoImage}
-            resizeMode="contain"
-          />
-          <View style={styles.card}>
-            <Text style={styles.cardText}> Quantidade de motos no pátio:  {motos.length} </Text>
-          </View>
+    <View>
+      <View style={styles.header}>
+        <Image
+          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3177/3177361.png' }}
+          style={styles.pinIcon}
+        />
+        <Image
+          source={{ uri: 'https://mottu.com.br/wp-content/uploads/2023/08/moto.webp' }}
+          style={styles.motoImage}
+          resizeMode="contain"
+        />
+        <View style={styles.card}>
+          <Text style={styles.cardText}> Quantidade de motos no pátio: {motos.length} </Text>
+        </View>
+      </View>
+
+      <View style={styles.form}>
+        <Text style={styles.formTitle}>Cadastrar Moto</Text>
+
+        <Text style={styles.label}>Modelo</Text>
+        <View style={styles.selectBorder}>
+          <Picker selectedValue={modelo} onValueChange={setModelo} style={{ color: modelo === '' ? '#838383' : '#000' }}>
+            <Picker.Item label="Selecione um modelo" value="" />
+            <Picker.Item label="Mottu Pop" value="Mottu Pop" />
+            <Picker.Item label="Mottu Sport" value="Mottu Sport" />
+            <Picker.Item label="Mottu-E" value="Mottu-E" />
+          </Picker>
         </View>
 
-        <View style={styles.form}>
-          <Text style={styles.formTitle}>Cadastrar Moto</Text>
+        <Text style={styles.label}>Placa</Text>
+        <TextInput
+          value={placa}
+          onChangeText={setPlaca}
+          placeholder="Insira a placa (ex: ABC1234)"
+          style={styles.input}
+          autoCapitalize="characters"
+          maxLength={7}
+        />
 
-          <Text style={styles.label}>Modelo</Text>
-          <View style={styles.selectBorder}>
-            <Picker selectedValue={modelo} onValueChange={setModelo} style={{color: modelo === '' ? '#838383' : '#000'}}>
-              <Picker.Item label="Selecione um modelo" value="" />
-              <Picker.Item label="Mottu Pop" value="Mottu Pop" />
-              <Picker.Item label="Mottu Sport" value="Mottu Sport" />
-              <Picker.Item label="Mottu-E" value="Mottu-E" />
-            </Picker>
-          </View>
-
-          <Text style={styles.label}>Placa</Text>
-          <TextInput
-            value={placa}
-            onChangeText={setPlaca}
-            placeholder="Insira a placa (ex: ABC1234)"
-            style={styles.input}
-            autoCapitalize="characters"
-            maxLength={7}
-          />
-
-          <Text style={styles.label}>Zona</Text>
-          <View style={styles.selectBorder}>
-          <Picker selectedValue={zona} onValueChange={setZona} style={{color: zona === '' ? '#838383' : '#000'}}>
+        <Text style={styles.label}>Zona</Text>
+        <View style={styles.selectBorder}>
+          <Picker selectedValue={zona} onValueChange={setZona} style={{ color: zona === '' ? '#838383' : '#000' }}>
             <Picker.Item label="Selecione uma zona" value="" />
             <Picker.Item label="Manutenção Rápida" value="Manutenção Rápida" />
             <Picker.Item label="Danos Estruturais" value="Danos Estruturais" />
@@ -135,30 +145,35 @@ export default function CadMoto() {
             <Picker.Item label="Aluguel" value="Aluguel" />
             <Picker.Item label="Motor Defeituoso" value="Motor Defeituoso" />
           </Picker>
-          </View>
-
-          <View style={styles.buttons}>
-            <TouchableOpacity style={styles.clearButton} onPress={limparFormulario}>
-              <Text style={styles.buttonText}>Limpar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.saveButton} onPress={salvarMoto}>
-              <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
-          </View>
-          
-          {/* Teste - excluindo dados do storage */}
-          <TouchableOpacity
-              style={[styles.clearButton, { backgroundColor: '#e74c3c', marginTop: 15 }]}
-              onPress={async () => {
-                await AsyncStorage.removeItem('lista_motos');
-                setMotos([]);
-                alert('AsyncStorage limpo!');
-              }}
-            >
-              <Text style={styles.buttonText}>Limpar Motos do Storage</Text>
-            </TouchableOpacity>
         </View>
+
+        <View style={styles.buttons}>
+          <TouchableOpacity style={styles.clearButton} onPress={limparFormulario}>
+            <Text style={styles.buttonText}>Limpar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton} onPress={salvarMoto}>
+            <Text style={styles.buttonText}>Salvar</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+            style={[styles.clearButton, { backgroundColor: '#e74c3c', marginTop: 15 }]}
+            onPress={async () => {
+              await AsyncStorage.removeItem('lista_motos');
+              setMotos([]);
+            }}
+        >
+            <Text style={styles.buttonText}>Limpar Motos do Storage</Text>
+          </TouchableOpacity>
       </View>
+
+      <FeedbackModal
+        visible={modalVisible}
+        message={modalMessage}
+        isSuccess={isSuccess}
+        onClose={() => setModalVisible(false)}
+      />
+    </View>
   );
 }
 
