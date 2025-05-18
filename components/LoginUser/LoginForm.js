@@ -8,8 +8,11 @@ import MessageModal from "../MessageModal";
 import InputField from "./LoginInput";
 import { useUser } from "../../providers/UserContext";
 import appLogo from '../../assets/logo-app.png';
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginForm() {
+   const navigation = useNavigation();
+
   const users = [
     { email: "maria@fiap.com", password: "RM558832" },
     { email: "vinicius@fiap.com", password: "RM554456" },
@@ -43,8 +46,13 @@ export default function LoginForm() {
       const userData = { name, email, adress };
       await AsyncStorage.setItem("usuario", JSON.stringify(userData));
       setUser(userData);
+      setModalMessage(`Bem vindo(a), ${name}!`);
       setIsSuccess(true);
       setModalVisible(true);
+
+      setTimeout(() => {
+        navigation.replace('MainApp');
+      }, 1500);
     } else {
       setModalMessage("Email ou senha inválidos.");
       setIsSuccess(false);

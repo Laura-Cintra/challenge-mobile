@@ -6,14 +6,11 @@ import { useUser } from '../providers/UserContext';
 
 export default function MenuSuperior() {
   const navigation = useNavigation();
-   const { logout } = useUser();
+  const { logout } = useUser();
 
   const handleLogout = async () => {
     await logout();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+    navigation.replace('Login');
   };
 
   return (
