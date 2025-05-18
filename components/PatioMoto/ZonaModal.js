@@ -13,20 +13,17 @@ export default function ZonaModal({
   onClose,
   zona,
   motos,
-  searchQuery,
-  setSearchQuery,
+  filtroBusca,
+  setFiltroBusca,
 }) {
-  const termo = searchQuery.toLowerCase().trim();
+  const textoBusca = filtroBusca.toLowerCase().trim();
 
-  const motosFiltradas = motos.filter((item) => {
-    const modelo = item.modelo?.toLowerCase() || '';
-    const placa = item.placa?.toLowerCase() || '';
-
-    return (
-      modelo.includes(termo) ||
-      placa.includes(termo)
-    );
-  });
+  const motosFiltradas = filtroBusca
+    ? motos.filter((moto) =>
+        moto.modelo.toLowerCase().includes(textoBusca) ||
+        moto.placa.toLowerCase().includes(textoBusca)
+      )
+    : motos;
 
   return (
     <Modal visible={visible} animationType="slide">
@@ -36,17 +33,17 @@ export default function ZonaModal({
 
         <TextInput
           placeholder="Buscar por modelo ou placa"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
+          value={filtroBusca}
+          onChangeText={setFiltroBusca}
           style={styles.searchInput}
         />
 
         <FlatList
           data={motosFiltradas}
           keyExtractor={(_, i) => i.toString()}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <View style={styles.motoItem}>
-              <Text style={styles.itemText}>ID: {index + 1}</Text>
+              <Text style={styles.itemText}>ID: {item.id}</Text>
               <Text style={styles.itemText}>Modelo: {item.modelo}</Text>
               <Text style={styles.itemText}>Placa: {item.placa}</Text>
             </View>

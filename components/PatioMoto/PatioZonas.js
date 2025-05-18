@@ -19,7 +19,7 @@ export default function PatioZonas() {
   const [motos, setMotos] = useState([]);
   const [zonaSelecionada, setZonaSelecionada] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [filtroBusca, setFiltroBusca] = useState('');
 
   useFocusEffect(
     useCallback(() => {
@@ -37,7 +37,7 @@ export default function PatioZonas() {
 
   const abrirModalZona = (zona) => {
     setZonaSelecionada(zona);
-    setSearchQuery('');
+    setFiltroBusca('');
     setModalVisible(true);
   };
 
@@ -60,9 +60,9 @@ export default function PatioZonas() {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         zona={zonaSelecionada}
-        motos={motos.filter((m) => m.zona === zonaSelecionada)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        motos={motos.filter((moto) => moto.zona === zonaSelecionada)}
+        filtroBusca={filtroBusca}
+        setFiltroBusca={setFiltroBusca}
       />
     </View>
   );
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignSelf: 'center',
     color: '#000F05',
-    marginTop: 50,
+    marginTop: 20,
   },
   grid: {
     flexDirection: 'row',

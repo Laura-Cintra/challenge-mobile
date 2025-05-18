@@ -18,7 +18,6 @@ export default function TabIcon({ focused, icon, iconFocused }) {
         style={{
           width: iconSize,
           height: iconSize,
-          resizeMode: 'contain',
         }}
       />
     </View>

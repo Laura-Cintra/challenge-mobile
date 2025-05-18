@@ -1,14 +1,12 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import CadMoto from '../components/CadastroMoto/CadMoto';
-import MenuSuperior from '../components/MenuSuperior';
+import LoginForm from '../components/LoginUser/LoginForm';
 
-export default function NovaMoto() {
+export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <MenuSuperior/>
-          <CadMoto/>
+          <LoginForm/>
         </ScrollView>
     </SafeAreaView>
   );

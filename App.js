@@ -2,8 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Menu from './components/Menu';
-import Login from './pages/LoginForm';
+import Login from './pages/Login';
 import UserProvider, { useUser } from './providers/UserContext';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,10 +24,12 @@ function Routes() {
 
 export default function App() {
   return (
-    <UserProvider>
-      <NavigationContainer>
-        <Routes />
-      </NavigationContainer>
-    </UserProvider>
+    <SafeAreaProvider>
+      <UserProvider>
+        <NavigationContainer>
+          <Routes />
+        </NavigationContainer>
+      </UserProvider>
+    </SafeAreaProvider>
   );
 }
