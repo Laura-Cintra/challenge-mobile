@@ -5,7 +5,6 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -16,8 +15,6 @@ const UserProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Erro ao carregar usuário:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
