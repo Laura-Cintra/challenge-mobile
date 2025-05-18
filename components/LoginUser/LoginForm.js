@@ -46,13 +46,10 @@ export default function LoginForm() {
       const userData = { name, email, adress };
       await AsyncStorage.setItem("usuario", JSON.stringify(userData));
       setUser(userData);
-      setModalMessage(`Bem vindo(a), ${name}!`);
       setIsSuccess(true);
-      setModalVisible(true);
-
       setTimeout(() => {
         navigation.replace('MainApp');
-      }, 1500);
+      }, 100);
     } else {
       setModalMessage("Email ou senha inválidos.");
       setIsSuccess(false);

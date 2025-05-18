@@ -24,8 +24,8 @@ export default function CadMoto() {
     { id: '6', modelo: 'Mottu Pop', placa: 'TUV6789', zona: 'Danos Estruturais' },
     { id: '7', modelo: 'Mottu Sport', placa: 'XYZ7890', zona: 'Danos Estruturais' },
     { id: '8', modelo: 'Mottu-E', placa: 'AAA8901', zona: 'Danos Estruturais' },
-    { id: '9', modelo: 'Mottu Pop', placa: 'BBB9012', zona: 'Sem Placa' },
-    { id: '10', modelo: 'Mottu Sport', placa: 'CCC0123', zona: 'Sem Placa' },
+    { id: '9', modelo: 'Mottu Pop', placa: 'sem placa', zona: 'Sem Placa' },
+    { id: '10', modelo: 'Mottu Sport', placa: 'sem placa', zona: 'Sem Placa' },
     { id: '11', modelo: 'Mottu-E', placa: 'DDD1230', zona: 'Motor Defeituoso' },
     { id: '12', modelo: 'Mottu Sport', placa: 'EEE2341', zona: 'Motor Defeituoso' },
     { id: '13', modelo: 'Mottu Pop', placa: 'FFF3452', zona: 'BO' },
@@ -66,7 +66,10 @@ export default function CadMoto() {
   }
 
   function salvarMoto() {
-    if (modelo && placa.match(/^[A-Z]{3}[0-9]{4}$/) && zona) {
+
+    const placaFiltrada = placa.toLowerCase().trim();
+
+    if (modelo && (placaFiltrada === 'sem placa' || placa.match(/^[A-Z]{3}[0-9]{4}$/)) && zona) {
       const novaMoto = { id: Date.now().toString(), modelo, placa, zona };
       setMotos([...motos, novaMoto]);
       limparFormulario();

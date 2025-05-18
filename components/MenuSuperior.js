@@ -3,10 +3,15 @@ import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/logo.png';
 import logoutIcon from '../assets/icons/logout.png';
 import { useUser } from '../providers/UserContext';
+import { useEffect } from 'react';
 
 export default function MenuSuperior() {
   const navigation = useNavigation();
   const { logout } = useUser();
+
+  const handleHome = () => {
+    navigation.navigate('Home');
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -16,11 +21,13 @@ export default function MenuSuperior() {
   return (
     <SafeAreaView>
       <View style={styles.header}>
-        <Image
-          source={logo}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <TouchableOpacity onPress={handleHome}>
+          <Image
+            source={logo}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout}>
           <Image
             source={logoutIcon}

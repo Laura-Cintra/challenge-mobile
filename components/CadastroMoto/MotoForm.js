@@ -40,10 +40,10 @@ export default function MotoForm({
       <TextInput
         value={placa}
         onChangeText={setPlaca}
-        placeholder="Insira a placa (ex: ABC1234)"
+        placeholder="Insira a placa (ex: ABC1234) ou 'sem placa'"
         style={styles.input}
         autoCapitalize="characters"
-        maxLength={7}
+        maxLength={9}
       />
 
       <Text style={styles.label}>Zona</Text>
