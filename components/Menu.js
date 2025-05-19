@@ -36,7 +36,7 @@ export default function Menu() {
           backgroundColor: colors.background,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          borderTopWidth: 1,
+          borderTopWidth: 2,
           borderTopColor: colors.borderTop,
           height: 65,
           position: 'absolute',

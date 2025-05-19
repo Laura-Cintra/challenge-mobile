@@ -1,10 +1,11 @@
 const colors = {
-  background: '#F6FFF9',
+  background: '#F5F5F5',
   primary: '#009B30',
   secundary: '#1BA857',
   inative: '#95a5a6',
   title: '#000F05',
   text: '#000',
+  textSecondary: '#555',
   white: '#FBFBFB',
   placeholder: '#838383',
   border: '#ccc',

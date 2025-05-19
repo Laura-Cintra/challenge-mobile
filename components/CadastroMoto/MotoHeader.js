@@ -22,7 +22,7 @@ export default function MotoHeader({ motos }) {
 
 const styles = StyleSheet.create({
   header: {
-    height: '35%',
+    height: '30%',
     backgroundColor: colors.secundary,
     justifyContent: 'center',
     alignItems: 'center',
@@ -36,21 +36,19 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   motoImage: {
-    marginTop: 55,
+    marginTop: 42,
     width: 200,
     height: 150,
   },
   card: {
     backgroundColor: colors.title,
-    padding: 15,
-    shadowColor: colors.text,
+    padding: 10,
     width: '100%',
     marginTop: 5,
   },
   cardText: {
     color: colors.white,
-    fontSize: 17,
-    fontWeight: 'light',
+    fontSize: 16,
     textAlign: 'center',
   },
 });

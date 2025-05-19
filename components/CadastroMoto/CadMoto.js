@@ -47,7 +47,7 @@ export default function CadMoto() {
 
       // Verifica se já existe uma moto com a mesma placa
       const placaExiste = motos.some(
-        (m) => m.placa.toLowerCase().trim() === placaFiltrada
+        (moto) => moto.placa.toLowerCase().trim() === placaFiltrada
       );
       if (placaExiste) {
         setModalMessage('Já existe um registro com essa placa!');
