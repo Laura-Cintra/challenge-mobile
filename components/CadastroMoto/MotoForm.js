@@ -6,6 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import colors from '../../theme/colors';
 
 export default function MotoForm({
   modelo,
@@ -27,7 +28,7 @@ export default function MotoForm({
         <Picker
           selectedValue={modelo}
           onValueChange={setModelo}
-          style={{ color: modelo === '' ? '#838383' : '#000' }}
+          style={{ color: modelo === '' ? `${colors.placeholder}` : `${colors.text}` }}
         >
           <Picker.Item label="Selecione um modelo" value="" />
           <Picker.Item label="Mottu Pop" value="Mottu Pop" />
@@ -51,7 +52,7 @@ export default function MotoForm({
         <Picker
           selectedValue={zona}
           onValueChange={setZona}
-          style={{ color: zona === '' ? '#838383' : '#000' }}
+          style={{ color: zona === '' ? `${colors.placeholder}` : `${colors.text}` }}
         >
           <Picker.Item label="Selecione uma zona" value="" />
           <Picker.Item label="Manutenção Rápida" value="Manutenção Rápida" />
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     padding: 20,
     height: '40%',
     justifyContent: 'space-evenly',
-    backgroundColor: '#F6FFF9',
+    backgroundColor: colors.background,
   },
   formTitle: {
     fontSize: 24,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.border,
     padding: 15,
     borderRadius: 8,
     marginTop: 5,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   selectBorder: {
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.border,
   },
   buttons: {
     flexDirection: 'row',
@@ -121,19 +122,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   clearButton: {
-    backgroundColor: '#95a5a6',
+    backgroundColor: colors.inative,
     padding: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
   },
   saveButton: {
-    backgroundColor: '#1BA857',
+    backgroundColor: colors.secundary,
     padding: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontWeight: 'bold',
     fontSize: 16,
   },

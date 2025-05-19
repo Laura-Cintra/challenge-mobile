@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
+import colors from '../../theme/colors';
 
 const screen_width = Dimensions.get('window').width;
 
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cardText: {
-    color: '#fff',
+    color: colors.white,
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,

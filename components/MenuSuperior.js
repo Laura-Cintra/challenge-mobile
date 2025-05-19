@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/logo.png';
 import logoutIcon from '../assets/icons/logout.png';
 import { useUser } from '../providers/UserContext';
-import { useEffect } from 'react';
+import colors from '../theme/colors';
 
 export default function MenuSuperior() {
   const navigation = useNavigation();
@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 12,
-    backgroundColor: '#F6FFF9',
+    backgroundColor: colors.background,
     borderBottomWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.border,
   },
   logo: {
     width: 40,

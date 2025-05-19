@@ -15,6 +15,7 @@ import moto from '../assets/icons/moto.png';
 import motoWhite from '../assets/icons/moto-white.png';
 import perfil from '../assets/icons/user.png';
 import perfilWhite from '../assets/icons/user-white.png';
+import colors from '../theme/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,11 +33,11 @@ export default function Menu() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: '#F6FFF9',
+          backgroundColor: colors.background,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           borderTopWidth: 1,
-          borderTopColor: '#E0E0E0',
+          borderTopColor: colors.borderTop,
           height: 65,
           position: 'absolute',
         },

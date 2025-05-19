@@ -1,4 +1,5 @@
 import { View, Image, Text, StyleSheet } from 'react-native';
+import colors from '../../theme/colors';
 
 export default function MotoHeader({ motos }) {
   return (
@@ -22,7 +23,7 @@ export default function MotoHeader({ motos }) {
 const styles = StyleSheet.create({
   header: {
     height: '35%',
-    backgroundColor: '#1BA857',
+    backgroundColor: colors.secundary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -40,14 +41,14 @@ const styles = StyleSheet.create({
     height: 150,
   },
   card: {
-    backgroundColor: '#000F05',
+    backgroundColor: colors.title,
     padding: 15,
-    shadowColor: '#000',
+    shadowColor: colors.text,
     width: '100%',
     marginTop: 5,
   },
   cardText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 17,
     fontWeight: 'light',
     textAlign: 'center',

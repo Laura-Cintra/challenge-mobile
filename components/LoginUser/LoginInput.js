@@ -1,4 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import colors from '../../theme/colors';
 
 export default function InputField({ label, value, onChangeText, icon, ...props }) {
   return (
@@ -10,7 +11,7 @@ export default function InputField({ label, value, onChangeText, icon, ...props 
           style={styles.input}
           value={value}
           onChangeText={onChangeText}
-          placeholderTextColor="#888"
+          placeholderTextColor={colors.placeholder}
           {...props}
         />
       </View>
@@ -23,13 +24,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     fontSize: 15,
-    color: '#000',
+    color: colors.text,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.border,
     borderRadius: 8,
     paddingHorizontal: 10,
     marginTop: 5,
@@ -41,6 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     fontSize: 15,
-    color: '#000',
+    color: colors.text,
   },
 });

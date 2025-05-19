@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import colors from '../../theme/colors';
 
 export default function ZonaModal({
   visible,
@@ -51,7 +52,7 @@ export default function ZonaModal({
         />
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
-          <Text style={{ color: '#fff', fontSize: 19 }}>Fechar</Text>
+          <Text style={{ color: colors.white, fontSize: 19 }}>Fechar</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.border,
     borderRadius: 8,
     padding: 15,
     marginBottom: 15,
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   fecharBotao: {
-    backgroundColor: '#009B30',
+    backgroundColor: colors.primary,
     padding: 12,
     borderRadius: 10,
     marginTop: 20,

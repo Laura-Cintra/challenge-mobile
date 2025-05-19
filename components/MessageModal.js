@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import colors from '../theme/colors';
 
 export default function MessageModal({
   visible,
@@ -50,20 +51,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   successModal: {
-    backgroundColor: "#2ecc71",
+    backgroundColor: colors.modalGreen,
   },
   errorModal: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: colors.modalRed,
   },
   modalText: {
-    color: "#fff",
+    color: colors.white,
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
   },
   modalButton: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,

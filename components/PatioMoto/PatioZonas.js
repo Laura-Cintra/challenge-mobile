@@ -2,17 +2,18 @@ import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import colors from '../../theme/colors';
 
 import ZonaCard from './ZonaCard';
 import ZonaModal from './ZonaModal';
 
 const zonas = [
-  { nome: 'Manutenção Rápida', cor: '#2679B8' },
-  { nome: 'Danos Estruturais', cor: '#E58A3A' },
-  { nome: 'Sem Placa', cor: '#C760B3' },
-  { nome: 'BO', cor: '#E1B90D' },
-  { nome: 'Aluguel', cor: '#2FAE51' },
-  { nome: 'Motor Defeituoso', cor: '#D84336' },
+  { nome: 'Manutenção Rápida', cor: colors.zona1 },
+  { nome: 'Danos Estruturais', cor: colors.zona2 },
+  { nome: 'Sem Placa', cor: colors.zona3 },
+  { nome: 'BO', cor: colors.zona4 },
+  { nome: 'Aluguel', cor: colors.zona5 },
+  { nome: 'Motor Defeituoso', cor: colors.zona6 },
 ];
 
 export default function PatioZonas() {
@@ -72,14 +73,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F6FFF9',
+    backgroundColor: colors.background,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
     alignSelf: 'center',
-    color: '#000F05',
+    color: colors.title,
     marginTop: 20,
   },
   grid: {
