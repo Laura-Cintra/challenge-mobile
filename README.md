@@ -1,6 +1,6 @@
 # SmartPátio — Challenge Mottu
 
-<img src="assets/icons/icon-round.png" alt="Logo do Projeto" width="120" height="120">
+<img src="assets/logo-app.png" alt="Logo do Projeto" width="120" height="120">
 
 O **SmartPátio** é um aplicativo mobile desenvolvido em React Native Expo, com o objetivo de otimizar a **gestão das motos nos pátios da Mottu**. A solução inclui cadastro, visualização e organização de motos por zona, usando uma interface simples, acessível e funcional para os gestores do pátio.
 
