@@ -22,21 +22,21 @@ export default function MotoHeader({ motos }) {
 
 const styles = StyleSheet.create({
   header: {
-    height: '30%',
+    minHeight: '30%',
     backgroundColor: colors.secundary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   pinIcon: {
     position: 'absolute',
-    top: 50,
+    top: 30,
     left: '85%',
     width: 40,
     height: 40,
     opacity: 0.4,
   },
   motoImage: {
-    marginTop: 42,
+    marginTop: 35,
     width: 200,
     height: 150,
   },
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.title,
     padding: 10,
     width: '100%',
+    minHeight: `5%`,
     marginTop: 5,
   },
   cardText: {

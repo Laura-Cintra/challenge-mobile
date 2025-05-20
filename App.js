@@ -13,10 +13,11 @@ function Routes() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={Login} />
-      {user ? (
+      {!user ? (
+        <Stack.Screen name="Login" component={Login} />
+      ) : (
         <Stack.Screen name="MainApp" component={Menu} />
-      ) : null}
+      )}
     </Stack.Navigator>
   );
 }

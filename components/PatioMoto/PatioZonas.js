@@ -22,6 +22,7 @@ export default function PatioZonas() {
   const [modalVisible, setModalVisible] = useState(false);
   const [filtroBusca, setFiltroBusca] = useState('');
 
+  // atualizar a quantidade de motos em tempo real - dispara a função sempre que a tela é focada
   useFocusEffect(
     useCallback(() => {
       const carregarMotos = async () => {

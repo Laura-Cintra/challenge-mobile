@@ -20,7 +20,7 @@ export default function LoginForm() {
     { email: "laura@fiap.com", password: "RM558843" },
   ];
 
-  const { setUser } = useUser();
+  const { login } = useUser();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,13 +40,12 @@ export default function LoginForm() {
     }
 
     const user = users.find(
-      (u) => u.email === email && u.password === password
+      (user) => user.email === email && user.password === password
     );
 
     if (user) {
       const userData = { name, email, adress };
-      await AsyncStorage.setItem("usuario", JSON.stringify(userData));
-      setUser(userData);
+      await login(userData);
       setIsSuccess(true);
       setTimeout(() => {
         navigation.replace('MainApp');

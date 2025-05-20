@@ -1,25 +1,34 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useUser } from '../providers/UserContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import perfil from '../assets/icons/profile-user.png';
 import colors from '../theme/colors';
 import { Foundation, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function ProfileInfo() {
   const { user } = useUser();
   const [quantidadeMotos, setQuantidadeMotos] = useState(0);
   const navigation = useNavigation();
 
-  useEffect(() => {
+  useFocusEffect(
+  useCallback(() => {
     const carregarQuantidadeMotos = async () => {
-      const dados = await AsyncStorage.getItem('lista_motos');
-      const lista = dados ? JSON.parse(dados) : [];
-      setQuantidadeMotos(lista.length);
+      try {
+        const dados = await AsyncStorage.getItem('lista_motos');
+        const lista = dados ? JSON.parse(dados) : [];
+        setQuantidadeMotos(lista.length);
+      } catch (error) {
+        console.error('Erro ao carregar quantidade de motos:', error);
+      }
     };
+
     carregarQuantidadeMotos();
-  }, []);
+  }, [])
+);
+
 
   return (
     <View>
