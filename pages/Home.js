@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import motosMockadas from '../data/motosMockadas';
+import MenuSuperior from '../components/MenuSuperior';
+import Dashboard from '../components/DashHome/Dashboard';
 
 export default function Home() {
+
+  // inserir mock de motos automaticamente quando não encontrar nenhuma registro
   useEffect(() => {
     const inicializarMotos = async () => {
       const dados = await AsyncStorage.getItem('lista_motos');
@@ -16,22 +20,20 @@ export default function Home() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Dashboard</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <MenuSuperior/>
+        <Dashboard/>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F6FFF9',
+  scrollContainer: {
+    flexGrow: 1,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#009B30',
-  },
+  container: { 
+    flex: 1, 
+  }
 });

@@ -17,7 +17,6 @@ export default function MotoForm({
   setZona,
   salvarMoto,
   limparFormulario,
-  limparStorage,
 }) {
   return (
     <View style={styles.form}>
@@ -72,13 +71,6 @@ export default function MotoForm({
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={[styles.clearButton, { backgroundColor: '#e74c3c', marginTop: 15 }]}
-        onPress={limparStorage}
-      >
-        <Text style={styles.buttonText}>Limpar Motos do Storage</Text>
-      </TouchableOpacity>
     </View>
   );
 }

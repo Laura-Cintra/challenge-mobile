@@ -1,34 +1,17 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useUser } from '../providers/UserContext';
-import { useCallback, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import perfil from '../assets/icons/profile-user.png';
 import colors from '../theme/colors';
 import { Foundation, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useMotos } from '../providers/UseMotos';
 
 export default function ProfileInfo() {
   const { user } = useUser();
-  const [quantidadeMotos, setQuantidadeMotos] = useState(0);
   const navigation = useNavigation();
 
-  useFocusEffect(
-  useCallback(() => {
-    const carregarQuantidadeMotos = async () => {
-      try {
-        const dados = await AsyncStorage.getItem('lista_motos');
-        const lista = dados ? JSON.parse(dados) : [];
-        setQuantidadeMotos(lista.length);
-      } catch (error) {
-        console.error('Erro ao carregar quantidade de motos:', error);
-      }
-    };
-
-    carregarQuantidadeMotos();
-  }, [])
-);
-
+  const { motos } = useMotos();
+  const total = motos.length;
 
   return (
     <View>
@@ -53,7 +36,7 @@ export default function ProfileInfo() {
             Endereço: <Text>{user?.adress}</Text>
           </Text>
           <Text style={styles.patioText}>
-            Motos no pátio: <Text style={styles.motoText}>{quantidadeMotos}</Text>
+            Motos no pátio: <Text style={styles.motoText}>{total}</Text>
           </Text>
         </View>
       </View>
