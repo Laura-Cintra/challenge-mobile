@@ -8,7 +8,7 @@ export function useMotos() {
   // atualizar a quantidade de motos em tempo real - dispara a função sempre que a tela é focada
   useFocusEffect(
     useCallback(() => {
-      const carregar = async () => {
+      const carregarMotos = async () => {
         try {
           const dados = await AsyncStorage.getItem('lista_motos');
           const lista = dados ? JSON.parse(dados) : [];
@@ -18,7 +18,7 @@ export function useMotos() {
         }
       };
 
-      carregar();
+      carregarMotos();
     }, [])
   );
 
