@@ -22,7 +22,8 @@ export default function ZonaModal({
   const motosFiltradas = filtroBusca
     ? motos.filter((moto) =>
         moto.modelo.toLowerCase().includes(textoBusca) ||
-        moto.placa.toLowerCase().includes(textoBusca)
+        moto.placa.toLowerCase().includes(textoBusca) ||
+        moto.id.toString().includes(textoBusca)
       )
     : motos;
 
@@ -33,7 +34,7 @@ export default function ZonaModal({
         <Text style={styles.modalSubtitle}>Total: {motosFiltradas.length} motos</Text>
 
         <TextInput
-          placeholder="Buscar por modelo ou placa"
+          placeholder="Buscar por modelo, placa ou ID"
           value={filtroBusca}
           onChangeText={setFiltroBusca}
           style={styles.searchInput}
