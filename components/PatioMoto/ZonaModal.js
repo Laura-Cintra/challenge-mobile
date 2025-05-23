@@ -8,24 +8,33 @@ import {
   StyleSheet,
 } from 'react-native';
 import colors from '../../theme/colors';
+import { useMotos } from '../../providers/UseMotos';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useState } from 'react';
 
 export default function ZonaModal({
   visible,
   onClose,
   zona,
-  motos,
+  // motos,
   filtroBusca,
   setFiltroBusca,
 }) {
+  
+  const [motoSelecionada, setMotoSelecionada] = useState(null);
+  const [modalConfirmacaoVisible, setModalConfirmacaoVisible] = useState(false);
+  const { motos, deletarMotoPorId } = useMotos();
   const textoBusca = filtroBusca.toLowerCase().trim();
 
+  const motosDaZona = motos.filter((m) => m.zona === zona);
+
   const motosFiltradas = filtroBusca
-    ? motos.filter((moto) =>
+    ? motosDaZona.filter((moto) =>
         moto.modelo.toLowerCase().includes(textoBusca) ||
         moto.placa.toLowerCase().includes(textoBusca) ||
         moto.id.toString().includes(textoBusca)
       )
-    : motos;
+    : motosDaZona;
 
   return (
     <Modal visible={visible} animationType="slide">
@@ -45,9 +54,14 @@ export default function ZonaModal({
           keyExtractor={(_, i) => i.toString()}
           renderItem={({ item }) => (
             <View style={styles.motoItem}>
-              <Text style={styles.itemText}>ID: {item.id}</Text>
-              <Text style={styles.itemText}>Modelo: {item.modelo}</Text>
-              <Text style={styles.itemText}>Placa: {item.placa}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.itemText}>ID: {item.id}</Text>
+                <Text style={styles.itemText}>Modelo: {item.modelo}</Text>
+                <Text style={styles.itemText}>Placa: {item.placa}</Text>
+              </View>
+              <TouchableOpacity onPress={() => deletarMotoPorId(item.id)}>
+                <FontAwesome5 name="trash" size={20} color={colors.modalRed} />
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -87,6 +101,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     borderRadius: 8,
     marginBottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   itemText: {
     fontSize: 15,

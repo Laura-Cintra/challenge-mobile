@@ -31,5 +31,14 @@ export function useMotos() {
     }
   };
 
-  return { motos, atualizarMotos };
+  const deletarMotoPorId = async (id) => {
+    try {
+      const novasMotos = motos.filter(moto => moto.id !== id);
+      await atualizarMotos(novasMotos);
+    } catch (error) {
+      console.error('Erro ao deletar moto:', error);
+    }
+  };
+
+  return { motos, atualizarMotos, deletarMotoPorId};
 }

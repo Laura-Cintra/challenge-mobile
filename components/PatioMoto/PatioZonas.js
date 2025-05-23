@@ -11,7 +11,6 @@ export default function PatioZonas() {
   const [zonaSelecionada, setZonaSelecionada] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [filtroBusca, setFiltroBusca] = useState('');
-  const { motos } = useMotos();
 
   const abrirModalZona = (zona) => {
     setZonaSelecionada(zona);
@@ -38,7 +37,6 @@ export default function PatioZonas() {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         zona={zonaSelecionada}
-        motos={motos.filter((moto) => moto.zona === zonaSelecionada)}
         filtroBusca={filtroBusca}
         setFiltroBusca={setFiltroBusca}
       />

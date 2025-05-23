@@ -57,7 +57,7 @@ export default function CadMoto() {
       const novaMoto = {
         id: Date.now().toString(),
         modelo,
-        placa: placa.toLowerCase().trim(),
+        placa: SemPlaca ? 'sem placa' : placa.toUpperCase().trim(),
         zona,
       };
       atualizarMotos([...motos, novaMoto]);
