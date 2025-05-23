@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     padding: 20,
-    height: '40%',
-    justifyContent: 'space-evenly',
+    paddingBottom: 220,
+    justifyContent: 'flex-start',
     backgroundColor: colors.background,
   },
   formTitle: {
