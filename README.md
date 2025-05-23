@@ -23,7 +23,8 @@ Nossa proposta é o desenvolvimento de uma solução inteligente para **mapeamen
 ### **Organização das motos por zonas**
 - Exibição das **zonas** no pátio (ex: Manutenção Rápida, Danos Estruturais, etc)
 - Ao clicar em uma zona, abre um modal com a visualização das motos registradas naquela zona
-- Campo de filtro por **modelo** ou **placa**
+- Campo de filtro por **modelo**, **placa** ou **id**
+- Ícone em cada item para deletar a moto
 
 ### **Página de Login**
 - Campos de entrada: nome, e-mail, senha e endereço do pátio.
