@@ -10,23 +10,19 @@ import {
 import colors from '../../theme/colors';
 import { useMotos } from '../../providers/UseMotos';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useState } from 'react';
 
 export default function ZonaModal({
   visible,
   onClose,
   zona,
-  // motos,
   filtroBusca,
   setFiltroBusca,
 }) {
   
-  const [motoSelecionada, setMotoSelecionada] = useState(null);
-  const [modalConfirmacaoVisible, setModalConfirmacaoVisible] = useState(false);
   const { motos, deletarMotoPorId } = useMotos();
   const textoBusca = filtroBusca.toLowerCase().trim();
 
-  const motosDaZona = motos.filter((m) => m.zona === zona);
+  const motosDaZona = motos.filter((moto) => moto.zona === zona);
 
   const motosFiltradas = filtroBusca
     ? motosDaZona.filter((moto) =>
