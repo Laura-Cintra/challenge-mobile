@@ -24,12 +24,22 @@ export default function CadMoto() {
   }
 
   function salvarMoto() {
-
     const placaFiltrada = placa.toLowerCase().trim();
 
-    if (placaFiltrada !== 'sem placa') {
+    // Valida conflito entre zona e placa
+    const zonaSemPlaca = zona === 'Sem Placa';
+    const placaValida = /^[a-zA-Z]{3}[0-9]{4}$/.test(placaFiltrada);
+    const SemPlaca = placaFiltrada === 'sem placa';
 
-      // Verifica se já existe uma moto com a mesma placa
+    if ((zonaSemPlaca && !SemPlaca) || (!zonaSemPlaca && SemPlaca)) {
+      setModalMessage('Se a moto não possui placa, insira na zona "Sem Placa"');
+      setIsSuccess(false);
+      setModalVisible(true);
+      return;
+    }
+
+    // Verifica se já existe uma moto com a mesma placa (exceto se for "sem placa")
+    if (!SemPlaca) {
       const placaExiste = motos.some(
         (moto) => moto.placa.toLowerCase().trim() === placaFiltrada
       );
@@ -41,10 +51,15 @@ export default function CadMoto() {
       }
     }
 
-    if (modelo && (placaFiltrada === 'sem placa' || placa.match(/^[a-zA-Z]{3}[0-9]{4}$/)) && zona) {
-      const novaMoto = { id: Date.now().toString(), modelo, placa: placa.toUpperCase().trim(), zona };
-      const novasMotos = [...motos, novaMoto];
-      atualizarMotos(novasMotos);
+    // Verifica se todos os campos estão corretos
+    if (modelo && (SemPlaca || placaValida) && zona) {
+      const novaMoto = {
+        id: Date.now().toString(),
+        modelo,
+        placa: placa.toUpperCase().trim(),
+        zona,
+      };
+      atualizarMotos([...motos, novaMoto]);
       limparFormulario();
       setModalMessage('Moto cadastrada com sucesso!');
       setIsSuccess(true);
