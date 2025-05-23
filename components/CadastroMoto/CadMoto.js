@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import MotoForm from './MotoForm';
 import MotoHeader from './MotoHeader';
 import MessageModal from '../MessageModal';
-import { View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useMotos } from '../../providers/UseMotos';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CadMoto() {
 
@@ -56,7 +57,7 @@ export default function CadMoto() {
       const novaMoto = {
         id: Date.now().toString(),
         modelo,
-        placa: placa.toUpperCase().trim(),
+        placa: placa.toLowerCase().trim(),
         zona,
       };
       atualizarMotos([...motos, novaMoto]);
