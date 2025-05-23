@@ -65,7 +65,13 @@ npm install
 3. Inicie o projeto com Expo:
 
 ```bash
-npx expo start
+npm start
+```
+
+ou
+
+```bash
+npx expo start --tunnel
 ```
 
 4. Escaneie o QR Code com o app Expo Go no seu celular
