@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import colors from '../../theme/colors';
 import { useMotos } from '../../providers/UseMotos';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
 export default function ZonaModal({
   visible,
@@ -63,7 +63,10 @@ export default function ZonaModal({
         />
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
-          <Text style={{ color: colors.white, fontSize: 19 }}>Fechar</Text>
+          <FontAwesome name="close" size={20} color="#fff" />
+          <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>
+            Fechar
+          </Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -107,9 +110,11 @@ const styles = StyleSheet.create({
   },
   fecharBotao: {
     backgroundColor: colors.primary,
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 12,
     borderRadius: 10,
-    marginTop: 20,
-    alignItems: 'center',
   },
 });
