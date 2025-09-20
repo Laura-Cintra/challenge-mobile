@@ -5,6 +5,8 @@ import colors from '../theme/colors';
 import { Foundation, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useMotos } from '../providers/UseMotos';
+import { useState } from 'react';
+import ProcurarMotoModal from './LocalizarMoto';
 
 export default function ProfileInfo() {
   const { user } = useUser();
@@ -12,6 +14,8 @@ export default function ProfileInfo() {
 
   const { motos } = useMotos();
   const total = motos.length;
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View>
@@ -63,13 +67,26 @@ export default function ProfileInfo() {
 
           <TouchableOpacity
             style={styles.icon}
-            onPress={() => navigation.navigate('NovaMoto')}
+            onPress={() => navigation.navigate('RegistrarFrota')}
           >
             <MaterialIcons name="add-circle-outline" size={28} color={colors.secundary} />
-            <Text style={styles.iconText}>Cadastrar Moto</Text>
+            <Text style={styles.iconText}>Registrar Moto</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={() => setModalVisible(true)}
+          >
+            <MaterialIcons name="search" size={28} color={colors.secundary} />
+            <Text style={styles.iconText}>Localizar Moto</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      <ProcurarMotoModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
@@ -139,13 +156,15 @@ const styles = StyleSheet.create({
   atalhoIcons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap'
   },
   icon: {
-    padding: 15,
+    padding: 20,
     alignItems: 'center',
-    width: '32%',
+    width: '48%',
     borderRadius: 10,
     backgroundColor: '#f8f8f8',
+    marginBottom: 10,
   },
   iconText: {
     marginTop: 8,

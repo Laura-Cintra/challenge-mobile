@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import motosMockadas from '../data/motosMockadas';
 import MenuSuperior from '../components/MenuSuperior';
 import Dashboard from '../components/DashHome/Dashboard';
-import ProcurarMotoModal from './LocalizarMoto';
+import ProcurarMotoModal from '../components/LocalizarMoto';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);

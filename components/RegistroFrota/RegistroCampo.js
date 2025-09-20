@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import colors from "../theme/colors";
+import colors from "../../theme/colors";
 
 export default function RegistroCampo({
   label = "Placa",
@@ -49,7 +49,6 @@ export default function RegistroCampo({
         <Text style={styles.success}>✓ {valor}</Text>
       )}
 
-      {/* Input manual em casos de erro */}
       {erro && (
         <>
           {permiteSemPlaca && (
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 25,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 15,
     fontWeight: "500",
   },
   success: {

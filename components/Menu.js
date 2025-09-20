@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../pages/Home';
 import MotoPark from '../pages/MotoPark';
-import NovaMoto from '../pages/NovaMoto';
 import Perfil from '../pages/Perfil';
+import RegistrarFrota from '../pages/RegistrarFrota';
 
 import TabIcon from '../components/TabIcon';
 
@@ -16,14 +16,12 @@ import motoWhite from '../assets/icons/moto-white.png';
 import perfil from '../assets/icons/user.png';
 import perfilWhite from '../assets/icons/user-white.png';
 import colors from '../theme/colors';
-import RegistrarMoto from '../pages/RegistrarMoto';
 
 const Tab = createBottomTabNavigator();
 
 const iconMap = {
   Home: { icon: home, iconFocused: homeWhite },
   MotoPark: { icon: motoPark, iconFocused: motoParkWhite },
-  // NovaMoto: { icon: moto, iconFocused: motoWhite },
   RegistrarFrota: { icon: moto, iconFocused: motoWhite },
   Perfil: { icon: perfil, iconFocused: perfilWhite },
 };
@@ -54,8 +52,7 @@ export default function Menu() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="MotoPark" component={MotoPark} />
-      {/* <Tab.Screen name="NovaMoto" component={NovaMoto} /> */}
-      <Tab.Screen name="RegistrarFrota" component={RegistrarMoto} />
+      <Tab.Screen name="RegistrarFrota" component={RegistrarFrota} />
       <Tab.Screen name="Perfil" component={Perfil} />
     </Tab.Navigator>
   );

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import RegistroCampo from "../components/RegistroCampo";
-import MessageModal from "../components/MessageModal";
-import colors from "../theme/colors";
+import RegistroCampo from "./RegistroCampo";
+import MessageModal from "../MessageModal";
+import colors from "../../theme/colors";
 
 export default function RegistrarMoto() {
   const [step, setStep] = useState(1);
@@ -200,10 +200,8 @@ export default function RegistrarMoto() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20,
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f8f8f8",
   },
   title: {
     fontSize: 22,

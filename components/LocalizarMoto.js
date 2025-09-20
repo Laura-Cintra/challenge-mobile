@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import ListaMotos from "../components/ListaMotos";
+import ListaMotos from "./ListaMotos";
 
 // Mock de motos (depois vem da API)
 const motos = [
