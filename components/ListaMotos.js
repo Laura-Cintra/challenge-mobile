@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ListaMotos({
   titulo,
@@ -15,7 +16,12 @@ export default function ListaMotos({
   selected,
   onLocalizar,
   onParar,
+  onDelete,
+  onEdit,
   mostrarFiltro = true,
+  permitirEditar = false,
+  permitirExcluir = false,
+  permitirLocalizar = true,
 }) {
   const textoBusca = busca.toLowerCase().trim();
 
@@ -24,13 +30,14 @@ export default function ListaMotos({
         (moto) =>
           moto.placa.toLowerCase().includes(textoBusca) ||
           moto.deviceId?.toLowerCase().includes(textoBusca) ||
-          moto.id?.toString().includes(textoBusca)
+          moto.id?.toString().includes(textoBusca) ||
+          moto.modelo?.toLowerCase().includes(textoBusca)
       )
     : motos;
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={styles.modalTitle}>{titulo}</Text>
+      {titulo && <Text style={styles.modalTitle}>{titulo}</Text>}
 
       {mostrarFiltro && (
         <TextInput
@@ -47,33 +54,54 @@ export default function ListaMotos({
 
       <FlatList
         data={motosFiltradas}
-        keyExtractor={(item, i) => item.deviceId || item.id?.toString() || i.toString()}
+        keyExtractor={(item, i) =>
+          item.deviceId || item.id?.toString() || i.toString()
+        }
         renderItem={({ item }) => (
           <View style={styles.item}>
             <View>
-              <Text style={styles.text}>Placa: {item.placa}</Text>
               {item.deviceId && (
-                <Text style={styles.deviceText}>Device: {item.deviceId}</Text>
+                <Text style={styles.deviceText}>Carrapato: {item.deviceId}</Text>
               )}
+              <Text style={styles.text}>Placa: {item.placa}</Text>
               {item.modelo && (
                 <Text style={styles.deviceText}>Modelo: {item.modelo}</Text>
               )}
             </View>
 
             <View style={styles.buttonsContainer}>
-              {selected === item.placa ? (
+              {permitirLocalizar &&
+                (selected === item.placa ? (
+                  <TouchableOpacity
+                    style={[styles.button, { backgroundColor: "red" }]}
+                    onPress={() => onParar(item)}
+                  >
+                    <Text style={styles.buttonText}>Parar</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={[styles.button, { backgroundColor: "#009B30" }]}
+                    onPress={() => onLocalizar(item)}
+                  >
+                    <Text style={styles.buttonText}>Localizar</Text>
+                  </TouchableOpacity>
+                ))}
+
+              {permitirEditar && (
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: "red" }]}
-                  onPress={() => onParar(item)}
+                  style={{ marginLeft: 10 }}
+                  onPress={() => onEdit(item)}
                 >
-                  <Text style={styles.buttonText}>Parar</Text>
+                  <MaterialCommunityIcons name="pencil-outline" size={20} color="#0b2c04ff" />
                 </TouchableOpacity>
-              ) : (
+              )}
+
+              {permitirExcluir && (
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: "#009B30" }]}
-                  onPress={() => onLocalizar(item)}
+                  style={{ marginLeft: 10 }}
+                  onPress={() => onDelete(item)}
                 >
-                  <Text style={styles.buttonText}>Localizar</Text>
+                  <MaterialCommunityIcons name="trash-can-outline" size={20} color="red" />
                 </TouchableOpacity>
               )}
             </View>
@@ -131,6 +159,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: "row",
+    alignItems: "center",
   },
   button: {
     paddingVertical: 8,

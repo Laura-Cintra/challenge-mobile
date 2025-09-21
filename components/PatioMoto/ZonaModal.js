@@ -1,15 +1,16 @@
+import { useState } from "react";
 import {
   View,
   Text,
   Modal,
-  FlatList,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import colors from '../../theme/colors';
-import { useMotos } from '../../providers/UseMotos';
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+} from "react-native";
+import colors from "../../theme/colors";
+import { useMotos } from "../../providers/UseMotos";
+import { FontAwesome } from "@expo/vector-icons";
+import ListaMotos from "../ListaMotos";
+import MessageModal from "../MessageModal";
 
 export default function ZonaModal({
   visible,
@@ -18,48 +19,61 @@ export default function ZonaModal({
   filtroBusca,
   setFiltroBusca,
 }) {
-  
   const { motos, deletarMotoPorId } = useMotos();
-  const textoBusca = filtroBusca.toLowerCase().trim();
-
   const motosDaZona = motos.filter((moto) => moto.zona === zona);
 
-  const motosFiltradas = filtroBusca
-    ? motosDaZona.filter((moto) =>
-        moto.modelo.toLowerCase().includes(textoBusca) ||
-        moto.placa.toLowerCase().includes(textoBusca) ||
-        moto.id.toString().includes(textoBusca)
-      )
-    : motosDaZona;
+  const [selected, setSelected] = useState(null);
+
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [motoSelecionada, setMotoSelecionada] = useState(null);
+
+ const localizar = (moto) => {
+    setSelected(moto.placa);
+    console.log("Localizando", moto.placa);
+  };
+
+  const parar = () => {
+    setSelected(null);
+    console.log("Parando localização");
+  };
+
+  const editar = (moto) => console.log("Editar", moto.placa);
+
+  const confirmarExclusao = (moto) => {
+    setMotoSelecionada(moto);
+    setConfirmVisible(true);
+  };
+
+  const excluir = () => {
+    if (motoSelecionada) {
+      deletarMotoPorId(motoSelecionada.id);
+    }
+    setConfirmVisible(false);
+    setMotoSelecionada(null);
+  };
 
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.modalContent}>
         <Text style={styles.modalTitle}>{zona}</Text>
-        <Text style={styles.modalSubtitle}>Total: {motosFiltradas.length} motos</Text>
+        <Text style={styles.modalSubtitle}>
+          Total: {motosDaZona.length} motos
+        </Text>
 
-        <TextInput
-          placeholder="Buscar por modelo, placa ou ID"
-          value={filtroBusca}
-          onChangeText={setFiltroBusca}
-          style={styles.searchInput}
-        />
-
-        <FlatList
-          data={motosFiltradas}
-          keyExtractor={(_, i) => i.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.motoItem}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.itemText}>ID: {item.id}</Text>
-                <Text style={styles.itemText}>Modelo: {item.modelo}</Text>
-                <Text style={styles.itemText}>Placa: {item.placa}</Text>
-              </View>
-              <TouchableOpacity onPress={() => deletarMotoPorId(item.id)}>
-                <FontAwesome5 name="trash" size={20} color={colors.modalRed} />
-              </TouchableOpacity>
-            </View>
-          )}
+        <ListaMotos
+          titulo={null}
+          motos={motosDaZona}
+          busca={filtroBusca}
+          setBusca={setFiltroBusca}
+          selected={selected}
+          onLocalizar={localizar}
+          onParar={parar}
+          onEdit={editar}
+          onDelete={confirmarExclusao}
+          mostrarFiltro={true}
+          permitirLocalizar={true}
+          permitirEditar={true}
+          permitirExcluir={true}
         />
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
@@ -68,6 +82,25 @@ export default function ZonaModal({
             Fechar
           </Text>
         </TouchableOpacity>
+
+        <MessageModal
+          visible={confirmVisible}
+          message={
+            motoSelecionada
+              ? `Tem certeza que deseja excluir a moto ${motoSelecionada.placa}?`
+              : ""
+          }
+          isSuccess={false}
+          onClose={() => setConfirmVisible(false)}
+        >
+
+          <TouchableOpacity
+            style={styles.confirmDeleteButton}
+            onPress={excluir}
+          >
+            <Text style={styles.confirmDeleteText}>Confirmar</Text>
+          </TouchableOpacity>
+        </MessageModal>
       </View>
     </Modal>
   );
@@ -80,33 +113,13 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 5,
   },
   modalSubtitle: {
     fontSize: 18,
     paddingVertical: 8,
     marginBottom: 10,
-  },
-  searchInput: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 15,
-  },
-  motoItem: {
-    padding: 10,
-    backgroundColor: '#f2f2f2',
-    borderRadius: 8,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  itemText: {
-    fontSize: 15,
-    paddingVertical: 2,
   },
   fecharBotao: {
     backgroundColor: colors.primary,
@@ -116,5 +129,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     borderRadius: 10,
+  },
+  confirmDeleteButton: {
+    backgroundColor: "white",
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  confirmDeleteText: {
+    color: "red",
+    fontWeight: "bold",
   },
 });

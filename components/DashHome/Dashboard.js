@@ -5,6 +5,8 @@ import colors from '../../theme/colors';
 import GraficoZonas from './GraficoZonas';
 import { useMotos } from '../../providers/UseMotos';
 import { useUser } from '../../providers/UserContext';
+import ProcurarMotoModal from '../ProcurarMotoModal';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -12,6 +14,20 @@ export default function Dashboard() {
 
   const { motos } = useMotos();
   const total = motos.length;
+  const [modalVisible, setModalVisible] = useState(false);
+
+    // inserir mock de motos automaticamente quando não encontrar nenhuma registro
+  useEffect(() => {
+    const inicializarMotos = async () => {
+      const dados = await AsyncStorage.getItem('lista_motos');
+      if (!dados || JSON.parse(dados).length === 0) {
+        await AsyncStorage.setItem('lista_motos', JSON.stringify(motosMockadas));
+      }
+      setLoading(false); // Sinaliza que os dados estão prontos
+    };
+
+    inicializarMotos();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -25,7 +41,7 @@ export default function Dashboard() {
             
             <View>
             <Text style={styles.total}>{total}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NovaMoto')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegistrarFrota')}>
                 <MaterialIcons name="add-circle-outline" size={20} color="#fff" />
                 <Text style={styles.buttonText}>Nova Moto</Text>
             </TouchableOpacity>
@@ -33,6 +49,18 @@ export default function Dashboard() {
         </View>
     </View>
     <GraficoZonas />
+
+    <TouchableOpacity
+      style={styles.buttonSearch}
+      onPress={() => setModalVisible(true)}
+    >
+      <Text style={styles.buttonTextSearch}>Procurar Moto</Text>
+    </TouchableOpacity>
+
+    <ProcurarMotoModal
+      visible={modalVisible}
+      onClose={() => setModalVisible(false)}
+    />
     </View>
   );
 }
@@ -89,5 +117,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     marginLeft: 6,
+  },
+  buttonSearch: {
+    backgroundColor: colors.primary,
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 20,
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  buttonTextSearch: {
+    color: colors.background,
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 15,
   },
 });

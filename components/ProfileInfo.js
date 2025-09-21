@@ -6,7 +6,7 @@ import { Foundation, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-ic
 import { useNavigation } from '@react-navigation/native';
 import { useMotos } from '../providers/UseMotos';
 import { useState } from 'react';
-import ProcurarMotoModal from './LocalizarMoto';
+import ProcurarMotoModal from './ProcurarMotoModal';
 
 export default function ProfileInfo() {
   const { user } = useUser();

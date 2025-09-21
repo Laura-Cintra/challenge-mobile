@@ -5,9 +5,9 @@ import ListaMotos from "./ListaMotos";
 
 // Mock de motos (depois vem da API)
 const motos = [
-  { placa: "ABC-1234", deviceId: "CARRAPATO_001" },
-  { placa: "XYZ-5678", deviceId: "CARRAPATO_002" },
-  { placa: "JKL-9101", deviceId: "CARRAPATO_003" },
+  { placa: "ABC-1234", deviceId: "CARRAPATO_001", modelo: "Honda CG" },
+  { placa: "XYZ-5678", deviceId: "CARRAPATO_002", modelo: "Yamaha XTZ" },
+  { placa: "JKL-9101", deviceId: "CARRAPATO_003", modelo: "Suzuki GSX" },
 ];
 
 export default function ProcurarMotoModal({ visible, onClose }) {
@@ -29,6 +29,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
           onLocalizar={localizar}
           onParar={parar}
           mostrarFiltro={true}
+          permitirLocalizar={true}
         />
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>

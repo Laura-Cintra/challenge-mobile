@@ -4,45 +4,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import motosMockadas from '../data/motosMockadas';
 import MenuSuperior from '../components/MenuSuperior';
 import Dashboard from '../components/DashHome/Dashboard';
-import ProcurarMotoModal from '../components/LocalizarMoto';
+import ProcurarMotoModal from '../components/ProcurarMotoModal';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
-  const [modalVisible, setModalVisible] = useState(false);
-  
-  // inserir mock de motos automaticamente quando não encontrar nenhuma registro
-  useEffect(() => {
-    const inicializarMotos = async () => {
-      const dados = await AsyncStorage.getItem('lista_motos');
-      if (!dados || JSON.parse(dados).length === 0) {
-        await AsyncStorage.setItem('lista_motos', JSON.stringify(motosMockadas));
-      }
-      setLoading(false); // Sinaliza que os dados estão prontos
-    };
-
-    inicializarMotos();
-  }, []);
-
-  if (loading) return null; // Evita renderizar com dados vazios
+  if (loading) return null;
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <MenuSuperior/>
-        {/* <Dashboard/> */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.buttonText}>Procurar Moto</Text>
-        </TouchableOpacity>
-
-        {/* Modal */}
-        <ProcurarMotoModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-        />
+        <Dashboard/>
       </ScrollView>
     </SafeAreaView>
   );
