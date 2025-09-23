@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useUser } from '../providers/UserContext';
-import perfil from '../assets/icons/profile-user.png';
+import perfil from '../../assets/icons/profile-user.png';
 import colors from '../theme/colors';
 import { Foundation, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';

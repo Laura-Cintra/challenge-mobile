@@ -1,7 +1,7 @@
 import { View, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import logo from '../assets/logo.png';
-import logoutIcon from '../assets/icons/logout.png';
+import logo from '../../assets/logo.png';
+import logoutIcon from '../../assets/icons/logout.png';
 import { useUser } from '../providers/UserContext';
 import colors from '../theme/colors';
 

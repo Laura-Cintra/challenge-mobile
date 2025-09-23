@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import MenuSuperior from '../components/MenuSuperior';
 import Dashboard from '../components/DashHome/Dashboard';
 

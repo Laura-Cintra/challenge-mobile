@@ -7,14 +7,14 @@ import RegistrarFrota from '../pages/RegistrarFrota';
 
 import TabIcon from '../components/TabIcon';
 
-import home from '../assets/icons/home.png';
-import homeWhite from '../assets/icons/home-white.png';
-import motoPark from '../assets/icons/moto-park.png';
-import motoParkWhite from '../assets/icons/moto-park-white.png';
-import moto from '../assets/icons/moto.png';
-import motoWhite from '../assets/icons/moto-white.png';
-import perfil from '../assets/icons/user.png';
-import perfilWhite from '../assets/icons/user-white.png';
+import home from '../../assets/icons/home.png';
+import homeWhite from '../../assets/icons/home-white.png';
+import motoPark from '../../assets/icons/moto-park.png';
+import motoParkWhite from '../../assets/icons/moto-park-white.png';
+import moto from '../../assets/icons/moto.png';
+import motoWhite from '../../assets/icons/moto-white.png';
+import perfil from '../../assets/icons/user.png';
+import perfilWhite from '../../assets/icons/user-white.png';
 import colors from '../theme/colors';
 
 const Tab = createBottomTabNavigator();

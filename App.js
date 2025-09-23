@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Menu from './components/Menu';
-import Login from './pages/Login';
-import Cadastro from './pages/Cadastro';
-import UserProvider, { useUser } from './providers/UserContext';
+import Menu from './src/components/Menu';
+import Login from './src/pages/Login';
+import Cadastro from './src/pages/Cadastro';
+import UserProvider, { useUser } from './src/providers/UserContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();

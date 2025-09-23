@@ -5,7 +5,6 @@ import colors from '../../theme/colors';
 import ZonaCard from './ZonaCard';
 import ZonaModal from './ZonaModal';
 import { zonas } from '../../data/zonas';
-import { useMotos } from '../../providers/UseMotos';
 
 export default function PatioZonas() {
   const [zonaSelecionada, setZonaSelecionada] = useState(null);

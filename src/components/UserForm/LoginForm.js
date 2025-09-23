@@ -7,11 +7,10 @@ import { auth } from "../../services/firebaseConfig";
 
 import { useUser } from "../../providers/UserContext";
 import FormInput from "./FormInput";
-import appLogo from '../../assets/logo-app.png';
+import appLogo from '../../../assets/logo-app.png';
 import colors from "../../theme/colors";
 
 import Fontisto from "@expo/vector-icons/Fontisto";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { AntDesign } from "@expo/vector-icons";
 
 export default function Login() {
