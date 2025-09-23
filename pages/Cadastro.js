@@ -1,12 +1,12 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import LoginForm from '../components/UserForm/LoginForm';
+import CadastroForm from '../components/UserForm/CadForm';
 
-export default function Login() {
+export default function Cadastro() {
 
   return (
     <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <LoginForm/>
+          <CadastroForm/>
         </ScrollView>
     </SafeAreaView>
   );

@@ -15,6 +15,7 @@ export default function MenuSuperior() {
 
   const handleLogout = async () => {
     await logout();
+    navigation.replace('Login');
   };
 
   return (

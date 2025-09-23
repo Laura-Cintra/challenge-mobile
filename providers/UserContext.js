@@ -9,7 +9,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const storedUser = await AsyncStorage.getItem('user');
+        const storedUser = await AsyncStorage.getItem('@user');
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
@@ -23,7 +23,7 @@ const UserProvider = ({ children }) => {
 
   const login = async (userData) => {
     try {
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      await AsyncStorage.setItem('@user', JSON.stringify(userData));
       setUser(userData);
     } catch (error) {
       console.error("Erro ao salvar usuário:", error);
@@ -32,7 +32,7 @@ const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem('@user');
       setUser(null);
     } catch (error) {
       console.error("Erro ao fazer logout:", error);

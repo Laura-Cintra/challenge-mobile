@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Menu from './components/Menu';
 import Login from './pages/Login';
+import Cadastro from './pages/Cadastro';
 import UserProvider, { useUser } from './providers/UserContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -14,7 +15,10 @@ function Routes() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!user ? (
-        <Stack.Screen name="Login" component={Login} />
+        <>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Cadastro" component={Cadastro} />
+        </>
       ) : (
         <Stack.Screen name="MainApp" component={Menu} />
       )}

@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import colors from '../../theme/colors';
 
-export default function InputField({ label, value, onChangeText, icon, ...props }) {
+export default function FormInput({ label, value, onChangeText, icon, ...props }) {
   return (
     <View style={{ marginBottom: 10 }}>
       <Text style={styles.label}>{label}</Text>
