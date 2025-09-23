@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth } from "../../services/firebaseConfig";
 
 import { useUser } from "../../providers/UserContext";
 import FormInput from "./FormInput";
-import appLogo from '../../../assets/logo-app.png';
+import appLogo from "../../../assets/logo-app.png";
 import colors from "../../theme/colors";
 
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -27,14 +25,24 @@ export default function Login() {
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const mockUsers = [
+        { id: 1, email: "maria@fiap.com", password: "123456", name: "Maria", patio: "butanta" },
+        { id: 2, email: "joao@fiap.com", password: "654321", name: "João", patio: "x" },
+      ];
+
+      const user = mockUsers.find((u) => u.email === email && u.password === password);
+
+      if (!user) {
+        Alert.alert("Erro", "Email ou senha inválidos.");
+        return;
+      }
 
       await AsyncStorage.setItem("@user", JSON.stringify(user));
       login(user);
+      navigation.replace("MainApp");
     } catch (error) {
       console.log("Erro no login:", error.message);
-      Alert.alert("Erro", "Email ou senha inválidos.");
+      Alert.alert("Erro", "Não foi possível fazer login.");
     }
   };
 
@@ -71,7 +79,7 @@ export default function Login() {
 
         <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
           <Text style={styles.linkText}>
-            Não possui conta? 
+            Não possui conta?
             <Text style={styles.link}> Cadastre-se</Text>
           </Text>
         </TouchableOpacity>
@@ -84,6 +92,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+    width: '100%',
+    marginVertical: 100,
   },
   header: {
     height: 180,

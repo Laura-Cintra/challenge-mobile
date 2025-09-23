@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth } from "../../services/firebaseConfig";
 
 import { useUser } from "../../providers/UserContext";
 import FormInput from "./FormInput";
-import appLogo from '../../../assets/logo-app.png';
+import InputSelect from "./InputSelect";
+import appLogo from "../../../assets/logo-app.png";
 import colors from "../../theme/colors";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
-import { Picker } from "@react-native-picker/picker";
 
 export default function CadastroForm() {
   const navigation = useNavigation();
@@ -23,47 +22,44 @@ export default function CadastroForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [patio, setPatio] = useState("");
-  
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const patiosDisponiveis = [
-    { id: "1", nome: "Pátio Butantã" },
-    { id: "2", nome: "Pátio X" },
-    { id: "3", nome: "Pátio Centro" },
+    { value: "butanta", label: "Pátio Butantã" },
+    { value: "x", label: "Pátio X" },
+    { value: "centro", label: "Pátio Centro" },
   ];
 
   const handleCadastro = async () => {
     if (!name || !email || !password || !patio) {
-        setModalMessage("Preencha todos os campos.");
-        setIsSuccess(false);
-        setModalVisible(true);
-        return;
+      setModalMessage("Preencha todos os campos.");
+      setIsSuccess(false);
+      setModalVisible(true);
+      return;
     }
 
     try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const firebaseUser = userCredential.user;
+      // Simulando chamada API (substitua depois pelo fetch real)
+      const user = { id: Date.now(), name, email, patio };
 
-        const user = {
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        name,
-        patio,
-        };
+      await AsyncStorage.setItem("@user", JSON.stringify(user));
+      login(user);
 
-        await AsyncStorage.setItem("@user", JSON.stringify(user));
-        login(user);
+      setModalMessage("Cadastro realizado com sucesso!");
+      setIsSuccess(true);
+      setModalVisible(true);
 
-        setModalMessage("Cadastro realizado com sucesso!");
-        setIsSuccess(true);
-        setModalVisible(true);
+      setTimeout(() => {
+        navigation.replace("MainApp");
+      }, 1000);
     } catch (error) {
-        console.log("Erro no cadastro:", error.message);
-        setModalMessage("Erro ao cadastrar. Verifique os dados.");
-        setIsSuccess(false);
-        setModalVisible(true);
+      console.log("Erro no cadastro:", error.message);
+      setModalMessage("Erro ao cadastrar. Tente novamente.");
+      setIsSuccess(false);
+      setModalVisible(true);
     }
   };
 
@@ -102,19 +98,12 @@ export default function CadastroForm() {
           icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
         />
 
-        <Text style={styles.label}>Pátio</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={patio}
-            onValueChange={(value) => setPatio(value)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Selecione um pátio..." value="" />
-            {patiosDisponiveis.map((p) => (
-              <Picker.Item key={p.id} label={p.nome} value={p.nome} />
-            ))}
-          </Picker>
-        </View>
+        <InputSelect
+          label="Pátio"
+          selectedValue={patio}
+          onValueChange={(value) => setPatio(value)}
+          items={patiosDisponiveis}
+        />
 
         <TouchableOpacity style={styles.button} onPress={handleCadastro}>
           <Text style={styles.buttonText}>Cadastrar</Text>
@@ -122,7 +111,7 @@ export default function CadastroForm() {
 
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.linkText}>
-            Já possui conta? 
+            Já possui conta?
             <Text style={styles.link}> Fazer login</Text>
           </Text>
         </TouchableOpacity>
@@ -141,10 +130,12 @@ export default function CadastroForm() {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: colors.background 
+    backgroundColor: colors.background,
+    width: '100%',
+    marginVertical: 30,
   },
   header: { 
-    height: 180, 
+    height: 150, 
     justifyContent: "center", 
     alignItems: "center" 
   },
@@ -163,24 +154,6 @@ const styles = StyleSheet.create({
     color: colors.text,
     textAlign: "center",
     marginBottom: 20,
-  },
-  label: {
-    fontWeight: "bold",
-    fontSize: 15,
-    color: colors.text,
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    overflow: "hidden",
-    marginBottom: 10,
-  },
-  picker: {
-    height: 54,
-    paddingHorizontal: 10,
   },
   button: {
     backgroundColor: colors.secundary,

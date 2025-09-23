@@ -28,6 +28,7 @@ export default function PatioZonas() {
             nome={zona.nome}
             cor={zona.cor}
             onPress={abrirModalZona}
+            isDoubleSize={zona.nome === 'Saguão'}
           />
         ))}
       </View>
@@ -52,10 +53,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 14,
     alignSelf: 'center',
     color: colors.title,
-    marginTop: 20,
+    marginTop: 10,
   },
   grid: {
     flexDirection: 'row',

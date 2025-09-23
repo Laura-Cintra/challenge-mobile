@@ -17,6 +17,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   container: { 
-    flex: 1, 
+    flex: 1,
   }
 });

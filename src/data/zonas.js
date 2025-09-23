@@ -7,4 +7,5 @@ export const zonas = [
   { nome: 'BO', cor: colors.zona4 },
   { nome: 'Aluguel', cor: colors.zona5 },
   { nome: 'Motor Defeituoso', cor: colors.zona6 },
+  { nome: 'Saguão', cor: colors.zona7 },
 ];
