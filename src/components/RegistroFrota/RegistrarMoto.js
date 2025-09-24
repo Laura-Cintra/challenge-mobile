@@ -27,7 +27,7 @@ export default function RegistrarMoto() {
       setTimeout(() => {
         const sucesso = Math.random() > 0.3;
         if (sucesso) {
-          setPlaca("ABC1234");
+          setPlaca("AAA1A23");
           setLoading(false);
           setTimeout(() => {
             setStep(2);
@@ -57,7 +57,7 @@ export default function RegistrarMoto() {
     }
   }, [step, loading, finalizado]);
 
-  const validarPlaca = (valor) => /^[A-Z]{3}[0-9]{4}$/.test(valor);
+  const placaValida = (valor) => /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(valor);
 
   const handleProsseguirPlaca = () => {
     const valor = placa.trim().toUpperCase();
@@ -68,8 +68,8 @@ export default function RegistrarMoto() {
         return;
       }
     } else {
-      if (!validarPlaca(valor)) {
-        setModalMessage("Formato de placa inválido. Ex: ABC1234");
+      if (!placaValida(valor)) {
+        setModalMessage("Formato de placa inválido. Ex: AAA1A23.");
         setModalVisible(true);
         return;
       }
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#333",
+    color: colors.title,
     textAlign: "center",
   },
   successBox: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginVertical: 15,
     fontWeight: "bold",
-    color: "#333",
+    color: colors.text,
     textAlign: "center",
   },
   checkCircle: {
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   checkIcon: {
-    color: "#fff",
+    color: colors.white,
     fontSize: 30,
     fontWeight: "bold",
   },
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   buttonText: {
-    color: "#fff",
+    color: colors.white,
     fontWeight: "bold",
   },
   buttonsContainer: {

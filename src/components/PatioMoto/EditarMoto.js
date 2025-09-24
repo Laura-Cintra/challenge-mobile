@@ -54,9 +54,9 @@ export default function EditarMotoModal({
       return;
     }
 
-    const placaValida = /^[a-zA-Z]{3}[0-9]{4}$/.test(placa.trim());
+    const placaValida = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(placa.trim());
     if (!placaValida) {
-      setModalMessage("Formato de placa inválido. Use o formato ABC1234.");
+      setModalMessage("Formato de placa inválido. Use o formato AAA1A23.");
       setIsSuccess(false);
       setModalVisible(true);
       return;
