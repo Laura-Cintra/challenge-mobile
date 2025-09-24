@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ListaMotos({
   titulo,
@@ -101,7 +101,7 @@ export default function ListaMotos({
                   style={{ marginLeft: 10 }}
                   onPress={() => onDelete(item)}
                 >
-                  <MaterialCommunityIcons name="trash-can-outline" size={20} color="red" />
+                  <Feather name="trash-2" size={20} color="red" />
                 </TouchableOpacity>
               )}
             </View>

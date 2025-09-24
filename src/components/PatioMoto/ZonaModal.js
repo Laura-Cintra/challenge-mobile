@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import colors from "../../theme/colors";
 import { useMotos } from "../../providers/UseMotos";
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListaMotos from "../ListaMotos";
 import MessageModal from "../MessageModal";
+import EditarMotoModal from "./EditarMoto";
 
 export default function ZonaModal({
   visible,
@@ -23,7 +24,7 @@ export default function ZonaModal({
   const motosDaZona = motos.filter((moto) => moto.zona === zona);
 
   const [selected, setSelected] = useState(null);
-
+  const [editarVisible, setEditarVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [motoSelecionada, setMotoSelecionada] = useState(null);
 
@@ -37,7 +38,11 @@ export default function ZonaModal({
     console.log("Parando localização");
   };
 
-  const editar = (moto) => console.log("Editar", moto.placa);
+  const editar = (moto) => {
+    setMotoSelecionada(moto);
+    setEditarVisible(true);
+  };
+
 
   const confirmarExclusao = (moto) => {
     setMotoSelecionada(moto);
@@ -77,7 +82,7 @@ export default function ZonaModal({
         />
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
-          <FontAwesome name="close" size={20} color="#fff" />
+          <MaterialCommunityIcons name="close" size={20} color={colors.white} />
           <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>
             Fechar
           </Text>
@@ -101,6 +106,13 @@ export default function ZonaModal({
             <Text style={styles.confirmDeleteText}>Confirmar</Text>
           </TouchableOpacity>
         </MessageModal>
+
+        <EditarMotoModal
+          visible={editarVisible}
+          onClose={() => setEditarVisible(false)}
+          moto={motoSelecionada}
+          zonasDisponiveis={["Manutenção Rápida", "Danos Estruturais", "Sem Placa", "Motor Defeituoso", "BO", "Aluguel", "Saguão"]}
+        />
       </View>
     </Modal>
   );

@@ -9,7 +9,7 @@ export default function ZonaCard({ nome, cor, onPress, isDoubleSize }) {
       style={[
         styles.card,
         { backgroundColor: cor },
-        isDoubleSize && styles.doubleSize, // Se for a zona "Saguão", aplica o estilo para ocupar 2 zonas
+        isDoubleSize && styles.doubleSize,
       ]}
       onPress={() => onPress(nome)}
     >

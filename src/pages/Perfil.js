@@ -1,6 +1,6 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import MenuSuperior from '../components/MenuSuperior';
-import ProfileInfo from '../components/ProfileInfo';
+import ProfileInfo from '../components/Perfil/ProfileInfo';
 
 export default function Perfil() {
 

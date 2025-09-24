@@ -1,38 +1,63 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import { useUser } from '../providers/UserContext';
-import perfil from '../../assets/icons/profile-user.png';
-import colors from '../theme/colors';
-import { Foundation, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useMotos } from '../providers/UseMotos';
 import { useState } from 'react';
-import ProcurarMotoModal from './ProcurarMotoModal';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useUser } from '../../providers/UserContext';
+import perfil from '../../../assets/icons/profile-user.png';
+import colors from '../../theme/colors';
+import { Foundation, FontAwesome5, MaterialIcons, Entypo, Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { useMotos } from '../../providers/UseMotos';
+import ProcurarMotoModal from '../ProcurarMotoModal';
+import EditarPerfilModal from './EditarPerfilModal';
+import ExcluirPerfilModal from './ExcluirPerfilModal';
 
 export default function ProfileInfo() {
-  const { user } = useUser();
+  const { user, logout, setUser } = useUser();
   const navigation = useNavigation();
-
   const { motos } = useMotos();
   const total = motos.length;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [editarVisible, setEditarVisible] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    setUser(null);
+    await logout();
+    setConfirmDelete(false);
+  };
 
   return (
     <View>
       <View style={styles.profileContainer}>
-        <Image
-          source={perfil}
-          style={styles.profileImg}
-        />
+        <Image source={perfil} style={styles.profileImg} />
         <Text style={styles.name}>{user?.name}</Text>
         <Text style={styles.email}>{user?.email}</Text>
+
+        <View style={styles.actionButtons}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => setEditarVisible(true)}
+          >
+            <Feather name="edit" size={20} color={colors.primary} />
+            <Text style={styles.actionText}>Editar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => setConfirmDelete(true)}
+          >
+            <Feather name="trash-2" size={20} color={colors.modalRed} />
+            <Text style={[styles.actionText, { color: colors.text }]}>
+              Excluir
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.patioContainer}>
         <View style={styles.patioHeader}>
-          <Entypo name="location-pin" size={24} color="#fff" />
+          <Entypo name="location-pin" size={24} color={colors.background} />
           <Text style={styles.patioTitle}>Filial</Text>
-          
         </View>
 
         <View style={styles.patioDiv}>
@@ -69,7 +94,11 @@ export default function ProfileInfo() {
             style={styles.icon}
             onPress={() => navigation.navigate('RegistrarFrota')}
           >
-            <MaterialIcons name="add-circle-outline" size={28} color={colors.secundary} />
+            <MaterialIcons
+              name="add-circle-outline"
+              size={28}
+              color={colors.secundary}
+            />
             <Text style={styles.iconText}>Registrar Moto</Text>
           </TouchableOpacity>
 
@@ -86,6 +115,17 @@ export default function ProfileInfo() {
       <ProcurarMotoModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
+      />
+
+      <EditarPerfilModal
+        visible={editarVisible}
+        onClose={() => setEditarVisible(false)}
+      />
+
+      <ExcluirPerfilModal
+        visible={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        onConfirm={handleDeleteAccount}
       />
     </View>
   );
@@ -105,11 +145,31 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: colors.text,
+    marginTop: 10,
   },
   email: {
     fontSize: 16,
     color: colors.textSecondary,
     marginTop: 5,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    marginTop: 15,
+    gap: 20,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: colors.buttonBackground,
+  },
+  actionText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text,
   },
   patioContainer: {
     marginHorizontal: 30,
@@ -131,7 +191,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   patioDiv: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: colors.white,
     padding: 16,
   },
   patioText: {
@@ -156,14 +216,14 @@ const styles = StyleSheet.create({
   atalhoIcons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   icon: {
     padding: 20,
     alignItems: 'center',
     width: '48%',
     borderRadius: 10,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: colors.white,
     marginBottom: 10,
   },
   iconText: {
@@ -171,5 +231,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 13,
     color: '#000',
+  },
+  confirmDeleteButton: {
+    marginTop: 15,
+    backgroundColor: colors.modalRed,
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  confirmDeleteText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });

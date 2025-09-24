@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListaMotos from "./ListaMotos";
 
 // Mock de motos (depois vem da API)
@@ -33,7 +33,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         />
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
-          <FontAwesome name="close" size={20} color="#fff" />
+          <MaterialCommunityIcons name="close" size={20} color="#fff" />
           <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>
             Fechar
           </Text>

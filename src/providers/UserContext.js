@@ -17,7 +17,6 @@ const UserProvider = ({ children }) => {
         console.error("Erro ao carregar usuário:", error);
       }
     };
-
     loadUser();
   }, []);
 
@@ -39,8 +38,27 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const updateUser = async (novosDados) => {
+    try {
+      const usuarioAtualizado = { ...user, ...novosDados };
+      await AsyncStorage.setItem('@user', JSON.stringify(usuarioAtualizado));
+      setUser(usuarioAtualizado);
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error);
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      await AsyncStorage.removeItem('@user');
+      setUser(null);
+    } catch (error) {
+      console.error("Erro ao excluir usuário:", error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, login, logout }}>
+    <UserContext.Provider value={{ user, setUser, login, logout, updateUser, deleteUser }}>
       {children}
     </UserContext.Provider>
   );

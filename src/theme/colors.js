@@ -20,7 +20,7 @@ const colors = {
   zona4: '#E1B90D',
   zona5: '#2FAE51',
   zona6: '#D84336',
-  zona7: '#2c2c2cff'
+  zona7: '#3d3d3dff'
 };
 
 export default colors;
