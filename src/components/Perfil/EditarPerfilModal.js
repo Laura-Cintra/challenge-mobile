@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../theme/colors";
 import MessageModal from "../MessageModal";
 import { useUser } from "../../providers/UserContext";
@@ -10,6 +10,8 @@ export default function EditarPerfilModal({ visible, onClose }) {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -30,7 +32,27 @@ export default function EditarPerfilModal({ visible, onClose }) {
       return;
     }
 
-    setUser({ ...user, name: nome, email });
+    if (senha && senha !== confirmarSenha) {
+      setModalMessage("As senhas não coincidem.");
+      setIsSuccess(false);
+      setModalVisible(true);
+      return;
+    }
+
+    if (senha && senha.length < 6) {
+      setModalMessage("A senha deve ter pelo menos 6 caracteres.");
+      setIsSuccess(false);
+      setModalVisible(true);
+      return;
+    }
+
+    setUser({
+      ...user,
+      name: nome,
+      email,
+      password: senha || user.password,
+    });
+
     setModalMessage("Perfil atualizado com sucesso!");
     setIsSuccess(true);
     setModalVisible(true);
@@ -45,7 +67,7 @@ export default function EditarPerfilModal({ visible, onClose }) {
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <FontAwesome name="close" size={22} color={colors.text} />
+            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
           <Text style={styles.title}>Editar Perfil</Text>
@@ -69,6 +91,26 @@ export default function EditarPerfilModal({ visible, onClose }) {
             keyboardType="email-address"
           />
 
+          <Text style={styles.label}>Nova Senha</Text>
+          <TextInput
+            style={styles.input}
+            value={senha}
+            onChangeText={setSenha}
+            placeholder="Digite sua nova senha"
+            placeholderTextColor={colors.placeholder}
+            secureTextEntry
+          />
+
+          <Text style={styles.label}>Confirmar Senha</Text>
+          <TextInput
+            style={styles.input}
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
+            placeholder="Confirme sua senha"
+            placeholderTextColor={colors.placeholder}
+            secureTextEntry
+          />
+
           <View style={styles.buttonsRow}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.secundary }]}
@@ -78,7 +120,7 @@ export default function EditarPerfilModal({ visible, onClose }) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: "gray" }]}
+              style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
               <Text style={styles.buttonText}>Cancelar</Text>
@@ -112,8 +154,9 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    right: 15,
-    top: 15,
+    right: 12,
+    top: 12,
+    padding: 4,
   },
   title: {
     fontSize: 20,

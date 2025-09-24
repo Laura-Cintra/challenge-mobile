@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import RegistroCampo from "./RegistroCampo";
 import MessageModal from "../MessageModal";
 import colors from "../../theme/colors";
+import { getMotos, verificarMoto, vincularCarrapato } from "../../services/actions";
 
 export default function RegistrarMoto() {
   const [step, setStep] = useState(1);
@@ -11,6 +12,8 @@ export default function RegistrarMoto() {
   const [placa, setPlaca] = useState("");
   const [semPlaca, setSemPlaca] = useState(false);
   const [carrapato, setCarrapato] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [zona, setZona] = useState("");
 
   const [erroPlaca, setErroPlaca] = useState(false);
   const [erroCarrapato, setErroCarrapato] = useState(false);
@@ -23,41 +26,76 @@ export default function RegistrarMoto() {
   useEffect(() => {
     if (finalizado) return;
 
-    if (step === 1 && loading) {
-      setTimeout(() => {
-        const sucesso = Math.random() > 0.3;
-        if (sucesso) {
-          setPlaca("AAA1A23");
-          setLoading(false);
-          setTimeout(() => {
-            setStep(2);
-            setLoading(true);
-          }, 1000);
-        } else {
-          setErroPlaca(true);
-          setLoading(false);
-        }
-      }, 2000);
-    }
+    const executarEtapas = async () => {
+      try {
+        if (step === 1 && loading) {
+          try {
+            if (Math.random() < 0.3) {
+              throw new Error("Falha na leitura da placa/chassi");
+            }
 
-    if (step === 2 && loading) {
-      setTimeout(() => {
-        const sucesso = Math.random() > 0.3;
-        if (sucesso) {
-          setCarrapato("CARRAPATO_001");
-          setLoading(false);
-          setTimeout(() => {
-            setStep(3);
-          }, 1000);
-        } else {
-          setErroCarrapato(true);
-          setLoading(false);
+            const motos = await getMotos();
+            if (!motos || motos.length === 0) {
+              throw new Error("Nenhuma moto encontrada no banco.");
+            }
+
+            const aleatoria = motos[Math.floor(Math.random() * motos.length)];
+            const check = await verificarMoto(aleatoria.placa);
+
+            setPlaca(check.placa);
+            setLoading(false);
+
+            setTimeout(() => {
+              setStep(2);
+              setLoading(true);
+            }, 1000);
+          } catch (error) {
+            console.error("Erro no passo 1:", error);
+            setErroPlaca(true);
+            setLoading(false);
+          }
         }
-      }, 2000);
-    }
+
+        if (step === 2 && loading) {
+          try {
+            if (Math.random() < 0.3) {
+              throw new Error("Falha na leitura do carrapato");
+            }
+
+            const vinculo = await vincularCarrapato(placa);
+
+            setCarrapato(vinculo.carrapato);
+            setModelo(vinculo.modelo);
+            setZona(vinculo.zona);
+
+            setLoading(false);
+
+            setTimeout(() => {
+              setStep(3);
+            }, 1000);
+          } catch (error) {
+            console.error("Erro no passo 2:", error);
+            setErroCarrapato(true);
+            setLoading(false);
+          }
+        }
+      } catch (error) {
+        console.error("Erro no fluxo de registro:", error);
+
+        if (step === 1) {
+          setErroPlaca(true);
+        }
+        if (step === 2) {
+          setErroCarrapato(true);
+        }
+        setLoading(false);
+      }
+    };
+
+    executarEtapas();
   }, [step, loading, finalizado]);
 
-  const placaValida = (valor) => /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(valor);
+  const validarPlaca = (valor) => /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(valor);
 
   const handleProsseguirPlaca = () => {
     const valor = placa.trim().toUpperCase();
@@ -68,8 +106,8 @@ export default function RegistrarMoto() {
         return;
       }
     } else {
-      if (!placaValida(valor)) {
-        setModalMessage("Formato de placa inválido. Ex: AAA1A23.");
+      if (!validarPlaca(valor)) {
+        setModalMessage("Formato de placa inválido. Ex: AAA1A23");
         setModalVisible(true);
         return;
       }
@@ -94,6 +132,8 @@ export default function RegistrarMoto() {
     setStep(1);
     setPlaca("");
     setCarrapato("");
+    setModelo("");
+    setZona("");
     setSemPlaca(false);
     setErroPlaca(false);
     setErroCarrapato(false);
@@ -102,6 +142,10 @@ export default function RegistrarMoto() {
   };
 
   const handleRegistrarFrota = () => {
+    setPlaca("");
+    setCarrapato("");
+    setModelo("");
+    setZona("");
     setFinalizado(false);
     setStep(1);
     setLoading(true);
@@ -148,26 +192,23 @@ export default function RegistrarMoto() {
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
 
-              <Text style={styles.successFinal}>Moto registrada com sucesso</Text>
+              <Text style={styles.successFinal}>
+                Moto identificada com sucesso!
+              </Text>
+
+              <Text style={styles.detailText}>Modelo: {modelo}</Text>
+              <Text style={styles.detailText}>Zona atual: {zona}</Text>
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                   style={[styles.button, { flex: 1 }]}
-                  onPress={() => {
-                    setStep(1);
-                    setPlaca("");
-                    setCarrapato("");
-                    setErroPlaca(false);
-                    setErroCarrapato(false);
-                    setSemPlaca(false);
-                    setLoading(true);
-                  }}
+                  onPress={handleRegistrarFrota}
                 >
                   <Text style={styles.buttonText}>Registrar outra</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: "gray", flex: 1 }]}
+                  style={[styles.button, { backgroundColor: colors.inative, flex: 1 }]}
                   onPress={handleFinalizar}
                 >
                   <Text style={styles.buttonText}>Finalizar</Text>
@@ -251,5 +292,11 @@ const styles = StyleSheet.create({
     gap: 10,
     width: "100%",
     marginTop: 15,
+  },
+   detailText: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    marginTop: 5,
+    textAlign: "left",
   },
 });

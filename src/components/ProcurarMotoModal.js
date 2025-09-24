@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListaMotos from "./ListaMotos";
+import colors from "../theme/colors";
 
 // Mock de motos (depois vem da API)
 const motos = [
@@ -19,7 +20,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
 
   return (
     <Modal visible={visible} animationType="slide">
-      <View style={styles.modalContent}>
+      <View style={styles.container}>
         <ListaMotos
           titulo="Localize uma moto em seu pátio"
           motos={motos}
@@ -32,7 +33,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
           permitirLocalizar={true}
         />
 
-        <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
+        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
           <MaterialCommunityIcons name="close" size={20} color="#fff" />
           <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>
             Fechar
@@ -44,17 +45,17 @@ export default function ProcurarMotoModal({ visible, onClose }) {
 }
 
 const styles = StyleSheet.create({
-  modalContent: {
+  container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: colors.background,
   },
-  fecharBotao: {
+  closeButton: {
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#009B30",
+    backgroundColor: colors.primary,
     padding: 12,
     borderRadius: 10,
   },

@@ -1,15 +1,18 @@
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import colors from "../../theme/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ExcluirPerfilModal({ visible, onClose, onConfirm }) {
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
+          </TouchableOpacity>
           <Text style={styles.title}>Confirmar Exclusão</Text>
-          <Text style={styles.message}>
-            Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.
-          </Text>
+          <Text style={styles.message}>Tem certeza que deseja excluir sua conta?</Text>
+          <Text style={styles.messageWarn}>Esta ação não poderá ser desfeita.</Text>
 
           <View style={styles.buttonsRow}>
             <TouchableOpacity
@@ -20,7 +23,7 @@ export default function ExcluirPerfilModal({ visible, onClose, onConfirm }) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: "gray" }]}
+              style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
               <Text style={styles.buttonText}>Cancelar</Text>
@@ -43,20 +46,31 @@ const styles = StyleSheet.create({
     width: "85%",
     backgroundColor: colors.white,
     borderRadius: 12,
-    padding: 20,
+    padding: 26,
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     color: colors.text,
-    marginBottom: 10,
+    marginVertical: 10,
     textAlign: "center",
   },
   message: {
     fontSize: 15,
     color: colors.text,
     textAlign: "center",
+    marginBottom: 8,
+  },
+  messageWarn: {
+    color: colors.modalRed,
+    textAlign: "center",
     marginBottom: 20,
+  },
+  closeButton: {
+    position: "absolute",
+    right: 12,
+    top: 12,
+    padding: 4,
   },
   buttonsRow: {
     flexDirection: "row",
