@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useUser } from '../../providers/UserContext';
 import perfil from '../../../assets/icons/profile-user.png';
@@ -9,16 +9,30 @@ import { useMotos } from '../../providers/UseMotos';
 import ProcurarMotoModal from '../ProcurarMotoModal';
 import EditarPerfilModal from './EditarPerfilModal';
 import ExcluirPerfilModal from './ExcluirPerfilModal';
+import { getPatioById } from '../../services/actions';
 
 export default function ProfileInfo() {
   const { user, logout, setUser } = useUser();
   const navigation = useNavigation();
-  const { motos } = useMotos();
-  const total = motos.length;
-
+  const [patioDetails, setPatioDetails] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [editarVisible, setEditarVisible] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  useEffect(() => {
+    const fetchPatioDetails = async () => {
+      try {
+        const patioData = await getPatioById(user?.idPatio);
+        setPatioDetails(patioData);
+      } catch (error) {
+        console.error('Erro ao buscar detalhes do pátio:', error);
+      }
+    };
+
+    if (user?.idPatio) {
+      fetchPatioDetails();
+    }
+  }, [user]);
 
   const handleDeleteAccount = async () => {
     setUser(null);
@@ -30,7 +44,7 @@ export default function ProfileInfo() {
     <View>
       <View style={styles.profileContainer}>
         <Image source={perfil} style={styles.profileImg} />
-        <Text style={styles.name}>{user?.name}</Text>
+        <Text style={styles.name}>{user?.nome}</Text>
         <Text style={styles.email}>{user?.email}</Text>
 
         <View style={styles.actionButtons}>
@@ -62,10 +76,13 @@ export default function ProfileInfo() {
 
         <View style={styles.patioDiv}>
           <Text style={styles.patioText}>
-            Endereço: <Text>{user?.adress}</Text>
+            Nome do Pátio: <Text>{user?.nomePatio || "Nome não disponível"}</Text>
           </Text>
           <Text style={styles.patioText}>
-            Motos no pátio: <Text style={styles.motoText}>{total}</Text>
+            Endereço: <Text>{patioDetails?.endereco || "Endereço não disponível"}</Text>
+          </Text>
+          <Text style={styles.patioText}>
+            Motos no pátio: <Text style={styles.motoText}>{patioDetails?.motos.length || 0}</Text>
           </Text>
         </View>
       </View>

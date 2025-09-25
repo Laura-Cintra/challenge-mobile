@@ -76,14 +76,34 @@ export async function getPatios() {
   }
 }
 
+export async function getPatioById(id) {
+  try {
+    const response = await api.get(`/patios/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pátio:", error);
+    throw error;
+  }
+}
+
 // ================= Usuários =================
 
-export async function createUser(){
+export async function createUser(userData) {
   try {
     const response = await api.post("/usuarios", userData);
     return response.data;
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
+    throw error;
+  }
+}
+
+export async function getUsers(){
+  try {
+    const response = await api.get("/usuarios");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
     throw error;
   }
 };

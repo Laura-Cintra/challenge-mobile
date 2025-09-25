@@ -11,6 +11,7 @@ const UserProvider = ({ children }) => {
     const loadUser = async () => {
       try {
         const storedUser = await AsyncStorage.getItem('@user');
+        console.log("Usuário carregado do AsyncStorage:", storedUser);
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
@@ -25,6 +26,7 @@ const UserProvider = ({ children }) => {
     try {
       await AsyncStorage.setItem('@user', JSON.stringify(userData));
       setUser(userData);
+      console.log("Usuário armazenado:", userData);
     } catch (error) {
       console.error("Erro no login:", error);
     }

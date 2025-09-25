@@ -1,14 +1,12 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { useUser } from "../../providers/UserContext";
+import { createUser, getPatios } from "../../services/actions";
 import FormInput from "./FormInput";
 import InputSelect from "./InputSelect";
 import appLogo from "../../../assets/logo-app.png";
 import colors from "../../theme/colors";
-
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
@@ -21,16 +19,27 @@ export default function CadastroForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [patio, setPatio] = useState("");
+  const [patiosDisponiveis, setPatiosDisponiveis] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const patiosDisponiveis = [
-    { value: "butanta", label: "Pátio Butantã" },
-    { value: "x", label: "Pátio X" },
-    { value: "centro", label: "Pátio Centro" },
-  ];
+  useEffect(() => {
+    const fetchPatios = async () => {
+      try {
+        const patios = await getPatios();
+        const formattedPatios = patios.map((patio) => ({
+          value: patio.id.toString(),
+          label: patio.nome,
+        }));
+        setPatiosDisponiveis(formattedPatios);
+      } catch (error) {
+        console.error("Erro ao carregar os pátios:", error);
+      }
+    };
+    fetchPatios();
+  }, []);
 
   const handleCadastro = async () => {
     if (!name || !email || !password || !patio) {
@@ -41,11 +50,15 @@ export default function CadastroForm() {
     }
 
     try {
-      // Simulando chamada API (substitua depois pelo fetch real)
-      const user = { id: Date.now(), name, email, patio };
+      const userData = {
+        nome: name,
+        email: email,
+        senha: password,
+        idPatio: parseInt(patio),
+      };
 
-      await AsyncStorage.setItem("@user", JSON.stringify(user));
-      login(user);
+      const novoUser = await createUser(userData);
+      login(novoUser);
 
       setModalMessage("Cadastro realizado com sucesso!");
       setIsSuccess(true);
@@ -67,7 +80,6 @@ export default function CadastroForm() {
       <View style={styles.header}>
         <Image source={appLogo} style={styles.logo} resizeMode="contain" />
       </View>
-
       <View style={styles.form}>
         <Text style={styles.formTitle}>Cadastro</Text>
 
@@ -78,7 +90,6 @@ export default function CadastroForm() {
           onChangeText={setName}
           icon={<AntDesign name="user" size={20} color={colors.secundary} />}
         />
-
         <FormInput
           label="E-mail"
           placeholder="Digite seu e-mail"
@@ -87,7 +98,6 @@ export default function CadastroForm() {
           keyboardType="email-address"
           icon={<Fontisto name="email" size={20} color={colors.secundary} />}
         />
-
         <FormInput
           label="Senha"
           placeholder="Digite sua senha"
@@ -96,7 +106,6 @@ export default function CadastroForm() {
           secureTextEntry
           icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
         />
-
         <InputSelect
           label="Pátio"
           selectedValue={patio}
@@ -110,18 +119,12 @@ export default function CadastroForm() {
 
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.linkText}>
-            Já possui conta?
-            <Text style={styles.link}> Fazer login</Text>
+            Já possui conta?<Text style={styles.link}> Fazer login</Text>
           </Text>
         </TouchableOpacity>
       </View>
 
-      <MessageModal
-        visible={modalVisible}
-        message={modalMessage}
-        isSuccess={isSuccess}
-        onClose={() => setModalVisible(false)}
-      />
+      <MessageModal visible={modalVisible} message={modalMessage} isSuccess={isSuccess} onClose={() => setModalVisible(false)} />
     </View>
   );
 }
