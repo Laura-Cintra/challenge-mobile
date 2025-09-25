@@ -9,3 +9,5 @@ export const zonas = [
   { nome: 'Motor Defeituoso', cor: colors.zona6 },
   { nome: 'Saguão', cor: colors.zona7 },
 ];
+
+// dicionário para o mapeamento das zonas (por conta do formato do json)

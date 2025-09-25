@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createUser, updateUserApi, deleteUserApi, getUserById } from '../services/actions';
 
 const UserContext = createContext(null);
 
@@ -25,7 +26,7 @@ const UserProvider = ({ children }) => {
       await AsyncStorage.setItem('@user', JSON.stringify(userData));
       setUser(userData);
     } catch (error) {
-      console.error("Erro ao salvar usuário:", error);
+      console.error("Erro no login:", error);
     }
   };
 
@@ -40,20 +41,33 @@ const UserProvider = ({ children }) => {
 
   const updateUser = async (novosDados) => {
     try {
-      const usuarioAtualizado = { ...user, ...novosDados };
+      if (!user?.id) throw new Error("Usuário não possui ID.");
+
+      const usuarioAtualizado = await updateUserApi(user.id, {
+        ...user,
+        ...novosDados,
+      });
+
       await AsyncStorage.setItem('@user', JSON.stringify(usuarioAtualizado));
       setUser(usuarioAtualizado);
+
+      return usuarioAtualizado;
     } catch (error) {
       console.error("Erro ao atualizar usuário:", error);
+      throw error;
     }
   };
 
   const deleteUser = async () => {
     try {
+      if (!user?.id) throw new Error("Usuário não possui ID.");
+      await deleteUserApi(user.id);
+
       await AsyncStorage.removeItem('@user');
       setUser(null);
     } catch (error) {
       console.error("Erro ao excluir usuário:", error);
+      throw error;
     }
   };
 

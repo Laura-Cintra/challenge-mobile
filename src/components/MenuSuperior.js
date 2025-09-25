@@ -14,8 +14,7 @@ export default function MenuSuperior() {
   };
 
   const handleLogout = async () => {
-    await logout();
-    navigation.replace('Login');
+    await logout();    
   };
 
   return (

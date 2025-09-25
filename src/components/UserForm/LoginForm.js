@@ -39,7 +39,6 @@ export default function Login() {
 
       await AsyncStorage.setItem("@user", JSON.stringify(user));
       login(user);
-      navigation.replace("MainApp");
     } catch (error) {
       console.log("Erro no login:", error.message);
       Alert.alert("Erro", "Não foi possível fazer login.");

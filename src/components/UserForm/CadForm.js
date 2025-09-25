@@ -10,7 +10,6 @@ import appLogo from "../../../assets/logo-app.png";
 import colors from "../../theme/colors";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
 
