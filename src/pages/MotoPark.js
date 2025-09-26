@@ -1,6 +1,7 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import PatioZonas from '../components/PatioMoto/PatioZonas';
 import MenuSuperior from '../components/MenuSuperior';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 
 export default function NovaMoto() {
 
@@ -9,6 +10,7 @@ export default function NovaMoto() {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <MenuSuperior/>
           <PatioZonas/>
+          <ThemeToggleButton/>
         </ScrollView>
     </SafeAreaView>
   );

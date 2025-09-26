@@ -1,6 +1,7 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import MenuSuperior from '../components/MenuSuperior';
 import RegistrarMoto from '../components/RegistroFrota/RegistrarMoto';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 
 export default function RegistrarFrota() {
 
@@ -9,6 +10,7 @@ export default function RegistrarFrota() {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <MenuSuperior/>
           <RegistrarMoto/>
+          <ThemeToggleButton/>
         </ScrollView>
     </SafeAreaView>
   );
