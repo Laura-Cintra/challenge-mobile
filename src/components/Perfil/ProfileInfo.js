@@ -11,7 +11,7 @@ import EditarPerfilModal from './EditarPerfilModal';
 import ExcluirPerfilModal from './ExcluirPerfilModal';
 import { deleteUserApi, getPatioById } from '../../services/actions';
 
-// ver sobre pátios
+// ver sobre pátios!
 
 export default function ProfileInfo() {
   const { user, logout, setUser } = useUser();

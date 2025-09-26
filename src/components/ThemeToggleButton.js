@@ -2,11 +2,11 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import { useTheme } from "../providers/ThemeContext";
 
-export default function ThemeToggleButton() {
+export default function ThemeToggleButton({ topOffset = 105 }) {
   const { toggleTheme, colors, theme } = useTheme();
 
   return (
-    <TouchableOpacity style={styles.button} onPress={toggleTheme}>
+    <TouchableOpacity style={[styles.button, { top: topOffset }]} onPress={toggleTheme}>
       <Feather
         name={theme === "light" ? "moon" : "sun"}
         size={24}
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 105,
     right: 15,
-  }
+  },
 });

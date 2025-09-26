@@ -1,5 +1,6 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import LoginForm from '../components/UserForm/LoginForm';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 
 export default function Login() {
 
@@ -7,6 +8,7 @@ export default function Login() {
     <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <LoginForm/>
+          <ThemeToggleButton topOffset={335}/>
         </ScrollView>
     </SafeAreaView>
   );
