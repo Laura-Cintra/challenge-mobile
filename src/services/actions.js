@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Platform } from "react-native";
+import { zonasMap } from "../data/zonas";
 
 const API_BASE_URL =
   Platform.OS === "android"
@@ -57,7 +58,15 @@ export async function vincularCarrapato(placaOuChassi) {
 export async function getZonas() {
   try {
     const response = await api.get("/zonas");
-    return response.data;
+
+    // Exemplo de response: { "Saguão": 0, "ManutencaoRapida": 1, ... }
+    const data = response.data;
+
+    // converte em lista usando nosso dicionário
+    return Object.values(data).map((id) => ({
+      id,
+      ...zonasMap[id], // adiciona nome bonito + cor
+    }));
   } catch (error) {
     console.error("Erro ao buscar zonas:", error);
     throw error;
@@ -118,7 +127,7 @@ export async function getUserById(){
   }
 };
 
-export async function updateUserApi(id, novosDados){
+export async function updateUserApi(id, novosDados) {
   try {
     const response = await api.put(`/usuarios/${id}`, novosDados);
     return response.data;

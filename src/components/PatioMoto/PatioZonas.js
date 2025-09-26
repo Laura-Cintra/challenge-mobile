@@ -4,7 +4,7 @@ import colors from '../../theme/colors';
 
 import ZonaCard from './ZonaCard';
 import ZonaModal from './ZonaModal';
-import { zonas } from '../../data/zonas';
+import { zonasLista } from '../../data/zonas';
 
 export default function PatioZonas() {
   const [zonaSelecionada, setZonaSelecionada] = useState(null);
@@ -22,7 +22,7 @@ export default function PatioZonas() {
       <Text style={styles.title}>Zonas do Pátio</Text>
 
       <View style={styles.grid}>
-        {zonas.map((zona) => (
+        {zonasLista.map((zona) => (
           <ZonaCard
             key={zona.nome}
             nome={zona.nome}

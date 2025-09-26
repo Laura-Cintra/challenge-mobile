@@ -11,7 +11,6 @@ const UserProvider = ({ children }) => {
     const loadUser = async () => {
       try {
         const storedUser = await AsyncStorage.getItem('@user');
-        console.log("Usuário carregado do AsyncStorage:", storedUser);
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
@@ -43,9 +42,9 @@ const UserProvider = ({ children }) => {
 
   const updateUser = async (novosDados) => {
     try {
-      if (!user?.id) throw new Error("Usuário não possui ID.");
+      if (!user?.idUsuario) throw new Error("Usuário não possui ID.");
 
-      const usuarioAtualizado = await updateUserApi(user.id, {
+      const usuarioAtualizado = await updateUserApi(user.idUsuario, {
         ...user,
         ...novosDados,
       });
@@ -63,7 +62,7 @@ const UserProvider = ({ children }) => {
   const deleteUser = async () => {
     try {
       if (!user?.id) throw new Error("Usuário não possui ID.");
-      await deleteUserApi(user.id);
+      await deleteUserApi(user.idUsuario);
 
       await AsyncStorage.removeItem('@user');
       setUser(null);

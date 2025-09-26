@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { BarChart } from 'react-native-gifted-charts';
-import { zonas } from '../../data/zonas';
+import { zonasLista  } from '../../data/zonas';
 import colors from '../../theme/colors';
 
 export default function GraficoZonas() {
@@ -15,7 +15,7 @@ export default function GraficoZonas() {
         const dados = await AsyncStorage.getItem('lista_motos');
         const motos = dados ? JSON.parse(dados) : [];
 
-        const contagem = zonas.map(zona => {
+        const contagem = zonasLista .map(zona => {
           const total = motos.filter(moto => moto.zona === zona.nome).length;
           return { ...zona, total };
         });
