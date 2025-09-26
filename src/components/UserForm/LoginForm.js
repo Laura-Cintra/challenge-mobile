@@ -2,12 +2,13 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../providers/UserContext";
-import { getUsers } from "../../services/actions";
+import { loginUser } from "../../services/actions";
 import FormInput from "./FormInput";
 import appLogo from "../../../assets/logo-app.png";
 import colors from "../../theme/colors";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { AntDesign } from "@expo/vector-icons";
+import MessageModal from "../MessageModal";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -16,28 +17,33 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-const handleLogin = async () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Atenção", "Preencha todos os campos!");
+      setModalMessage("Preencha todos os campos!");
+      setIsSuccess(false);
+      setModalVisible(true);
       return;
     }
 
     try {
-      const usuarios = await getUsers();
-      const normalizedEmail = email.trim().toLowerCase();
-      const user = usuarios.find(
-        (u) => u.email.toLowerCase().trim() === normalizedEmail && u.senha === password
-      );
+      const response = await loginUser(email, password);
 
-      if (!user) {
-        Alert.alert("Erro", "Email ou senha inválidos.");
-        return;
+      if (response) {
+        login(response);
+
+        setModalMessage("Login realizado com sucesso!");
+        setIsSuccess(true);
+        setModalVisible(true);
       }
-
-      login(user);
     } catch (error) {
       console.log("Erro no login:", error.message);
-      Alert.alert("Erro", "Não foi possível fazer login.");
+      setModalMessage("Email ou senha inválidos.");
+      setIsSuccess(false);
+      setModalVisible(true);
     }
   };
 
@@ -77,6 +83,13 @@ const handleLogin = async () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      <MessageModal
+        visible={modalVisible}
+        message={modalMessage}
+        isSuccess={isSuccess}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }

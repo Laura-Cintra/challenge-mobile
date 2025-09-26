@@ -33,6 +33,16 @@ export async function getMotoById(id) {
   }
 }
 
+export async function createMoto(dados) {
+  try {
+    const response = await api.post("/motos", dados);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar moto:", error);
+    throw error;
+  }
+}
+
 export async function updateMoto(id, dados) {
   try {
     const response = await api.put(`/motos/${id}`, dados);
@@ -53,39 +63,15 @@ export async function deleteMoto(id) {
   }
 }
 
-export async function verificarMoto(placaOuChassi) {
-  try {
-    const response = await axios.get(`/verificarMoto/${placaOuChassi}`);
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao verificar moto:", error);
-    throw error;
-  }
-}
-
-export async function vincularCarrapato(placaOuChassi) {
-  try {
-    const response = await axios.post(`/carrapato/vinculo/${placaOuChassi}`);
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao vincular carrapato:", error);
-    throw error;
-  }
-}
-
 // ================= Zonas =================
 
 export async function getZonas() {
   try {
     const response = await api.get("/zonas");
-
-    // Exemplo de response: { "Saguão": 0, "ManutencaoRapida": 1, ... }
     const data = response.data;
-
-    // converte em lista usando nosso dicionário
     return Object.values(data).map((id) => ({
       id,
-      ...zonasMap[id], // adiciona nome bonito + cor
+      ...zonasMap[id],
     }));
   } catch (error) {
     console.error("Erro ao buscar zonas:", error);
@@ -147,9 +133,9 @@ export async function getUserById(){
   }
 };
 
-export async function loginUser(email, password) {
+export async function loginUser(email, senha) {
   try {
-    const response = await api.post("/usuarios/login", { email, senha: password });
+    const response = await api.post("/usuarios/login", { email, senha });
     return response.data;
   } catch (error) {
     console.error("Erro no login:", error.message);
