@@ -31,7 +31,7 @@ export default function Dashboard() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Olá, {user?.name}</Text>
+      <Text style={styles.title}>Olá, {user?.nome}</Text>
       <Text style={styles.subtitle}>Esses são os dados do seu pátio</Text>
         
     <View style={styles.atalho}>
