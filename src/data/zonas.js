@@ -11,11 +11,8 @@ export const zonasMap = {
   6: { nome: "Motor Defeituoso", cor: colors.zona6 },
 };
 
-// gera uma lista para iterar em pickers ou telas
 export const zonasLista = Object.entries(zonasMap).map(([id, { nome, cor }]) => ({
   id: Number(id),
   nome,
   cor,
 }));
-
-console.log("ZonasMap:", zonasMap); // Verifique se está sendo carregado corretamente

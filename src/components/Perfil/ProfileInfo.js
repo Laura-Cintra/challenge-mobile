@@ -20,7 +20,6 @@ export default function ProfileInfo() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editarVisible, setEditarVisible] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  console.log("DEBUG USER:", user);
 
   useEffect(() => {
     const fetchPatioDetails = async () => {

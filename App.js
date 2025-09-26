@@ -6,6 +6,7 @@ import Login from './src/pages/Login';
 import Cadastro from './src/pages/Cadastro';
 import UserProvider, { useUser } from './src/providers/UserContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider } from './src/providers/ThemeContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,11 +30,13 @@ function Routes() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <UserProvider>
-        <NavigationContainer>
-          <Routes />
-        </NavigationContainer>
-      </UserProvider>
+      <ThemeProvider>
+        <UserProvider>
+          <NavigationContainer>
+            <Routes />
+          </NavigationContainer>
+        </UserProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

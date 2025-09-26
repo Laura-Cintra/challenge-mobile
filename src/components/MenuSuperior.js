@@ -3,11 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import logo from '../../assets/logo.png';
 import logoutIcon from '../../assets/icons/logout.png';
 import { useUser } from '../providers/UserContext';
-import colors from '../theme/colors';
+import { useTheme } from '../providers/ThemeContext';
 
 export default function MenuSuperior() {
   const navigation = useNavigation();
   const { logout } = useUser();
+  const { colors } = useTheme();
 
   const handleHome = () => {
     navigation.navigate('Home');
@@ -19,20 +20,12 @@ export default function MenuSuperior() {
 
   return (
     <SafeAreaView>
-      <View style={styles.header}>
+      <View style={[styles.header, { borderColor: colors.border }]}>
         <TouchableOpacity onPress={handleHome}>
-          <Image
-            source={logo}
-            style={styles.logo}
-            resizeMode="contain"
-          />
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout}>
-          <Image
-            source={logoutIcon}
-            style={styles.logoutIcon}
-            resizeMode="contain"
-          />
+          <Image source={logoutIcon} style={styles.logoutIcon} resizeMode="contain" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -47,7 +40,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 12,
     borderBottomWidth: 1,
-    borderColor: colors.border,
   },
   logo: {
     width: 40,

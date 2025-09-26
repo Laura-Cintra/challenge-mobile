@@ -1,6 +1,7 @@
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import MenuSuperior from '../components/MenuSuperior';
 import Dashboard from '../components/DashHome/Dashboard';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 
 export default function Home() {
 
@@ -9,6 +10,7 @@ export default function Home() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <MenuSuperior/>
         <Dashboard/>
+        <ThemeToggleButton/>
       </ScrollView>
     </SafeAreaView>
   );
