@@ -1,26 +1,24 @@
-import { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Modal,
+  StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../theme/colors";
 import MessageModal from "../MessageModal";
-import { useMotos } from "../../providers/UseMotos";
-import { zonas } from "../../data/zonas";
+import { useEffect, useState } from "react";
+import { zonasLista } from "../../data/zonas";
 
 export default function EditarMotoModal({
   visible,
   onClose,
   moto,
+  onSave,
 }) {
-  const { editarMoto } = useMotos();
-
   const [placa, setPlaca] = useState("");
   const [carrapato, setCarrapato] = useState("");
   const [modelo, setModelo] = useState("");
@@ -32,12 +30,18 @@ export default function EditarMotoModal({
 
   useEffect(() => {
     if (moto) {
-      setPlaca(moto.placa || "");
-      setCarrapato(moto.carrapato || "");
-      setModelo(moto.modelo || "");
-      setZona(moto.zona || "");
+      setPlaca(moto.placa ?? "");
+      setCarrapato(String(moto.idCarrapato ?? moto.carrapato ?? ""));
+      setModelo(moto.modelo ?? "");
+      const initialZona = zonasLista.find(z => z.id === moto.zona)?.id ?? moto.zona ?? "";
+      setZona(initialZona);
+    } else {
+      setPlaca("");
+      setCarrapato("");
+      setModelo("");
+      setZona("");
     }
-  }, [moto]);
+  }, [moto, visible]);
 
   const limparCampos = () => {
     setPlaca("");
@@ -46,52 +50,55 @@ export default function EditarMotoModal({
     setZona("");
   };
 
-  const handleSalvar = () => {
-    if (!placa || !carrapato || !modelo || !zona) {
+  const handleSalvar = async () => {
+    if (!placa || !carrapato || !modelo || (zona === "" || zona === null)) {
       setModalMessage("Preencha todos os campos.");
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
-    const placaValida = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(placa.trim());
-    if (!placaValida) {
-      setModalMessage("Formato de placa inválido. Use o formato AAA1A23.");
+    const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(placa.trim().toUpperCase());
+    if (!validarPlaca) {
+      setModalMessage("Formato de placa inválido. Use o formato ABC1234.");
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
-    try {
-      editarMoto({
-        ...moto,
-        placa,
-        carrapato,
-        modelo,
-        zona,
-      });
+    const dados = {
+      placa: placa.trim().toUpperCase(),
+      modelo,
+      zona: typeof zona === "number" ? zona : Number(zona),
+      idCarrapato: isNaN(Number(carrapato)) ? carrapato : Number(carrapato),
+    };
 
+    try {
+      if (typeof onSave === "function") {
+        await onSave(moto.id, dados);
+      }
       setModalMessage("Moto editada com sucesso!");
       setIsSuccess(true);
       setModalVisible(true);
-
       setTimeout(() => {
         onClose();
-      }, 1000);
-    } catch (err) {
-      console.log(err);
+      }, 700);
+    } catch (error) {
+      console.error(error);
       setModalMessage("Erro ao editar moto.");
       setIsSuccess(false);
       setModalVisible(true);
     }
   };
 
+  const options = zonasLista || [];
+
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <MaterialCommunityIcons name="close" size={24} color={colors.text} />
+            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
           <Text style={styles.title}>Editar Moto</Text>
@@ -100,7 +107,7 @@ export default function EditarMotoModal({
           <TextInput
             style={styles.input}
             value={placa}
-            onChangeText={setPlaca}
+            onChangeText={(t) => setPlaca(t.toUpperCase())}
             placeholder="Digite a placa"
             placeholderTextColor={colors.placeholder}
           />
@@ -115,45 +122,30 @@ export default function EditarMotoModal({
           />
 
           <Text style={styles.label}>Modelo</Text>
-          <View style={styles.pickerContainer}>
-            <Picker selectedValue={modelo} onValueChange={setModelo}>
-              <Picker.Item
-                label="Selecione um modelo..."
-                value=""
-                color={colors.placeholder}
-              />
-              <Picker.Item label="Mottu Sport" value="Mottu Sport" />
-              <Picker.Item label="Mottu E" value="Mottu E" />
-              <Picker.Item label="Mottu Pop" value="Mottu Pop" />
-            </Picker>
-          </View>
+          <TextInput
+            style={styles.input}
+            value={modelo}
+            onChangeText={setModelo}
+            placeholder="Modelo"
+            placeholderTextColor={colors.placeholder}
+          />
 
           <Text style={styles.label}>Zona</Text>
           <View style={styles.pickerContainer}>
-            <Picker selectedValue={zona} onValueChange={setZona}>
-              <Picker.Item
-                label="Selecione uma zona..."
-                value=""
-                color={colors.placeholder}
-              />
-              {zonas.map((z, i) => (
-                <Picker.Item key={i} label={z.nome} value={z.nome} />
+            <Picker selectedValue={zona} onValueChange={(v) => setZona(v)}>
+              <Picker.Item label="Selecione uma zona..." value="" color={colors.placeholder} />
+              {options.map((z) => (
+                <Picker.Item key={z.id} label={z.nome} value={z.id} />
               ))}
             </Picker>
           </View>
 
           <View style={styles.buttonsRow}>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.primary }]}
-              onPress={handleSalvar}
-            >
+            <TouchableOpacity style={[styles.button, { backgroundColor: colors.secundary }]} onPress={handleSalvar}>
               <Text style={styles.buttonText}>Salvar</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: "#aaa" }]}
-              onPress={limparCampos}
-            >
+            <TouchableOpacity style={[styles.button, { backgroundColor: "#9e9e9e" }]} onPress={limparCampos}>
               <Text style={styles.buttonText}>Limpar</Text>
             </TouchableOpacity>
           </View>

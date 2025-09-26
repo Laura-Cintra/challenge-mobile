@@ -17,16 +17,17 @@ export default function PatioZonas() {
     setModalVisible(true);
   };
 
+  const lista = zonasLista || [];
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Zonas do Pátio</Text>
 
       <View style={styles.grid}>
-        {zonasLista.map((zona) => (
+        {lista.map((zona) => (
           <ZonaCard
-            key={zona.nome}
-            nome={zona.nome}
-            cor={zona.cor}
+            key={zona.id}
+            zona={zona}
             onPress={abrirModalZona}
             isDoubleSize={zona.nome === 'Saguão'}
           />

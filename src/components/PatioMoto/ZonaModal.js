@@ -1,34 +1,22 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import colors from "../../theme/colors";
 import { useMotos } from "../../providers/UseMotos";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListaMotos from "../ListaMotos";
-import MessageModal from "../MessageModal";
 import EditarMotoModal from "./EditarMoto";
+import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 
-export default function ZonaModal({
-  visible,
-  onClose,
-  zona,
-  filtroBusca,
-  setFiltroBusca,
-}) {
-  const { motos, deletarMotoPorId } = useMotos();
-  const motosDaZona = motos.filter((moto) => moto.zona === zona);
-
+export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFiltroBusca }) {
+  const { motos, editarMoto, deletarMotoPorId } = useMotos();
   const [selected, setSelected] = useState(null);
   const [editarVisible, setEditarVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [motoSelecionada, setMotoSelecionada] = useState(null);
 
- const localizar = (moto) => {
+  const motosDaZona = motos.filter((moto) => moto.zona === zona?.id);
+
+  const localizar = (moto) => {
     setSelected(moto.placa);
     console.log("Localizando", moto.placa);
   };
@@ -43,15 +31,18 @@ export default function ZonaModal({
     setEditarVisible(true);
   };
 
-
   const confirmarExclusao = (moto) => {
     setMotoSelecionada(moto);
     setConfirmVisible(true);
   };
 
-  const excluir = () => {
+  const excluir = async () => {
     if (motoSelecionada) {
-      deletarMotoPorId(motoSelecionada.id);
+      try {
+        await deletarMotoPorId(motoSelecionada.id);
+      } catch (error) {
+        console.error("Erro ao excluir moto:", error);
+      }
     }
     setConfirmVisible(false);
     setMotoSelecionada(null);
@@ -60,10 +51,8 @@ export default function ZonaModal({
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>{zona}</Text>
-        <Text style={styles.modalSubtitle}>
-          Total: {motosDaZona.length} motos
-        </Text>
+        <Text style={styles.modalTitle}>{zona?.nome}</Text>
+        <Text style={styles.modalSubtitle}>Total: {motosDaZona.length} motos</Text>
 
         <ListaMotos
           titulo={null}
@@ -83,35 +72,29 @@ export default function ZonaModal({
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
           <MaterialCommunityIcons name="close" size={20} color={colors.white} />
-          <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>
-            Fechar
-          </Text>
+          <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>Fechar</Text>
         </TouchableOpacity>
 
-        <MessageModal
+        <ConfirmarExclusaoModal
           visible={confirmVisible}
-          message={
-            motoSelecionada
-              ? `Tem certeza que deseja excluir a moto ${motoSelecionada.placa}?`
-              : ""
-          }
-          isSuccess={false}
           onClose={() => setConfirmVisible(false)}
-        >
-
-          <TouchableOpacity
-            style={styles.confirmDeleteButton}
-            onPress={excluir}
-          >
-            <Text style={styles.confirmDeleteText}>Confirmar</Text>
-          </TouchableOpacity>
-        </MessageModal>
+          onConfirm={excluir}
+          mensagem={`Tem certeza que deseja excluir a moto ${motoSelecionada?.placa}?`}
+        />
 
         <EditarMotoModal
           visible={editarVisible}
           onClose={() => setEditarVisible(false)}
           moto={motoSelecionada}
-          zonasDisponiveis={["Manutenção Rápida", "Danos Estruturais", "Sem Placa", "Motor Defeituoso", "BO", "Aluguel", "Saguão"]}
+          onSave={async (id, dados) => {
+            try {
+              await editarMoto(id, dados);
+              setEditarVisible(false);
+              setMotoSelecionada(null);
+            } catch (error) {
+              console.error("Erro ao editar moto:", error);
+            }
+          }}
         />
       </View>
     </Modal>

@@ -1,6 +1,5 @@
 import colors from "../theme/colors";
 
-// dicionário fixo, que nunca depende da API
 export const zonasMap = {
   0: { nome: "Saguão", cor: colors.zona7 },
   1: { nome: "Manutenção Rápida", cor: colors.zona1 },
@@ -11,8 +10,11 @@ export const zonasMap = {
   6: { nome: "Motor Defeituoso", cor: colors.zona6 },
 };
 
-export const zonasLista = Object.entries(zonasMap).map(([id, { nome, cor }]) => ({
+const _entries = Object.entries(zonasMap || {});
+export const zonasLista = _entries.map(([id, { nome, cor }]) => ({
   id: Number(id),
   nome,
   cor,
 }));
+
+export const zonas = zonasLista.map(({ id, nome, cor }) => ({ id, nome, cor }));

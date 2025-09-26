@@ -5,13 +5,10 @@ import perfil from '../../../assets/icons/profile-user.png';
 import colors from '../../theme/colors';
 import { Foundation, FontAwesome5, MaterialIcons, Entypo, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { useMotos } from '../../providers/UseMotos';
 import ProcurarMotoModal from '../ProcurarMotoModal';
 import EditarPerfilModal from './EditarPerfilModal';
-import ExcluirPerfilModal from './ExcluirPerfilModal';
 import { deleteUserApi, getPatioById } from '../../services/actions';
-
-// ver sobre pátios!
+import ConfirmarExclusaoModal from '../ConfirmarExclusaoModal';
 
 export default function ProfileInfo() {
   const { user, logout, setUser } = useUser();
@@ -77,18 +74,15 @@ export default function ProfileInfo() {
       <View style={styles.patioContainer}>
         <View style={styles.patioHeader}>
           <Entypo name="location-pin" size={24} color={colors.background} />
-          <Text style={styles.patioTitle}>Filial</Text>
+          <Text style={styles.patioTitle}>Pátio - {user?.nomePatio || "Nome não disponível"}</Text>
         </View>
 
         <View style={styles.patioDiv}>
           <Text style={styles.patioText}>
-            Nome do Pátio: <Text>{user?.nomePatio || "Nome não disponível"}</Text>
+            Endereço: <Text style={styles.patioItemText}>{patioDetails?.endereco || "Endereço não disponível"}</Text>
           </Text>
           <Text style={styles.patioText}>
-            Endereço: <Text>{patioDetails?.endereco || "Endereço não disponível"}</Text>
-          </Text>
-          <Text style={styles.patioText}>
-            Motos no pátio: <Text style={styles.motoText}>{patioDetails?.motos.length || 0}</Text>
+            Motos no pátio: <Text style={styles.patioItemText}>{patioDetails?.motos.length || 0}</Text>
           </Text>
         </View>
       </View>
@@ -145,10 +139,11 @@ export default function ProfileInfo() {
         onClose={() => setEditarVisible(false)}
       />
 
-      <ExcluirPerfilModal
+      <ConfirmarExclusaoModal
         visible={confirmDelete}
         onClose={() => setConfirmDelete(false)}
         onConfirm={handleDeleteAccount}
+        mensagem={`Tem certeza que deseja excluir sua conta?`}
       />
     </View>
   );
@@ -195,7 +190,7 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   patioContainer: {
-    marginHorizontal: 30,
+    marginHorizontal: 22,
     borderRadius: 10,
     overflow: 'hidden',
     borderWidth: 1,
@@ -220,10 +215,12 @@ const styles = StyleSheet.create({
   patioText: {
     fontSize: 15,
     marginVertical: 5,
-  },
-  motoText: {
     fontWeight: 'bold',
-    color: colors.text,
+  },
+  patioItemText: {
+    fontSize: 14.5,
+    fontWeight: 'light',
+    lineHeight: 22,
   },
   atalhoContainer: {
     marginTop: 30,

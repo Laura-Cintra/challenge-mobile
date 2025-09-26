@@ -3,17 +3,17 @@ import colors from '../../theme/colors';
 
 const screen_width = Dimensions.get('window').width;
 
-export default function ZonaCard({ nome, cor, onPress, isDoubleSize }) {
+export default function ZonaCard({ zona, onPress, isDoubleSize }) {
   return (
     <TouchableOpacity
       style={[
         styles.card,
-        { backgroundColor: cor },
+        { backgroundColor: zona?.cor ?? colors.zona7 },
         isDoubleSize && styles.doubleSize,
       ]}
-      onPress={() => onPress(nome)}
+      onPress={() => onPress(zona)}
     >
-      <Text style={styles.cardText}>{nome}</Text>
+      <Text style={styles.cardText}>{zona?.nome ?? '—'}</Text>
     </TouchableOpacity>
   );
 }

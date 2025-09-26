@@ -23,15 +23,35 @@ export async function getMotos(){
   }
 };
 
-export async function getMotoById(id){
+export async function getMotoById(id) {
   try {
-    const response = await api.get(`/mottu/motos/${id}`);
+    const response = await api.get(`/motos/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar moto por ID:", error);
+    console.error(`Erro ao buscar moto com id ${id}:`, error);
     throw error;
   }
-};
+}
+
+export async function updateMoto(id, dados) {
+  try {
+    const response = await api.put(`/motos/${id}`, dados);
+    return response.data;
+  } catch (error) {
+    console.error(`Erro ao atualizar moto ${id}:`, error);
+    throw error;
+  }
+}
+
+export async function deleteMoto(id) {
+  try {
+    await api.delete(`/motos/${id}`);
+    return true;
+  } catch (error) {
+    console.error(`Erro ao deletar moto ${id}:`, error);
+    throw error;
+  }
+}
 
 export async function verificarMoto(placaOuChassi) {
   try {
@@ -126,6 +146,16 @@ export async function getUserById(){
     throw error;
   }
 };
+
+export async function loginUser(email, password) {
+  try {
+    const response = await api.post("/usuarios/login", { email, senha: password });
+    return response.data;
+  } catch (error) {
+    console.error("Erro no login:", error.message);
+    throw error;
+  }
+}
 
 export async function updateUserApi(id, novosDados) {
   try {

@@ -1,8 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
-import colors from "../../theme/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import colors from "../theme/colors";
 
-export default function ExcluirPerfilModal({ visible, onClose, onConfirm }) {
+export default function ConfirmarExclusaoModal({
+  visible,
+  onClose,
+  onConfirm,
+  mensagem,
+}) {
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
@@ -10,8 +15,9 @@ export default function ExcluirPerfilModal({ visible, onClose, onConfirm }) {
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
+
           <Text style={styles.title}>Confirmar Exclusão</Text>
-          <Text style={styles.message}>Tem certeza que deseja excluir sua conta?</Text>
+          <Text style={styles.message}>{mensagem}</Text>
           <Text style={styles.messageWarn}>Esta ação não poderá ser desfeita.</Text>
 
           <View style={styles.buttonsRow}>

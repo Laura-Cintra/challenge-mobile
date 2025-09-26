@@ -1,66 +1,55 @@
-import { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getMotos } from '../services/actions';
+import { useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getPatioById, updateMoto, deleteMoto } from "../services/actions";
+import { useUser } from "../providers/UserContext";
 
 export function useMotos() {
+  const { user } = useUser();
   const [motos, setMotos] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       const carregarMotos = async () => {
+        if (!user?.idPatio) return;
+        setLoading(true);
         try {
-          const lista = await getMotos();
+          const patio = await getPatioById(user.idPatio);
+          const lista = patio?.motos || [];
           setMotos(lista);
           await AsyncStorage.setItem("lista_motos", JSON.stringify(lista));
         } catch (error) {
-          console.error("Erro ao carregar motos da API:", error);
+          console.error("Erro ao carregar motos:", error);
           const dados = await AsyncStorage.getItem("lista_motos");
-          const lista = dados ? JSON.parse(dados) : [];
-          setMotos(lista);
+          setMotos(dados ? JSON.parse(dados) : []);
+        } finally {
+          setLoading(false);
         }
       };
       carregarMotos();
-    }, [])
+    }, [user?.idPatio])
   );
 
   const atualizarMotos = async (novasMotos) => {
-    try {
-      await AsyncStorage.setItem('lista_motos', JSON.stringify(novasMotos));
-      setMotos(novasMotos);
-    } catch (error) {
-      console.error('Erro ao salvar motos:', error);
-    }
+    setMotos(novasMotos);
+    await AsyncStorage.setItem("lista_motos", JSON.stringify(novasMotos));
   };
 
-  const adicionarMoto = async (novaMoto) => {
-    try {
-      const novasMotos = [...motos, { id: Date.now().toString(), ...novaMoto }];
-      await atualizarMotos(novasMotos);
-    } catch (error) {
-      console.error('Erro ao adicionar moto:', error);
-    }
-  };
-
-  const editarMoto = async (motoEditada) => {
-    try {
-      const novasMotos = motos.map(moto =>
-        moto.id === motoEditada.id ? { ...moto, ...motoEditada } : moto
-      );
-      await atualizarMotos(novasMotos);
-    } catch (error) {
-      console.error('Erro ao editar moto:', error);
-    }
+  const editarMoto = async (id, dadosAtualizados) => {
+    const motoAtualizada = await updateMoto(id, dadosAtualizados);
+    const novasMotos = motos.map((m) =>
+      m.id === id ? { ...m, ...motoAtualizada } : m
+    );
+    await atualizarMotos(novasMotos);
+    return motoAtualizada;
   };
 
   const deletarMotoPorId = async (id) => {
-    try {
-      const novasMotos = motos.filter(moto => moto.id !== id);
-      await atualizarMotos(novasMotos);
-    } catch (error) {
-      console.error('Erro ao deletar moto:', error);
-    }
+    await deleteMoto(id);
+    const novasMotos = motos.filter((m) => m.id !== id);
+    await atualizarMotos(novasMotos);
   };
 
-  return { motos, atualizarMotos, adicionarMoto, editarMoto, deletarMotoPorId };
+  return { motos, loading, atualizarMotos, editarMoto, deletarMotoPorId };
 }

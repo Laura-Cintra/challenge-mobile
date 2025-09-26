@@ -25,7 +25,6 @@ const UserProvider = ({ children }) => {
     try {
       await AsyncStorage.setItem('@user', JSON.stringify(userData));
       setUser(userData);
-      console.log("Usuário armazenado:", userData);
     } catch (error) {
       console.error("Erro no login:", error);
     }
@@ -61,7 +60,7 @@ const UserProvider = ({ children }) => {
 
   const deleteUser = async () => {
     try {
-      if (!user?.id) throw new Error("Usuário não possui ID.");
+      if (!user?.idUsuario) throw new Error("Usuário não possui ID.");
       await deleteUserApi(user.idUsuario);
 
       await AsyncStorage.removeItem('@user');
