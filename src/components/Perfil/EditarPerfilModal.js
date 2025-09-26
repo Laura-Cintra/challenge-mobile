@@ -4,9 +4,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../theme/colors";
 import MessageModal from "../MessageModal";
 import { useUser } from "../../providers/UserContext";
+import { updateUserApi } from "../../services/actions";
 
 export default function EditarPerfilModal({ visible, onClose }) {
-  const { user, setUser } = useUser();
+  const { user, updateUser } = useUser();
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -19,16 +20,21 @@ export default function EditarPerfilModal({ visible, onClose }) {
 
   useEffect(() => {
     if (user) {
-      setNome(user.name || "");
+      setNome(user.nome || "");
       setEmail(user.email || "");
     }
   }, [user, visible]);
 
-  const handleSalvar = () => {
+  const handleSalvar = async () => {
     if (!nome.trim() || !email.trim()) {
       setModalMessage("Preencha todos os campos.");
       setIsSuccess(false);
       setModalVisible(true);
+
+      setTimeout(() => {
+        setModalVisible(false);
+      }, 2000);
+
       return;
     }
 
@@ -36,30 +42,40 @@ export default function EditarPerfilModal({ visible, onClose }) {
       setModalMessage("As senhas não coincidem.");
       setIsSuccess(false);
       setModalVisible(true);
+
+      setTimeout(() => {
+        setModalVisible(false);
+      }, 2000);
       return;
     }
 
-    if (senha && senha.length < 6) {
-      setModalMessage("A senha deve ter pelo menos 6 caracteres.");
+    try {
+      const dadosAtualizados = {
+        nome,
+        email,
+        senha: senha || user.senha,
+      };
+
+      const atualizado = await updateUserApi(user.idUsuario, dadosAtualizados);
+      await updateUser(atualizado);
+
+      setModalMessage("Perfil atualizado com sucesso!");
+      setIsSuccess(true);
+      setModalVisible(true);
+
+      setTimeout(() => {
+        setModalVisible(false);
+        onClose();
+      }, 2000);
+    } catch (error) {
+      setModalMessage("Erro ao atualizar perfil.");
       setIsSuccess(false);
       setModalVisible(true);
-      return;
+
+      setTimeout(() => {
+        setModalVisible(false);
+      }, 2000);
     }
-
-    setUser({
-      ...user,
-      name: nome,
-      email,
-      password: senha || user.password,
-    });
-
-    setModalMessage("Perfil atualizado com sucesso!");
-    setIsSuccess(true);
-    setModalVisible(true);
-
-    setTimeout(() => {
-      onClose();
-    }, 1000);
   };
 
   return (

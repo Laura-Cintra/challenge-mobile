@@ -9,7 +9,9 @@ import { useMotos } from '../../providers/UseMotos';
 import ProcurarMotoModal from '../ProcurarMotoModal';
 import EditarPerfilModal from './EditarPerfilModal';
 import ExcluirPerfilModal from './ExcluirPerfilModal';
-import { getPatioById } from '../../services/actions';
+import { deleteUserApi, getPatioById } from '../../services/actions';
+
+// ver sobre pátios
 
 export default function ProfileInfo() {
   const { user, logout, setUser } = useUser();
@@ -18,6 +20,7 @@ export default function ProfileInfo() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editarVisible, setEditarVisible] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  console.log("DEBUG USER:", user);
 
   useEffect(() => {
     const fetchPatioDetails = async () => {
@@ -35,10 +38,14 @@ export default function ProfileInfo() {
   }, [user]);
 
   const handleDeleteAccount = async () => {
-    setUser(null);
+  try {
+    await deleteUserApi(user.idUsuario);
     await logout();
     setConfirmDelete(false);
-  };
+  } catch (error) {
+    console.error("Erro ao excluir conta:", error);
+  }
+};
 
   return (
     <View>
