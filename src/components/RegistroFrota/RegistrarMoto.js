@@ -44,6 +44,7 @@ export default function RegistrarMoto() {
             if (!motos || motos.length === 0) {
               throw new Error("Nenhuma moto encontrada no banco.");
             }
+            await new Promise(res => setTimeout(res, 1000));
 
             const aleatoria = motos[Math.floor(Math.random() * motos.length)];
             setPlaca(aleatoria.placa || aleatoria.chassi || "");
@@ -56,6 +57,7 @@ export default function RegistrarMoto() {
             }, 1000);
           } catch (error) {
             setErroPlaca(true);
+            await new Promise(res => setTimeout(res, 1000));
             setLoading(false);
           }
         }
@@ -71,6 +73,7 @@ export default function RegistrarMoto() {
             setCarrapato(vinculo.idCarrapato);
             setModelo(vinculo.modelo);
             setZona(vinculo.zona);
+            await new Promise(res => setTimeout(res, 1000));
 
             setLoading(false);
 
@@ -89,6 +92,7 @@ export default function RegistrarMoto() {
 
             setModalMessage(mensagemApi)
             setErroCarrapato(true);
+            await new Promise(res => setTimeout(res, 1000));
             setLoading(false);
             setStep(3);
           }
