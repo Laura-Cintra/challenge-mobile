@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderRadius: 10,
     marginBottom: 25,
-    shadowColor: "#000",
+    shadowColor: colors.text,
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
@@ -100,11 +100,11 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.border,
     borderRadius: 8,
     padding: 12,
     marginTop: 10,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: colors.background,
   },
   button: {
     padding: 12,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   buttonText: {
-    color: "#fff",
+    color: colors.white,
     fontWeight: "bold",
   },
   checkboxContainer: {

@@ -3,13 +3,18 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import RegistroCampo from "./RegistroCampo";
 import MessageModal from "../MessageModal";
 import colors from "../../theme/colors";
-import { getMotos, verificarMoto, vincularCarrapato } from "../../services/actions";
+import { getMotos, createMoto } from "../../services/actions";
+import { useUser } from "../../providers/UserContext";
+import { zonasMap } from "../../data/zonas";
 
 export default function RegistrarMoto() {
+  const { user } = useUser();
+
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const [placa, setPlaca] = useState("");
+  const [chassi, setChassi] = useState("");
   const [semPlaca, setSemPlaca] = useState(false);
   const [carrapato, setCarrapato] = useState("");
   const [modelo, setModelo] = useState("");
@@ -30,6 +35,7 @@ export default function RegistrarMoto() {
       try {
         if (step === 1 && loading) {
           try {
+            // simular falha de leitura da placa/chassi
             if (Math.random() < 0.3) {
               throw new Error("Falha na leitura da placa/chassi");
             }
@@ -40,9 +46,8 @@ export default function RegistrarMoto() {
             }
 
             const aleatoria = motos[Math.floor(Math.random() * motos.length)];
-            const check = await verificarMoto(aleatoria.placa);
+            setPlaca(aleatoria.placa || aleatoria.chassi || "");
 
-            setPlaca(check.placa);
             setLoading(false);
 
             setTimeout(() => {
@@ -58,13 +63,13 @@ export default function RegistrarMoto() {
 
         if (step === 2 && loading) {
           try {
-            if (Math.random() < 0.3) {
-              throw new Error("Falha na leitura do carrapato");
-            }
+            const body = semPlaca
+            ? { chassi: chassi.trim(), idPatio: user.idPatio }
+            : { placa: placa.trim().toUpperCase(), idPatio: user.idPatio };
 
-            const vinculo = await vincularCarrapato(placa);
+            const vinculo = await createMoto(body);
 
-            setCarrapato(vinculo.carrapato);
+            setCarrapato(vinculo.idCarrapato);
             setModelo(vinculo.modelo);
             setZona(vinculo.zona);
 
@@ -75,57 +80,46 @@ export default function RegistrarMoto() {
             }, 1000);
           } catch (error) {
             console.error("Erro no passo 2:", error);
+
+            const mensagemApi = error.response?.data?.mensagem || "Erro ao vincular carrapato";
+            setModalMessage(`Erro de validação ao criar moto: ${mensagemApi}`);
+
             setErroCarrapato(true);
             setLoading(false);
+            setStep(3);
           }
         }
       } catch (error) {
         console.error("Erro no fluxo de registro:", error);
 
-        if (step === 1) {
-          setErroPlaca(true);
-        }
-        if (step === 2) {
-          setErroCarrapato(true);
-        }
+        if (step === 1) setErroPlaca(true);
+        if (step === 2) setErroCarrapato(true);
+
         setLoading(false);
       }
     };
 
     executarEtapas();
-  }, [step, loading, finalizado]);
-
-  const validarPlaca = (valor) => /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(valor);
+  }, [step, loading, finalizado, semPlaca, placa, user]);
 
   const handleProsseguirPlaca = () => {
-    const valor = placa.trim().toUpperCase();
     if (semPlaca) {
-      if (!valor) {
+      if (!chassi.trim()) {
         setModalMessage("Digite o número do chassi.");
         setModalVisible(true);
         return;
       }
     } else {
-      if (!validarPlaca(valor)) {
-        setModalMessage("Formato de placa inválido. Ex: AAA1A23");
+      if (!placa.trim()) {
+        setModalMessage("Digite uma placa válida.");
         setModalVisible(true);
         return;
       }
     }
 
+    setErroPlaca(false);
     setStep(2);
     setLoading(true);
-    setErroPlaca(false);
-  };
-
-  const handleProsseguirCarrapato = () => {
-    if (!carrapato.trim()) {
-      setModalMessage("Digite um ID válido do carrapato.");
-      setModalVisible(true);
-      return;
-    }
-    setStep(3);
-    setErroCarrapato(false);
   };
 
   const handleFinalizar = () => {
@@ -161,8 +155,8 @@ export default function RegistrarMoto() {
             <RegistroCampo
               label="Placa"
               isFeminine={true}
-              valor={placa}
-              setValor={(v) => setPlaca(v)}
+              valor={semPlaca ? chassi : placa}
+              setValor={semPlaca ? setChassi : setPlaca}
               erro={erroPlaca}
               loading={loading && step === 1}
               placeholder="Digite a placa"
@@ -173,31 +167,31 @@ export default function RegistrarMoto() {
             />
           )}
 
-          {step >= 2 && (
+          {step >= 2 && !erroCarrapato && (
             <RegistroCampo
               label="Carrapato"
               isFeminine={false}
-              valor={carrapato}
+              valor={carrapato?.toString()}
               setValor={(v) => setCarrapato(v)}
-              erro={erroCarrapato}
+              erro={false}
               loading={loading && step === 2}
-              placeholder="Digite o ID do carrapato"
-              onProsseguir={handleProsseguirCarrapato}
+              placeholder="Vinculando carrapato..."
+              onProsseguir={() => {}}
             />
           )}
 
-          {step === 3 && (
+          {step === 3 && !erroCarrapato ? (
             <View style={styles.successBox}>
               <View style={styles.checkCircle}>
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
-
-              <Text style={styles.successFinal}>
-                Moto identificada com sucesso!
-              </Text>
-
-              <Text style={styles.detailText}>Modelo: {modelo}</Text>
-              <Text style={styles.detailText}>Zona atual: {zona}</Text>
+              <View>
+                <Text style={styles.successFinal}>Moto identificada com sucesso!</Text>
+                <Text style={styles.detailText}>Modelo: {modelo}</Text>
+                <Text style={styles.detailText}>
+                  Zona atual: {zonasMap[zona]?.nome || "Zona não definida"}
+                </Text>
+              </View>
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
@@ -215,7 +209,19 @@ export default function RegistrarMoto() {
                 </TouchableOpacity>
               </View>
             </View>
-          )}
+          ) : step === 3 && erroCarrapato ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorTitle}>Erro ao identificar moto</Text>
+              <Text style={styles.errorMessage}>{modalMessage}</Text>
+
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.modalRed, marginTop: 15 }]}
+                onPress={handleFinalizar}
+              >
+                <Text style={styles.buttonText}>Quitar operação</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </>
       ) : (
         <View style={styles.successBox}>
@@ -258,10 +264,16 @@ const styles = StyleSheet.create({
   },
   successFinal: {
     fontSize: 18,
-    marginVertical: 15,
+    marginVertical: 10,
     fontWeight: "bold",
     color: colors.text,
     textAlign: "center",
+  },
+  detailText: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    marginTop: 5,
+    textAlign: "left",
   },
   checkCircle: {
     width: 60,
@@ -293,10 +305,24 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 15,
   },
-   detailText: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    marginTop: 5,
-    textAlign: "left",
+  errorBox: {
+    alignItems: "center",
+    marginTop: 20,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: colors.background,
+    width: "100%",
+  },
+  errorTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  errorMessage: {
+    fontSize: 15,
+    color: colors.text,
+    textAlign: "center",
   },
 });
