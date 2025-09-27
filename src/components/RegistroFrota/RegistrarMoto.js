@@ -55,7 +55,6 @@ export default function RegistrarMoto() {
               setLoading(true);
             }, 1000);
           } catch (error) {
-            console.error("Erro no passo 1:", error);
             setErroPlaca(true);
             setLoading(false);
           }
@@ -79,11 +78,16 @@ export default function RegistrarMoto() {
               setStep(3);
             }, 1000);
           } catch (error) {
-            console.error("Erro no passo 2:", error);
 
-            const mensagemApi = error.response?.data?.mensagem || "Erro ao vincular carrapato";
-            setModalMessage(`Erro de validação ao criar moto: ${mensagemApi}`);
+            const mensagemApi =
+            error.response?.data?.mensagem ||
+            error.response?.data?.message  ||
+            error.response?.data?.erro     ||
+            error.mensagem                 || 
+            error.message                  ||
+            "Erro desconhecido ao criar moto.";
 
+            setModalMessage(mensagemApi)
             setErroCarrapato(true);
             setLoading(false);
             setStep(3);
@@ -310,7 +314,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: colors.background,
     width: "100%",
   },
   errorTitle: {
