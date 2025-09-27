@@ -11,6 +11,19 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
+// Função para pegar as mensagens de erros de API
+function handleApiError(error, defaultMessage) {
+  const mensagem =
+    error.response?.data?.mensagem ||
+    error.message ||
+    defaultMessage ||
+    "Erro inesperado.";
+  const status = error.response?.status || 500;
+
+  console.error(defaultMessage, mensagem);
+  return { mensagem, status, raw: error };
+}
+
 // ================= Motos =================
 
 export async function getMotos(){
@@ -18,8 +31,7 @@ export async function getMotos(){
     const response = await api.get("/mottu/motos");
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar motos:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao buscar motos:");
   }
 };
 
@@ -28,8 +40,7 @@ export async function getMotoById(id) {
     const response = await api.get(`/motos/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Erro ao buscar moto com id ${id}:`, error);
-    throw error;
+    throw handleApiError(error, `Erro ao buscar moto com id ${id}:`);
   }
 }
 
@@ -38,8 +49,7 @@ export async function createMoto(dados) {
     const response = await api.post("/motos", dados);
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar moto:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao criar moto:");
   }
 }
 
@@ -48,8 +58,7 @@ export async function updateMoto(id, dados) {
     const response = await api.put(`/motos/${id}`, dados);
     return response.data;
   } catch (error) {
-    console.error(`Erro ao atualizar moto ${id}:`, error);
-    throw error;
+    throw handleApiError(error, `Erro ao atualizar moto ${id}:`);
   }
 }
 
@@ -58,8 +67,7 @@ export async function deleteMoto(id) {
     await api.delete(`/motos/${id}`);
     return true;
   } catch (error) {
-    console.error(`Erro ao deletar moto ${id}:`, error);
-    throw error;
+    throw handleApiError(error, `Erro ao deletar moto ${id}:`);
   }
 }
 
@@ -74,8 +82,18 @@ export async function getZonas() {
       ...zonasMap[id],
     }));
   } catch (error) {
-    console.error("Erro ao buscar zonas:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao buscar zonas:");
+  }
+}
+
+// ================= Modelos Moto =================
+
+export async function getModelos() {
+  try {
+    const response = await api.get("/modelos");
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error, "Erro ao buscar modelos:");
   }
 }
 
@@ -86,8 +104,7 @@ export async function getPatios() {
     const response = await api.get("/patios");
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar patios:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao buscar pátios:");
   }
 }
 
@@ -96,8 +113,7 @@ export async function getPatioById(id) {
     const response = await api.get(`/patios/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar pátio:", error);
-    throw error;
+    throw handleApiError(error, `Erro ao buscar pátio com id ${id}:`);
   }
 }
 
@@ -108,8 +124,7 @@ export async function createUser(userData) {
     const response = await api.post("/usuarios", userData);
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar usuário:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao criar usuário:");
   }
 }
 
@@ -118,8 +133,7 @@ export async function getUsers(){
     const response = await api.get("/usuarios");
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar usuários:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao buscar usuários:");
   }
 };
 
@@ -128,8 +142,7 @@ export async function getUserById(){
     const response = await api.get(`/usuarios/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar usuário:", error);
-    throw error;
+    throw handleApiError(error, `Erro ao buscar usuário com id ${id}:`);
   }
 };
 
@@ -138,8 +151,7 @@ export async function loginUser(email, senha) {
     const response = await api.post("/usuarios/login", { email, senha });
     return response.data;
   } catch (error) {
-    console.error("Erro no login:", error.message);
-    throw error;
+    throw handleApiError(error, "Erro no login:");
   }
 }
 
@@ -148,8 +160,7 @@ export async function updateUserApi(id, novosDados) {
     const response = await api.put(`/usuarios/${id}`, novosDados);
     return response.data;
   } catch (error) {
-    console.error("Erro ao atualizar usuário:", error);
-    throw error;
+    throw handleApiError(error, "Erro ao atualizar o usuário:");
   }
 };
 
@@ -158,7 +169,6 @@ export async function deleteUserApi(id){
     await api.delete(`/usuarios/${id}`);
     return true;
   } catch (error) {
-    console.error("Erro ao excluir usuário:", error);
-    throw error;
+    throw handleApiError(error, `Erro ao excluir usuário com id ${id}:`);
   }
 };
