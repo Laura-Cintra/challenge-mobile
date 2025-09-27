@@ -1,34 +1,23 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 import { BarChart } from 'react-native-gifted-charts';
-import { zonasLista  } from '../../data/zonas';
+import { zonasLista } from '../../data/zonas';
 import colors from '../../theme/colors';
 
-export default function GraficoZonas() {
+export default function GraficoZonas({ motos }) {
   const [dadosZonas, setDadosZonas] = useState([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const carregarDados = async () => {
-        const dados = await AsyncStorage.getItem('lista_motos');
-        const motos = dados ? JSON.parse(dados) : [];
+  useEffect(() => {
+    const contagem = zonasLista.map((zona) => {
+      const total = motos.filter((moto) => moto.zona === zona.id).length;
+      return { ...zona, total };
+    });
+    setDadosZonas(contagem);
+  }, [motos]);
 
-        const contagem = zonasLista .map(zona => {
-          const total = motos.filter(moto => moto.zona === zona.nome).length;
-          return { ...zona, total };
-        });
-
-        setDadosZonas(contagem);
-      }
-      carregarDados();
-    }, [])
-  );
-
-  const dadosGrafico = dadosZonas.map((zona, i) => ({
+  const dadosGrafico = dadosZonas.map((zona) => ({
     value: zona.total,
-    label: String(i + 1),
+    label: String(zona.id),
     frontColor: zona.cor,
     topLabelComponent: () => (
       <Text style={{ color: colors.textSecondary }}>{zona.total}</Text>
@@ -37,7 +26,7 @@ export default function GraficoZonas() {
 
   return (
     <View style={styles.container}>
-    <Text style={styles.title}>Gráfico de Zonas</Text>
+      <Text style={styles.title}>Gráfico de Zonas</Text>
       <BarChart
         data={dadosGrafico}
         barWidth={28}
@@ -51,13 +40,12 @@ export default function GraficoZonas() {
 
       <View style={styles.legenda}>
         {dadosZonas.map((zona) => (
-          <View key={zona.nome} style={styles.legendaItem}>
+          <View key={zona.id} style={styles.legendaItem}>
             <View style={[styles.legendaCor, { backgroundColor: zona.cor }]} />
             <Text style={styles.legendaTexto}>{zona.nome}</Text>
           </View>
         ))}
       </View>
-      
     </View>
   );
 }

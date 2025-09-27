@@ -1,12 +1,12 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import {  useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import colors from '../../theme/colors';
 import GraficoZonas from './GraficoZonas';
 import { useMotos } from '../../providers/UseMotos';
 import { useUser } from '../../providers/UserContext';
 import ProcurarMotoModal from '../ProcurarMotoModal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -16,51 +16,42 @@ export default function Dashboard() {
   const total = motos.length;
   const [modalVisible, setModalVisible] = useState(false);
 
-    // inserir mock de motos automaticamente quando não encontrar nenhuma registro
-  useEffect(() => {
-    const inicializarMotos = async () => {
-      const dados = await AsyncStorage.getItem('lista_motos');
-      if (!dados || JSON.parse(dados).length === 0) {
-        await AsyncStorage.setItem('lista_motos', JSON.stringify(motosMockadas));
-      }
-      setLoading(false); // Sinaliza que os dados estão prontos
-    };
-
-    inicializarMotos();
-  }, []);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Olá, {user?.nome}</Text>
       <Text style={styles.subtitle}>Esses são os dados do seu pátio</Text>
         
-    <View style={styles.atalho}>
+      <View style={styles.atalho}>
         <FontAwesome5 name="motorcycle" size={28} color={colors.secundary} />
         <View style={styles.atalhoContainer}>
-            <Text style={styles.atalhoText}>Total de motos</Text>
+          <Text style={styles.atalhoText}>Total de motos</Text>
             
-            <View>
+          <View>
             <Text style={styles.total}>{total}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegistrarFrota')}>
-                <MaterialIcons name="add-circle-outline" size={20} color="#fff" />
-                <Text style={styles.buttonText}>Nova Moto</Text>
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={() => navigation.navigate('RegistrarFrota')}
+            >
+              <MaterialIcons name="add-circle-outline" size={20} color={colors.white} />
+              <Text style={styles.buttonText}>Nova Moto</Text>
             </TouchableOpacity>
-            </View>
+          </View>
         </View>
-    </View>
-    <GraficoZonas />
+      </View>
 
-    <TouchableOpacity
-      style={styles.buttonSearch}
-      onPress={() => setModalVisible(true)}
-    >
-      <Text style={styles.buttonTextSearch}>Procurar Moto</Text>
-    </TouchableOpacity>
+      <GraficoZonas motos={motos} />
 
-    <ProcurarMotoModal
-      visible={modalVisible}
-      onClose={() => setModalVisible(false)}
-    />
+      <TouchableOpacity
+        style={styles.buttonSearch}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.buttonTextSearch}>Procurar Moto</Text>
+      </TouchableOpacity>
+
+      <ProcurarMotoModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
@@ -87,7 +78,7 @@ const styles = StyleSheet.create({
   atalho: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 16,
     gap: 16,
@@ -97,7 +88,7 @@ const styles = StyleSheet.create({
   },
   atalhoText: {
     fontSize: 15,
-    color: '#333',
+    color: colors.textSecondary,
   },
   total: {
     fontSize: 24,
@@ -114,7 +105,7 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     marginLeft: 6,
   },
