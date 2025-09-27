@@ -88,11 +88,11 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
           moto={motoSelecionada}
           onSave={async (id, dados) => {
             try {
-              await editarMoto(id, dados);
-              setEditarVisible(false);
-              setMotoSelecionada(null);
+              const response = await editarMoto(id, dados);
+              return response;
             } catch (error) {
               console.error("Erro ao editar moto:", error);
+              throw error;
             }
           }}
         />

@@ -40,7 +40,6 @@ export default function Login() {
         setModalVisible(true);
       }
     } catch (error) {
-      console.log("Erro no login:", error.message);
       setModalMessage("Email ou senha inválidos.");
       setIsSuccess(false);
       setModalVisible(true);
