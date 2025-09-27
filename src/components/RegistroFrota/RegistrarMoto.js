@@ -98,8 +98,6 @@ export default function RegistrarMoto() {
           }
         }
       } catch (error) {
-        console.error("Erro no fluxo de registro:", error);
-
         if (step === 1) setErroPlaca(true);
         if (step === 2) setErroCarrapato(true);
 

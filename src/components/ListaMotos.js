@@ -30,7 +30,8 @@ export default function ListaMotos({
     ? motos.filter(
         (moto) =>
           (moto?.placa || "").toLowerCase().includes(textoBusca) ||
-          (moto?.modelo || "").toLowerCase().includes(textoBusca)
+          (moto?.modelo || "").toLowerCase().includes(textoBusca) ||
+          (moto?.chassi || "").toLowerCase().includes(textoBusca)
       )
     : motos;
 
@@ -40,7 +41,11 @@ export default function ListaMotos({
 
       {mostrarFiltro && (
         <TextInput
-          placeholder="Digite a placa ou modelo"
+          placeholder={
+            motos.some(moto => moto.zona === 3)
+              ? "Digite o chassi ou modelo" 
+              : "Digite a placa ou modelo"
+          }
           value={busca}
           onChangeText={setBusca}
           style={styles.searchInput}
@@ -62,7 +67,12 @@ export default function ListaMotos({
               {item?.idCarrapato && (
                 <Text style={styles.deviceText}>Carrapato: {item.idCarrapato}</Text>
               )}
-              <Text style={styles.text}>Placa: {item?.placa}</Text>
+
+              {item?.zona === 3 ? (
+                <Text style={styles.text}>Chassi: {item.chassi}</Text>
+              ) : (
+                <Text style={styles.text}>Placa: {item?.placa}</Text>
+              )}
               {item?.modelo && (
                 <Text style={styles.deviceText}>Modelo: {item.modelo}</Text>
               )}
@@ -139,12 +149,13 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: colors.white,
-    padding: 15,
+    padding: 14,
     borderRadius: 8,
-    marginBottom: 10,
+    marginBottom: 14,
     shadowColor: colors.text,
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -168,6 +179,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 6,
+    marginVertical: 10,
   },
   buttonText: {
     color: colors.white,

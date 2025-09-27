@@ -54,21 +54,27 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
         <Text style={styles.modalTitle}>{zona?.nome}</Text>
         <Text style={styles.modalSubtitle}>Total: {motosDaZona.length} motos</Text>
 
-        <ListaMotos
-          titulo={null}
-          motos={motosDaZona}
-          busca={filtroBusca}
-          setBusca={setFiltroBusca}
-          selected={selected}
-          onLocalizar={localizar}
-          onParar={parar}
-          onEdit={editar}
-          onDelete={confirmarExclusao}
-          mostrarFiltro={true}
-          permitirLocalizar={true}
-          permitirEditar={true}
-          permitirExcluir={true}
-        />
+        {motosDaZona.length === 0 ? (
+          <Text style={{ textAlign: "center", marginTop: 20, color: colors.textSecondary }}>
+            Nenhuma moto nessa zona
+          </Text>
+        ) : (
+          <ListaMotos
+            titulo={null}
+            motos={motosDaZona}
+            busca={filtroBusca}
+            setBusca={setFiltroBusca}
+            selected={selected}
+            onLocalizar={localizar}
+            onParar={parar}
+            onEdit={editar}
+            onDelete={confirmarExclusao}
+            mostrarFiltro={true}
+            permitirLocalizar={true}
+            permitirEditar={true}
+            permitirExcluir={true}
+          />
+        )}
 
         <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
           <MaterialCommunityIcons name="close" size={20} color={colors.white} />
