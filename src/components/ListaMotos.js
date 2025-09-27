@@ -7,10 +7,11 @@ import {
   StyleSheet,
 } from "react-native";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import colors from "../theme/colors";
 
 export default function ListaMotos({
   titulo,
-  motos = [], // garante array
+  motos = [],
   busca = "",
   setBusca = () => {},
   selected,
@@ -29,8 +30,6 @@ export default function ListaMotos({
     ? motos.filter(
         (moto) =>
           (moto?.placa || "").toLowerCase().includes(textoBusca) ||
-          (moto?.deviceId || "").toLowerCase().includes(textoBusca) ||
-          (moto?.id || "").toString().includes(textoBusca) ||
           (moto?.modelo || "").toLowerCase().includes(textoBusca)
       )
     : motos;
@@ -41,7 +40,7 @@ export default function ListaMotos({
 
       {mostrarFiltro && (
         <TextInput
-          placeholder="Digite a placa, ID ou modelo"
+          placeholder="Digite a placa ou modelo"
           value={busca}
           onChangeText={setBusca}
           style={styles.searchInput}
@@ -55,13 +54,13 @@ export default function ListaMotos({
       <FlatList
         data={motosFiltradas}
         keyExtractor={(item, i) =>
-          item?.deviceId || item?.id?.toString() || i.toString()
+          item?.idCarrapato || item?.id?.toString() || i.toString()
         }
         renderItem={({ item }) => (
           <View style={styles.item}>
             <View>
-              {item?.deviceId && (
-                <Text style={styles.deviceText}>Carrapato: {item.deviceId}</Text>
+              {item?.idCarrapato && (
+                <Text style={styles.deviceText}>Carrapato: {item.idCarrapato}</Text>
               )}
               <Text style={styles.text}>Placa: {item?.placa}</Text>
               {item?.modelo && (
@@ -73,14 +72,14 @@ export default function ListaMotos({
               {permitirLocalizar &&
                 (selected === item?.placa ? (
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: "red" }]}
+                    style={[styles.button, { backgroundColor: colors.modalRed }]}
                     onPress={() => onParar(item)}
                   >
                     <Text style={styles.buttonText}>Parar</Text>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: "#009B30" }]}
+                    style={[styles.button, { backgroundColor: colors.primary }]}
                     onPress={() => onLocalizar(item)}
                   >
                     <Text style={styles.buttonText}>Localizar</Text>
@@ -105,7 +104,7 @@ export default function ListaMotos({
                   style={{ marginLeft: 10 }}
                   onPress={() => onDelete(item)}
                 >
-                  <Feather name="trash-2" size={20} color="red" />
+                  <Feather name="trash-2" size={20} color={colors.modalRed} />
                 </TouchableOpacity>
               )}
             </View>
@@ -126,11 +125,11 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.border,
     borderRadius: 8,
     padding: 12,
     marginBottom: 15,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   errorMessage: {
     fontSize: 16,
@@ -142,11 +141,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     padding: 15,
     borderRadius: 8,
     marginBottom: 10,
-    shadowColor: "#000",
+    shadowColor: colors.text,
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
@@ -154,11 +153,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: "500",
-    color: "#333",
+    color: colors.text,
   },
   deviceText: {
-    fontSize: 12,
-    color: "#666",
+    fontSize: 13,
+    color: colors.textSecondary,
     marginTop: 2,
   },
   buttonsContainer: {
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   buttonText: {
-    color: "#fff",
+    color: colors.white,
     fontWeight: "bold",
   },
 });
