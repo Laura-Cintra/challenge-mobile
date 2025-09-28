@@ -56,8 +56,8 @@ export default function RegistrarMoto() {
               setLoading(true);
             }, 1000);
           } catch (error) {
-            setErroPlaca(true);
             await new Promise(res => setTimeout(res, 1000));
+            setErroPlaca(true);
             setLoading(false);
           }
         }

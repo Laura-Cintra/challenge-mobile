@@ -62,15 +62,60 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 10 },
-  title: { fontSize: 22, fontWeight: 'bold', marginBottom: 4, paddingHorizontal: 10 },
-  subtitle: { fontSize: 15, marginBottom: 10, paddingHorizontal: 10 },
-  atalho: { flexDirection: 'row', alignItems: 'center', borderRadius: 12, padding: 16, gap: 16 },
-  atalhoContainer: { flex: 1 },
-  atalhoText: { fontSize: 15 },
-  total: { fontSize: 24, fontWeight: 'bold' },
-  button: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, width: '50%' },
-  buttonText: { fontSize: 14, marginLeft: 6 },
-  buttonSearch: { padding: 12, borderRadius: 8, marginVertical: 20, marginHorizontal: 20, marginTop: 20 },
-  buttonTextSearch: { fontWeight: "bold", textAlign: "center", fontSize: 15 },
+  container: { 
+    flex: 1, 
+    paddingTop: 10 
+  },
+  title: { 
+    fontSize: 22, 
+    fontWeight: 'bold', 
+    marginBottom: 4, 
+    paddingHorizontal: 10 
+  },
+  subtitle: { 
+    fontSize: 15, 
+    marginBottom: 10, 
+    paddingHorizontal: 10 
+  },
+  atalho: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    borderRadius: 12, 
+    padding: 16, 
+    gap: 16 
+  },
+  atalhoContainer: { 
+    flex: 1 
+  },
+  atalhoText: { 
+    fontSize: 15 
+  },
+  total: { 
+    fontSize: 24, 
+    fontWeight: 'bold' 
+  },
+  button: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    paddingHorizontal: 12, 
+    paddingVertical: 8, 
+    borderRadius: 8, 
+    width: '50%' 
+  },
+  buttonText: { 
+    fontSize: 14, 
+    marginLeft: 6 
+  },
+  buttonSearch: { 
+    padding: 12, 
+    borderRadius: 8, 
+    marginVertical: 20, 
+    marginHorizontal: 20, 
+    marginTop: 20 
+  },
+  buttonTextSearch: { 
+    fontWeight: "bold", 
+    textAlign: "center", 
+    fontSize: 15 
+  },
 });
