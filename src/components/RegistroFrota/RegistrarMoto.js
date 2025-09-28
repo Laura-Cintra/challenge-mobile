@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import RegistroCampo from "./RegistroCampo";
 import MessageModal from "../MessageModal";
-import colors from "../../theme/colors";
 import { getMotos, createMoto } from "../../services/actions";
 import { useUser } from "../../providers/UserContext";
 import { zonasMap } from "../../data/zonas";
+import { useTheme } from "../../providers/ThemeContext";
 
 export default function RegistrarMoto() {
   const { user } = useUser();
+  const { colors } = useTheme();
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -35,7 +36,6 @@ export default function RegistrarMoto() {
       try {
         if (step === 1 && loading) {
           try {
-            // simular falha de leitura da placa/chassi
             if (Math.random() < 0.3) {
               throw new Error("Falha na leitura da placa/chassi");
             }
@@ -44,7 +44,7 @@ export default function RegistrarMoto() {
             if (!motos || motos.length === 0) {
               throw new Error("Nenhuma moto encontrada no banco.");
             }
-            await new Promise(res => setTimeout(res, 1000));
+            await new Promise((res) => setTimeout(res, 1000));
 
             const aleatoria = motos[Math.floor(Math.random() * motos.length)];
             setPlaca(aleatoria.placa || aleatoria.chassi || "");
@@ -56,7 +56,7 @@ export default function RegistrarMoto() {
               setLoading(true);
             }, 1000);
           } catch (error) {
-            await new Promise(res => setTimeout(res, 1000));
+            await new Promise((res) => setTimeout(res, 1000));
             setErroPlaca(true);
             setLoading(false);
           }
@@ -65,15 +65,15 @@ export default function RegistrarMoto() {
         if (step === 2 && loading) {
           try {
             const body = semPlaca
-            ? { chassi: chassi.trim(), idPatio: user.idPatio }
-            : { placa: placa.trim().toUpperCase(), idPatio: user.idPatio };
+              ? { chassi: chassi.trim(), idPatio: user.idPatio }
+              : { placa: placa.trim().toUpperCase(), idPatio: user.idPatio };
 
             const vinculo = await createMoto(body);
 
             setCarrapato(vinculo.idCarrapato);
             setModelo(vinculo.modelo);
             setZona(vinculo.zona);
-            await new Promise(res => setTimeout(res, 1000));
+            await new Promise((res) => setTimeout(res, 1000));
 
             setLoading(false);
 
@@ -81,18 +81,17 @@ export default function RegistrarMoto() {
               setStep(3);
             }, 1000);
           } catch (error) {
-
             const mensagemApi =
-            error.response?.data?.mensagem ||
-            error.response?.data?.message  ||
-            error.response?.data?.erro     ||
-            error.mensagem                 || 
-            error.message                  ||
-            "Erro desconhecido ao criar moto.";
+              error.response?.data?.mensagem ||
+              error.response?.data?.message ||
+              error.response?.data?.erro ||
+              error.mensagem ||
+              error.message ||
+              "Erro desconhecido ao criar moto.";
 
-            setModalMessage(mensagemApi)
+            setModalMessage(mensagemApi);
             setErroCarrapato(true);
-            await new Promise(res => setTimeout(res, 1000));
+            await new Promise((res) => setTimeout(res, 1000));
             setLoading(false);
             setStep(3);
           }
@@ -118,6 +117,15 @@ export default function RegistrarMoto() {
     } else {
       if (!placa.trim()) {
         setModalMessage("Digite uma placa válida.");
+        setModalVisible(true);
+        return;
+      }
+
+      const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(
+        placa.trim().toUpperCase()
+      );
+      if (!validarPlaca) {
+        setModalMessage("Formato inválido (use ABC1A23).");
         setModalVisible(true);
         return;
       }
@@ -152,10 +160,10 @@ export default function RegistrarMoto() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {!finalizado ? (
         <>
-          <Text style={styles.title}>Registro de Nova Moto</Text>
+          <Text style={[styles.title, { color: colors.title }]}>Registro de Nova Moto</Text>
 
           {step >= 1 && (
             <RegistroCampo
@@ -188,20 +196,24 @@ export default function RegistrarMoto() {
 
           {step === 3 && !erroCarrapato ? (
             <View style={styles.successBox}>
-              <View style={styles.checkCircle}>
+              <View style={[styles.checkCircle, { backgroundColor: colors.success }]}>
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
               <View>
-                <Text style={styles.successFinal}>Moto identificada com sucesso!</Text>
-                <Text style={styles.detailText}>Modelo: {modelo}</Text>
-                <Text style={styles.detailText}>
+                <Text style={[styles.successFinal, { color: colors.text }]}>
+                  Moto identificada com sucesso!
+                </Text>
+                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                  Modelo: {modelo}
+                </Text>
+                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
                   Zona atual: {zonasMap[zona]?.nome || "Zona não definida"}
                 </Text>
               </View>
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                  style={[styles.button, { flex: 1 }]}
+                  style={[styles.button, { backgroundColor: colors.primary, flex: 1 }]}
                   onPress={handleRegistrarFrota}
                 >
                   <Text style={styles.buttonText}>Registrar outra</Text>
@@ -217,8 +229,12 @@ export default function RegistrarMoto() {
             </View>
           ) : step === 3 && erroCarrapato ? (
             <View style={styles.errorBox}>
-              <Text style={styles.errorTitle}>Erro ao identificar moto</Text>
-              <Text style={styles.errorMessage}>{modalMessage}</Text>
+              <Text style={[styles.errorTitle, { color: colors.modalRed }]}>
+                Erro ao identificar moto
+              </Text>
+              <Text style={[styles.errorMessage, { color: colors.text }]}>
+                {modalMessage}
+              </Text>
 
               <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors.modalRed, marginTop: 15 }]}
@@ -232,7 +248,7 @@ export default function RegistrarMoto() {
       ) : (
         <View style={styles.successBox}>
           <TouchableOpacity
-            style={[styles.button, { width: "70%" }]}
+            style={[styles.button, { backgroundColor: colors.primary, width: "70%" }]}
             onPress={handleRegistrarFrota}
           >
             <Text style={styles.buttonText}>Registrar Frota</Text>
@@ -260,7 +276,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 20,
-    color: colors.title,
     textAlign: "center",
   },
   successBox: {
@@ -272,12 +287,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginVertical: 10,
     fontWeight: "bold",
-    color: colors.text,
     textAlign: "center",
   },
   detailText: {
     fontSize: 16,
-    color: colors.textSecondary,
     marginTop: 5,
     textAlign: "left",
   },
@@ -285,12 +298,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "green",
     justifyContent: "center",
     alignItems: "center",
   },
   checkIcon: {
-    color: colors.white,
+    color: "#fff",
     fontSize: 30,
     fontWeight: "bold",
   },
@@ -299,10 +311,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
     alignItems: "center",
-    backgroundColor: colors.primary,
   },
   buttonText: {
-    color: colors.white,
+    color: "#fff",
     fontWeight: "bold",
   },
   buttonsContainer: {
@@ -313,7 +324,7 @@ const styles = StyleSheet.create({
   },
   errorBox: {
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 5,
     padding: 20,
     borderRadius: 10,
     width: "100%",
@@ -321,13 +332,11 @@ const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "red",
     marginBottom: 10,
     textAlign: "center",
   },
   errorMessage: {
     fontSize: 15,
-    color: colors.text,
     textAlign: "center",
   },
 });

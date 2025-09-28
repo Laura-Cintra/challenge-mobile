@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import colors from "../../theme/colors";
+import { useTheme } from "../../providers/ThemeContext";
 
 export default function RegistroCampo({
   label = "Placa",
@@ -22,7 +22,8 @@ export default function RegistroCampo({
   semPlaca,
   setSemPlaca,
 }) {
-  
+  const { colors } = useTheme();
+
   // Se a moto não tiver placa, o rótulo passa a ser "Chassi"
   const displayLabel = semPlaca ? "Chassi" : label;
   const displayIsFeminine = semPlaca ? false : isFeminine;
@@ -32,21 +33,23 @@ export default function RegistroCampo({
   const article = displayIsFeminine ? "a" : "o";
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
+    <View style={[styles.container, { backgroundColor: colors.white, shadowColor: colors.text }]}>
+      <Text style={[styles.title, { color: colors.text }]}>
         {loading
           ? `Identificando ${labelCapitalized}...`
           : erro
           ? `Erro ao ler ${article} ${displayLabel.toLowerCase()}, insira abaixo:`
           : valor
-          ? `${labelCapitalized} ${displayIsFeminine ? "identificada" : "identificado"}:`
+          ? `${labelCapitalized} ${
+              displayIsFeminine ? "identificada" : "identificado"
+            }:`
           : `Identificando ${labelCapitalized}...`}
       </Text>
 
       {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
       {!loading && valor && !erro && (
-        <Text style={styles.success}>✓ {valor}</Text>
+        <Text style={[styles.success, { color: colors.primary }]}>✓ {valor}</Text>
       )}
 
       {erro && (
@@ -54,19 +57,32 @@ export default function RegistroCampo({
           {permiteSemPlaca && (
             <View style={styles.checkboxContainer}>
               <Checkbox value={semPlaca} onValueChange={setSemPlaca} />
-              <Text style={styles.checkboxLabel}>Moto sem placa</Text>
+              <Text style={[styles.checkboxLabel, { color: colors.text }]}>
+                Moto sem placa
+              </Text>
             </View>
           )}
 
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                borderColor: colors.border,
+                backgroundColor: colors.background,
+                color: colors.text,
+              },
+            ]}
             placeholder={semPlaca ? "Digite o número do chassi" : placeholder}
             value={valor}
             onChangeText={setValor}
             autoCapitalize="characters"
+            placeholderTextColor={colors.placeholder}
           />
 
-          <TouchableOpacity style={styles.button} onPress={onProsseguir}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.primary }]}
+            onPress={onProsseguir}
+          >
             <Text style={styles.buttonText}>Prosseguir</Text>
           </TouchableOpacity>
         </>
@@ -79,10 +95,8 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     padding: 20,
-    backgroundColor: colors.white,
     borderRadius: 10,
     marginBottom: 25,
-    shadowColor: colors.text,
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
@@ -96,25 +110,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     marginTop: 5,
-    color: "green",
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.border,
     borderRadius: 8,
     padding: 12,
     marginTop: 10,
-    backgroundColor: colors.background,
   },
   button: {
     padding: 12,
     borderRadius: 8,
     marginTop: 10,
     alignItems: "center",
-    backgroundColor: colors.primary,
   },
   buttonText: {
-    color: colors.white,
+    color: "#fff",
     fontWeight: "bold",
   },
   checkboxContainer: {
@@ -125,6 +135,5 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     fontSize: 14,
-    color: "#333",
   },
 });
