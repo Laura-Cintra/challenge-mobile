@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
-import colors from "../../theme/colors";
 import { useMotos } from "../../providers/UseMotos";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListaMotos from "../ListaMotos";
 import EditarMotoModal from "./EditarMoto";
 import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
+import { useTheme } from "../../providers/ThemeContext";
 
 export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFiltroBusca }) {
   const { motos, editarMoto, deletarMotoPorId } = useMotos();
+  const { colors } = useTheme();
+
   const [selected, setSelected] = useState(null);
   const [editarVisible, setEditarVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
@@ -16,15 +18,8 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
 
   const motosDaZona = motos.filter((moto) => moto.zona === zona?.id);
 
-  const localizar = (moto) => {
-    setSelected(moto.placa);
-    console.log("Localizando", moto.placa);
-  };
-
-  const parar = () => {
-    setSelected(null);
-    console.log("Parando localização");
-  };
+  const localizar = (moto) => setSelected(moto.placa);
+  const parar = () => setSelected(null);
 
   const editar = (moto) => {
     setMotoSelecionada(moto);
@@ -50,12 +45,14 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
 
   return (
     <Modal visible={visible} animationType="slide">
-      <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>{zona?.nome}</Text>
-        <Text style={styles.modalSubtitle}>Total: {motosDaZona.length} motos</Text>
+      <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
+        <Text style={[styles.modalTitle, { color: colors.title }]}>{zona?.nome}</Text>
+        <Text style={[styles.modalSubtitle, { color: colors.text }]}>
+          Total: {motosDaZona.length} motos
+        </Text>
 
         {motosDaZona.length === 0 ? (
-          <Text style={{ textAlign: "center", marginTop: 20, color: colors.textSecondary }}>
+          <Text style={{ textAlign: "center", marginTop: 20, color: colors.placeholder }}>
             Nenhuma moto nessa zona
           </Text>
         ) : (
@@ -76,9 +73,9 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
           />
         )}
 
-        <TouchableOpacity style={styles.fecharBotao} onPress={onClose}>
+        <TouchableOpacity style={[styles.fecharBotao, { backgroundColor: colors.primary }]} onPress={onClose}>
           <MaterialCommunityIcons name="close" size={20} color={colors.white} />
-          <Text style={{ color: "#fff", fontSize: 16, marginLeft: 6 }}>Fechar</Text>
+          <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>Fechar</Text>
         </TouchableOpacity>
 
         <ConfirmarExclusaoModal
@@ -123,23 +120,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   fecharBotao: {
-    backgroundColor: colors.primary,
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     padding: 12,
     borderRadius: 10,
-  },
-  confirmDeleteButton: {
-    backgroundColor: "white",
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  confirmDeleteText: {
-    color: "red",
-    fontWeight: "bold",
   },
 });

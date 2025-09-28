@@ -32,6 +32,8 @@ export default function InputSelectDropdown({
           borderColor: colors.border,
           zIndex: zIndex + 1000,
           elevation: 1000,
+          maxHeight: 280,
+          overflow: 'hidden',
         }}
         zIndex={zIndex}
         zIndexInverse={zIndex}
