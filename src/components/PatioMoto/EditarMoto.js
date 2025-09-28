@@ -5,6 +5,7 @@ import {
   Modal,
   StyleSheet,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,18 +13,15 @@ import colors from "../../theme/colors";
 import MessageModal from "../MessageModal";
 import { useEffect, useState } from "react";
 import { zonasLista } from "../../data/zonas";
-
-// Mock: simula getModelos até a API existir
-const getModelos = () => ({
-  1: "SPORT",
-  2: "E",
-  3: "POP",
-});
+import { getModelos } from "../../services/actions";
 
 export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const [placa, setPlaca] = useState("");
   const [modelo, setModelo] = useState("");
   const [zona, setZona] = useState("");
+
+  const [modelos, setModelos] = useState([]);
+  const [loadingModelos, setLoadingModelos] = useState(false);
 
   const [erroPlaca, setErroPlaca] = useState("");
   const [erroModelo, setErroModelo] = useState("");
@@ -33,25 +31,37 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const modelos = getModelos();
+  useEffect(() => {
+    if (visible) {
+      carregarModelos();
+    }
+  }, [visible]);
 
-  const obterIdModelo = (modeloTexto) => {
-    return Object.keys(modelos).find(
-      (key) => modelos[key].toUpperCase() === modeloTexto.toUpperCase()
-    );
+  const carregarModelos = async () => {
+    setLoadingModelos(true);
+    try {
+      const lista = await getModelos();
+      setModelos(lista);
+    } catch (err) {
+      console.error("Erro ao buscar modelos:", err);
+      setModelos([]);
+    } finally {
+      setLoadingModelos(false);
+    }
   };
 
   useEffect(() => {
     if (moto) {
       setPlaca(moto.placa ?? "");
-      setModelo(obterIdModelo(moto.modelo ?? "") ?? "");
-      const initialZona =
-        zonasLista.find((z) => z.id === moto.zona)?.id ?? moto.zona ?? "";
-      setZona(initialZona);
+      const modeloEncontrado = modelos.find(
+        (m) => m.nome.toUpperCase() === (moto.modelo ?? "").toUpperCase()
+      );
+      setModelo(modeloEncontrado?.id?.toString() ?? "");
+      setZona(zonasLista.find((z) => z.id === moto.zona)?.id ?? moto.zona ?? "");
     } else {
       limparCampos();
     }
-  }, [moto, visible]);
+  }, [moto, modelos]);
 
   const limparCampos = () => {
     setPlaca("");
@@ -82,7 +92,9 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
       formIsValid = false;
     }
 
-    const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(placa.trim().toUpperCase());
+    const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(
+      placa.trim().toUpperCase()
+    );
     if (placa && !validarPlaca) {
       setErroPlaca("Formato inválido (use ABC1A23).");
       formIsValid = false;
@@ -153,18 +165,22 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
             placeholderTextColor={colors.placeholder}
           />
           {erroPlaca && <Text style={styles.errorText}>{erroPlaca}</Text>}
-          
+
           <Text style={styles.label}>Modelo</Text>
           <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={modelo}
-              onValueChange={(value) => setModelo(value)}
-            >
-              <Picker.Item label="Selecione um modelo..." value="" />
-              {Object.keys(modelos).map((key) => (
-                <Picker.Item key={key} label={modelos[key]} value={key} />
-              ))}
-            </Picker>
+            {loadingModelos ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <Picker
+                selectedValue={modelo}
+                onValueChange={(value) => setModelo(value)}
+              >
+                <Picker.Item label="Selecione um modelo..." value="" />
+                {modelos.map((m) => (
+                  <Picker.Item key={m.id} label={m.nome} value={m.id.toString()} />
+                ))}
+              </Picker>
+            )}
           </View>
           {erroModelo && <Text style={styles.errorText}>{erroModelo}</Text>}
 

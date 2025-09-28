@@ -90,7 +90,7 @@ export async function getZonas() {
 
 export async function getModelos() {
   try {
-    const response = await api.get("/modelos");
+    const response = await api.get("/modelos-moto");
     return response.data;
   } catch (error) {
     throw handleApiError(error, "Erro ao buscar modelos:");
