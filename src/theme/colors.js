@@ -1,18 +1,5 @@
 const colors = {
-  background: '#F5F5F5',
-  primary: '#009B30',
-  secundary: '#1BA857',
-  inative: '#8a8b8bff',
-  title: '#000F05',
-  text: '#000',
-  textSecondary: '#555',
   white: '#FBFBFB',
-  placeholder: '#838383',
-  border: '#ccc',
-  borderTop: '#E0E0E0',
-
-  modalGreen: '#2ecc71',
-  modalRed: '#e74c3c',
 
   zona1: '#2679B8',
   zona2: '#E58A3A',

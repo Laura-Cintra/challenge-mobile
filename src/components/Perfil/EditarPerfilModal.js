@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../../theme/colors";
 import MessageModal from "../MessageModal";
 import { useUser } from "../../providers/UserContext";
 import { updateUserApi } from "../../services/actions";
+import { useTheme } from "../../providers/ThemeContext";
 
 export default function EditarPerfilModal({ visible, onClose }) {
   const { user, updateUser } = useUser();
+  const { colors } = useTheme();
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -30,11 +31,6 @@ export default function EditarPerfilModal({ visible, onClose }) {
       setModalMessage("Preencha todos os campos.");
       setIsSuccess(false);
       setModalVisible(true);
-
-      setTimeout(() => {
-        setModalVisible(false);
-      }, 2000);
-
       return;
     }
 
@@ -42,20 +38,11 @@ export default function EditarPerfilModal({ visible, onClose }) {
       setModalMessage("As senhas não coincidem.");
       setIsSuccess(false);
       setModalVisible(true);
-
-      setTimeout(() => {
-        setModalVisible(false);
-      }, 2000);
       return;
     }
 
     try {
-      const dadosAtualizados = {
-        nome,
-        email,
-        senha: senha || user.senha,
-      };
-
+      const dadosAtualizados = { nome, email, senha: senha || user.senha };
       const atualizado = await updateUserApi(user.idUsuario, dadosAtualizados);
       await updateUser(atualizado);
 
@@ -71,35 +58,31 @@ export default function EditarPerfilModal({ visible, onClose }) {
       setModalMessage("Erro ao atualizar perfil.");
       setIsSuccess(false);
       setModalVisible(true);
-
-      setTimeout(() => {
-        setModalVisible(false);
-      }, 2000);
     }
   };
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+      <View style={styles(colors).overlay}>
+        <View style={styles(colors).modalContainer}>
+          <TouchableOpacity style={styles(colors).closeButton} onPress={onClose}>
             <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={styles.title}>Editar Perfil</Text>
+          <Text style={styles(colors).title}>Editar Perfil</Text>
 
-          <Text style={styles.label}>Nome</Text>
+          <Text style={styles(colors).label}>Nome</Text>
           <TextInput
-            style={styles.input}
+            style={styles(colors).input}
             value={nome}
             onChangeText={setNome}
             placeholder="Digite seu nome"
             placeholderTextColor={colors.placeholder}
           />
 
-          <Text style={styles.label}>E-mail</Text>
+          <Text style={styles(colors).label}>E-mail</Text>
           <TextInput
-            style={styles.input}
+            style={styles(colors).input}
             value={email}
             onChangeText={setEmail}
             placeholder="Digite seu e-mail"
@@ -107,9 +90,9 @@ export default function EditarPerfilModal({ visible, onClose }) {
             keyboardType="email-address"
           />
 
-          <Text style={styles.label}>Nova Senha</Text>
+          <Text style={styles(colors).label}>Nova Senha</Text>
           <TextInput
-            style={styles.input}
+            style={styles(colors).input}
             value={senha}
             onChangeText={setSenha}
             placeholder="Digite sua nova senha"
@@ -117,9 +100,9 @@ export default function EditarPerfilModal({ visible, onClose }) {
             secureTextEntry
           />
 
-          <Text style={styles.label}>Confirmar Senha</Text>
+          <Text style={styles(colors).label}>Confirmar Senha</Text>
           <TextInput
-            style={styles.input}
+            style={styles(colors).input}
             value={confirmarSenha}
             onChangeText={setConfirmarSenha}
             placeholder="Confirme sua senha"
@@ -127,19 +110,19 @@ export default function EditarPerfilModal({ visible, onClose }) {
             secureTextEntry
           />
 
-          <View style={styles.buttonsRow}>
+          <View style={styles(colors).buttonsRow}>
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.secundary }]}
+              style={[styles(colors).button, { backgroundColor: colors.secundary }]}
               onPress={handleSalvar}
             >
-              <Text style={styles.buttonText}>Salvar</Text>
+              <Text style={styles(colors).buttonText}>Salvar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.inative }]}
+              style={[styles(colors).button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles.buttonText}>Cancelar</Text>
+              <Text style={styles(colors).buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -155,60 +138,61 @@ export default function EditarPerfilModal({ visible, onClose }) {
   );
 }
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContainer: {
-    width: "90%",
-    backgroundColor: colors.white,
-    borderRadius: 12,
-    padding: 20,
-  },
-  closeButton: {
-    position: "absolute",
-    right: 12,
-    top: 12,
-    padding: 4,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: colors.text,
-    marginBottom: 15,
-    textAlign: "center",
-  },
-  label: {
-    fontWeight: "bold",
-    fontSize: 14,
-    marginTop: 10,
-    marginBottom: 4,
-    color: colors.text,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    padding: 10,
-    color: colors.text,
-  },
-  buttonsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  button: {
-    flex: 1,
-    padding: 12,
-    marginHorizontal: 5,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: colors.white,
-    fontWeight: "bold",
-  },
-});
+const styles = (colors) =>
+  StyleSheet.create({
+    overlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.4)",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    modalContainer: {
+      width: "90%",
+      backgroundColor: colors.white,
+      borderRadius: 12,
+      padding: 20,
+    },
+    closeButton: { 
+      position: "absolute", 
+      right: 12, 
+      top: 12, 
+      padding: 4 
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 15,
+      textAlign: "center",
+    },
+    label: { 
+      fontWeight: "bold", 
+      fontSize: 14, 
+      marginTop: 10, 
+      marginBottom: 4, 
+      color: colors.text 
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 8,
+      padding: 10,
+      color: colors.text,
+    },
+    buttonsRow: { 
+      flexDirection: "row", 
+      justifyContent: "space-between", 
+      marginTop: 20 
+    },
+    button: { 
+      flex: 1, 
+      padding: 12, 
+      marginHorizontal: 5, 
+      borderRadius: 8, 
+      alignItems: "center" 
+    },
+    buttonText: { 
+      color: '#FBFBFB', 
+      fontWeight: "bold" 
+    },
+  });

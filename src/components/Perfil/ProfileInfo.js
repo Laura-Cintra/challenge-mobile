@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useUser } from '../../providers/UserContext';
 import perfil from '../../../assets/icons/profile-user.png';
-import colors from '../../theme/colors';
+import perfilWhite from '../../../assets/icons/profile-user-white.png';
 import { Foundation, FontAwesome5, MaterialIcons, Entypo, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import ProcurarMotoModal from '../ProcurarMotoModal';
 import EditarPerfilModal from './EditarPerfilModal';
 import { deleteUserApi, getPatioById } from '../../services/actions';
 import ConfirmarExclusaoModal from '../ConfirmarExclusaoModal';
+import { useTheme } from '../../providers/ThemeContext';
 
 export default function ProfileInfo() {
   const { user, logout, setUser } = useUser();
   const navigation = useNavigation();
+  const { colors, theme } = useTheme();
   const [patioDetails, setPatioDetails] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [editarVisible, setEditarVisible] = useState(false);
@@ -34,21 +36,23 @@ export default function ProfileInfo() {
   }, [user]);
 
   const handleDeleteAccount = async () => {
-  try {
-    await deleteUserApi(user.idUsuario);
-    await logout();
-    setConfirmDelete(false);
-  } catch (error) {
-    console.error("Erro ao excluir conta:", error);
-  }
-};
+    try {
+      await deleteUserApi(user.idUsuario);
+      await logout();
+      setConfirmDelete(false);
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+    }
+  };
+
+  const logoSource = theme === "light" ? perfil : perfilWhite;
 
   return (
-    <View>
+    <View style={{ backgroundColor: colors.background, height: '100%' }}>
       <View style={styles.profileContainer}>
-        <Image source={perfil} style={styles.profileImg} />
-        <Text style={styles.name}>{user?.nome}</Text>
-        <Text style={styles.email}>{user?.email}</Text>
+        <Image source={logoSource} style={styles.profileImg} />
+        <Text style={[styles.name, { color: colors.text }]}>{user?.nome}</Text>
+        <Text style={[styles.email, { color: colors.textSecondary }]}>{user?.email}</Text>
 
         <View style={styles.actionButtons}>
           <TouchableOpacity
@@ -56,7 +60,7 @@ export default function ProfileInfo() {
             onPress={() => setEditarVisible(true)}
           >
             <Feather name="edit" size={20} color={colors.primary} />
-            <Text style={styles.actionText}>Editar</Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>Editar</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -64,51 +68,51 @@ export default function ProfileInfo() {
             onPress={() => setConfirmDelete(true)}
           >
             <Feather name="trash-2" size={20} color={colors.modalRed} />
-            <Text style={[styles.actionText, { color: colors.text }]}>
-              Excluir
-            </Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>Excluir</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={styles.patioContainer}>
-        <View style={styles.patioHeader}>
-          <Entypo name="location-pin" size={24} color={colors.background} />
-          <Text style={styles.patioTitle}>Pátio - {user?.nomePatio || "Nome não disponível"}</Text>
+      <View style={[styles.patioContainer, { borderColor: colors.border }]}>
+        <View style={[styles.patioHeader, { backgroundColor: colors.secundary }]}>
+          <Entypo name="location-pin" size={24} color='#FBFBFB' />
+          <Text style={styles.patioTitle}>
+            Pátio - {user?.nomePatio || "Nome não disponível"}
+          </Text>
         </View>
 
-        <View style={styles.patioDiv}>
-          <Text style={styles.patioText}>
-            Endereço: <Text style={styles.patioItemText}>{patioDetails?.endereco || "Endereço não disponível"}</Text>
+        <View style={[styles.patioDiv, { backgroundColor: colors.white }]}>
+          <Text style={[styles.patioText, { color: colors.text }]}>
+            Endereço: <Text style={[styles.patioItemText, { color: colors.textSecondary }]}>{patioDetails?.endereco || "Endereço não disponível"}</Text>
           </Text>
-          <Text style={styles.patioText}>
-            Motos no pátio: <Text style={styles.patioItemText}>{patioDetails?.motos.length || 0}</Text>
+          <Text style={[styles.patioText, { color: colors.text }]}>
+            Motos no pátio: <Text style={[styles.patioItemText, { color: colors.textSecondary }]}>{patioDetails?.motos.length || 0}</Text>
           </Text>
         </View>
       </View>
 
       <View style={styles.atalhoContainer}>
-        <Text style={styles.atalhoTitle}>Atalhos</Text>
+        <Text style={[styles.atalhoTitle, { color: colors.title }]}>Atalhos</Text>
 
         <View style={styles.atalhoIcons}>
           <TouchableOpacity
-            style={styles.icon}
+            style={[styles.icon, { backgroundColor: colors.white }]}
             onPress={() => navigation.navigate('Home')}
           >
             <Foundation name="graph-bar" size={28} color={colors.secundary} />
-            <Text style={styles.iconText}>Dashboard</Text>
+            <Text style={[styles.iconText, { color: colors.text }]}>Dashboard</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.icon}
+            style={[styles.icon, { backgroundColor: colors.white }]}
             onPress={() => navigation.navigate('MotoPark')}
           >
             <FontAwesome5 name="parking" size={28} color={colors.secundary} />
-            <Text style={styles.iconText}>Ver Pátio</Text>
+            <Text style={[styles.iconText, { color: colors.text }]}>Ver Pátio</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.icon}
+            style={[styles.icon, { backgroundColor: colors.white }]}
             onPress={() => navigation.navigate('RegistrarFrota')}
           >
             <MaterialIcons
@@ -116,15 +120,15 @@ export default function ProfileInfo() {
               size={28}
               color={colors.secundary}
             />
-            <Text style={styles.iconText}>Registrar Moto</Text>
+            <Text style={[styles.iconText, { color: colors.text }]}>Registrar Moto</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.icon}
+            style={[styles.icon, { backgroundColor: colors.white }]}
             onPress={() => setModalVisible(true)}
           >
             <MaterialIcons name="search" size={28} color={colors.secundary} />
-            <Text style={styles.iconText}>Localizar Moto</Text>
+            <Text style={[styles.iconText, { color: colors.text }]}>Localizar Moto</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -162,13 +166,9 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: colors.text,
-    marginTop: 10,
   },
   email: {
     fontSize: 16,
-    color: colors.textSecondary,
-    marginTop: 5,
   },
   actionButtons: {
     flexDirection: 'row',
@@ -182,34 +182,29 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 8,
-    backgroundColor: colors.buttonBackground,
   },
   actionText: {
     fontSize: 14,
     fontWeight: '600',
-    color: colors.text,
   },
   patioContainer: {
     marginHorizontal: 22,
     borderRadius: 10,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: colors.border,
   },
   patioHeader: {
-    backgroundColor: colors.secundary,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
   },
   patioTitle: {
-    color: colors.white,
+    color: '#FBFBFB',
     fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 8,
   },
   patioDiv: {
-    backgroundColor: colors.white,
     padding: 16,
   },
   patioText: {
@@ -230,7 +225,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: colors.title,
     marginVertical: 15,
   },
   atalhoIcons: {
@@ -243,18 +237,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '48%',
     borderRadius: 10,
-    backgroundColor: colors.white,
     marginBottom: 10,
   },
   iconText: {
     marginTop: 8,
     textAlign: 'center',
     fontSize: 13,
-    color: '#000',
   },
   confirmDeleteButton: {
     marginTop: 15,
-    backgroundColor: colors.modalRed,
+    backgroundColor: '#e74c3c',
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center',
