@@ -20,7 +20,7 @@ const lightColors = {
   zona4: "#E1B90D",
   zona5: "#2FAE51",
   zona6: "#D84336",
-  zona7: "#3d3d3dff"
+  zona7: "#494949ff"
 };
 
 const darkColors = {

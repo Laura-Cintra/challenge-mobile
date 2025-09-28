@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 import { zonasLista } from '../../data/zonas';
-import colors from '../../theme/colors';
+import { useTheme } from '../../providers/ThemeContext';
 
 export default function GraficoZonas({ motos }) {
   const [dadosZonas, setDadosZonas] = useState([]);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const contagem = zonasLista.map((zona) => {
@@ -26,7 +27,7 @@ export default function GraficoZonas({ motos }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Gráfico de Zonas</Text>
+      <Text style={[styles.title, { color: colors.title }]}>Gráfico de Zonas</Text>
       <BarChart
         data={dadosGrafico}
         barWidth={28}
@@ -36,13 +37,16 @@ export default function GraficoZonas({ motos }) {
         yAxisThickness={0}
         isAnimated
         barBorderRadius={4}
+        rulesColor={colors.textSecondary}
+        yAxisTextStyle={{ color: colors.text }}
+        xAxisLabelTextStyle={{ color: colors.text }}
       />
 
       <View style={styles.legenda}>
         {dadosZonas.map((zona) => (
           <View key={zona.id} style={styles.legendaItem}>
             <View style={[styles.legendaCor, { backgroundColor: zona.cor }]} />
-            <Text style={styles.legendaTexto}>{zona.nome}</Text>
+            <Text style={[styles.legendaTexto, { color: colors.text }]}>{zona.nome}</Text>
           </View>
         ))}
       </View>
@@ -51,35 +55,34 @@ export default function GraficoZonas({ motos }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    alignItems: 'center',
+  container: { 
+    padding: 10, 
+    alignItems: 'center' 
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 7,
-    color: colors.title,
+  title: { 
+    fontSize: 18, 
+    fontWeight: '600', 
+    marginBottom: 7 
   },
-  legenda: {
-    marginTop: 20,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
+  legenda: { 
+    marginTop: 20, 
+    flexWrap: 'wrap', 
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    gap: 10 
   },
-  legendaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 4
+  legendaItem: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    margin: 4 
   },
-  legendaCor: {
-    width: 14,
-    height: 14,
-    borderRadius: 3,
-    marginRight: 6,
+  legendaCor: { 
+    width: 14, 
+    height: 14, 
+    borderRadius: 3, 
+    marginRight: 6 
   },
-  legendaTexto: {
-    fontSize: 14,
+  legendaTexto: { 
+    fontSize: 14 
   },
 });
