@@ -8,7 +8,7 @@ export default function InputSelectDropdown({
   selectedValue, 
   onValueChange, 
   items, 
-  zIndex = 1000
+  zIndex = 1000 
 }) {
   const { colors } = useTheme();
   const [open, setOpen] = useState(false);
@@ -33,6 +33,8 @@ export default function InputSelectDropdown({
           zIndex: zIndex + 1000,
           elevation: 1000,
         }}
+        zIndex={zIndex}
+        zIndexInverse={zIndex}
         textStyle={{
           color: colors.text,
         }}
@@ -45,9 +47,9 @@ export default function InputSelectDropdown({
 
 const styles = StyleSheet.create({
   container: { 
-    marginBottom: 16 
+    marginTop: 10,
   },
-  label: { 
+  label: {
     marginBottom: 4, 
     fontWeight: "600" 
   },

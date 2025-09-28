@@ -7,15 +7,17 @@ import {
   TextInput,
   ActivityIndicator,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../../theme/colors";
 import MessageModal from "../MessageModal";
 import { useEffect, useState } from "react";
 import { zonasLista } from "../../data/zonas";
 import { getModelos } from "../../services/actions";
+import { useTheme } from "../../providers/ThemeContext";
+import InputSelectDropdown from "../UserForm/InputSelect";
 
 export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
+  const { colors } = useTheme();
+
   const [placa, setPlaca] = useState("");
   const [modelo, setModelo] = useState("");
   const [zona, setZona] = useState("");
@@ -32,16 +34,18 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    if (visible) {
-      carregarModelos();
-    }
+    if (visible) carregarModelos();
   }, [visible]);
 
   const carregarModelos = async () => {
     setLoadingModelos(true);
     try {
       const lista = await getModelos();
-      setModelos(lista);
+      const formatted = lista.map((m) => ({
+        value: m.id.toString(),
+        label: m.nome,
+      }));
+      setModelos(formatted);
     } catch (err) {
       console.error("Erro ao buscar modelos:", err);
       setModelos([]);
@@ -53,11 +57,12 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   useEffect(() => {
     if (moto) {
       setPlaca(moto.placa ?? "");
-      const modeloEncontrado = modelos.find(
-        (m) => m.nome.toUpperCase() === (moto.modelo ?? "").toUpperCase()
+      setModelo(
+        modelos.find(
+          (m) => m.label.toUpperCase() === (moto.modelo ?? "").toUpperCase()
+        )?.value ?? ""
       );
-      setModelo(modeloEncontrado?.id?.toString() ?? "");
-      setZona(zonasLista.find((z) => z.id === moto.zona)?.id ?? moto.zona ?? "");
+      setZona(zonasLista.find((z) => z.id === moto.zona)?.id.toString() ?? "");
     } else {
       limparCampos();
     }
@@ -87,7 +92,7 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
       setErroModelo("Modelo é obrigatório.");
       formIsValid = false;
     }
-    if (zona === "" || zona === null) {
+    if (!zona) {
       setErroZona("Zona é obrigatória.");
       formIsValid = false;
     }
@@ -110,21 +115,19 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
     };
 
     try {
-      if (typeof onSave === "function") {
-        const response = await onSave(moto.id, dados);
+      const response = await onSave(moto.id, dados);
 
-        if (response && response.id) {
-          setModalMessage("Moto editada com sucesso!");
-          setIsSuccess(true);
-          setModalVisible(true);
+      if (response && response.id) {
+        setModalMessage("Moto editada com sucesso!");
+        setIsSuccess(true);
+        setModalVisible(true);
 
-          setTimeout(() => {
-            setModalVisible(false);
-            onClose();
-          }, 1500);
-        } else {
-          throw new Error("A API não retornou a moto atualizada.");
-        }
+        setTimeout(() => {
+          setModalVisible(false);
+          onClose();
+        }, 1500);
+      } else {
+        throw new Error("A API não retornou a moto atualizada.");
       }
     } catch (error) {
       console.error("Erro ao editar moto:", error);
@@ -149,55 +152,50 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
+        <View style={[styles.modalContainer, { backgroundColor: colors.white }]}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={styles.title}>Editar Moto</Text>
+          <Text style={[styles.title, { color: colors.text }]}>Editar Moto</Text>
 
-          <Text style={styles.label}>Placa</Text>
+        <View>
+          <Text style={[styles.label, { color: colors.text }]}>Placa</Text>
           <TextInput
-            style={[styles.input, erroPlaca && styles.inputError]}
+            style={[
+              styles.input,
+              { borderColor: colors.border, color: colors.text },
+              erroPlaca && { borderColor: colors.modalRed },
+            ]}
             value={placa}
             onChangeText={(t) => setPlaca(t.toUpperCase())}
             placeholder="Digite a placa"
             placeholderTextColor={colors.placeholder}
           />
-          {erroPlaca && <Text style={styles.errorText}>{erroPlaca}</Text>}
+          {erroPlaca && <Text style={[styles.errorText]}>{erroPlaca}</Text>}
 
-          <Text style={styles.label}>Modelo</Text>
-          <View style={styles.pickerContainer}>
-            {loadingModelos ? (
-              <ActivityIndicator size="small" color={colors.primary} />
-            ) : (
-              <Picker
-                selectedValue={modelo}
-                onValueChange={(value) => setModelo(value)}
-              >
-                <Picker.Item label="Selecione um modelo..." value="" />
-                {modelos.map((m) => (
-                  <Picker.Item key={m.id} label={m.nome} value={m.id.toString()} />
-                ))}
-              </Picker>
-            )}
-          </View>
+          <InputSelectDropdown
+            label="Modelo"
+            selectedValue={modelo}
+            onValueChange={setModelo}
+            items={modelos}
+            zIndex={3000}
+          />
           {erroModelo && <Text style={styles.errorText}>{erroModelo}</Text>}
 
-          <Text style={styles.label}>Zona</Text>
-          <View style={styles.pickerContainer}>
-            <Picker selectedValue={zona} onValueChange={(v) => setZona(v)}>
-              <Picker.Item
-                label="Selecione uma zona..."
-                value=""
-                color={colors.placeholder}
-              />
-              {zonasLista.map((z) => (
-                <Picker.Item key={z.id} label={z.nome} value={z.id} />
-              ))}
-            </Picker>
-          </View>
+          <InputSelectDropdown
+            label="Zona"
+            selectedValue={zona}
+            onValueChange={setZona}
+            items={zonasLista.map((z) => ({
+              value: z.id.toString(),
+              label: z.nome,
+            }))}
+            zIndex={2000}
+          />
           {erroZona && <Text style={styles.errorText}>{erroZona}</Text>}
+        </View>
+
 
           <View style={styles.buttonsRow}>
             <TouchableOpacity
@@ -209,9 +207,9 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
 
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.inative }]}
-              onPress={limparCampos}
+              onPress={onClose}
             >
-              <Text style={styles.buttonText}>Limpar</Text>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -236,7 +234,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "90%",
-    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 20,
     position: "relative",
@@ -249,8 +246,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "bold",
-    color: colors.text,
-    marginBottom: 20,
+    marginBottom: 15,
     textAlign: "center",
   },
   label: {
@@ -258,30 +254,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 12,
     marginBottom: 6,
-    color: colors.text,
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.border,
     borderRadius: 8,
     padding: 12,
-    color: colors.text,
     fontSize: 15,
   },
-  inputError: {
-    borderColor: colors.modalRed,
-  },
   errorText: {
-    color: colors.modalRed,
+    color: "red",
     fontSize: 14,
     marginTop: 5,
     marginLeft: 5,
-  },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    marginBottom: 10,
   },
   buttonsRow: {
     flexDirection: "row",
@@ -296,7 +280,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: colors.white,
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
   },
