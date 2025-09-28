@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { Appearance } from "react-native";
-import baseColors from "../theme/colors";
+import colorPalettes from "../theme/themeColors";
 
 const ThemeContext = createContext();
 
@@ -13,26 +13,10 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(colorScheme || "light");
 
   const toggleTheme = () => {
-    setTheme((value) => (value === "light" ? "dark" : "light"));
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-  const overrides = {
-    light: {
-      background: "#F5F5F5",
-      text: "#000",
-      placeholder: "#555",
-    },
-    dark: {
-      background: "#121212",
-      text: "#fff",
-      placeholder: "#aaa",
-    },
-  };
-
-  const themeColors = {
-    ...baseColors,
-    ...overrides[theme],
-  };
+  const themeColors = colorPalettes[theme];
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, colors: themeColors }}>

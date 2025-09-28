@@ -15,18 +15,21 @@ import moto from '../../assets/icons/moto.png';
 import motoWhite from '../../assets/icons/moto-white.png';
 import perfil from '../../assets/icons/user.png';
 import perfilWhite from '../../assets/icons/user-white.png';
-import colors from '../theme/colors';
+
+import { useTheme } from '../providers/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 
-const iconMap = {
-  Home: { icon: home, iconFocused: homeWhite },
-  MotoPark: { icon: motoPark, iconFocused: motoParkWhite },
-  RegistrarFrota: { icon: moto, iconFocused: motoWhite },
-  Perfil: { icon: perfil, iconFocused: perfilWhite },
-};
-
 export default function Menu() {
+  const { theme, colors } = useTheme();
+
+  const iconMap = {
+    Home: { light: home, lightFocused: homeWhite, dark: homeWhite },
+    MotoPark: { light: motoPark, lightFocused: motoParkWhite, dark: motoParkWhite },
+    RegistrarFrota: { light: moto, lightFocused: motoWhite, dark: motoWhite },
+    Perfil: { light: perfil, lightFocused: perfilWhite, dark: perfilWhite },
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -41,13 +44,13 @@ export default function Menu() {
           height: 65,
           position: 'absolute',
         },
-        tabBarIcon: ({ focused }) => (
-          <TabIcon
-            focused={focused}
-            icon={iconMap[route.name].icon}
-            iconFocused={iconMap[route.name].iconFocused}
-          />
-        ),
+        tabBarIcon: ({ focused }) => {
+          const icons = iconMap[route.name];
+          const icon = theme === 'light'
+            ? (focused ? icons.lightFocused : icons.light)
+            : icons.dark;
+          return <TabIcon focused={focused} icon={icon} iconFocused={icon} />;
+        },
       })}
     >
       <Tab.Screen name="Home" component={Home} />
