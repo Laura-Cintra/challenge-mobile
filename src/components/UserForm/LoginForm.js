@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../providers/UserContext";
 import { loginUser } from "../../services/actions";
 import FormInput from "./FormInput";
 import appLogo from "../../../assets/logo-app.png";
-import colors from "../../theme/colors";
-import Fontisto from "@expo/vector-icons/Fontisto";
+import appLogoDark from "../../../assets/logo-app-dark.png";
 import { AntDesign } from "@expo/vector-icons";
+import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
+import { useTheme } from "../../providers/ThemeContext";
 
 export default function Login() {
   const navigation = useNavigation();
   const { login } = useUser();
+  const { colors, theme } = useTheme();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,10 +33,8 @@ export default function Login() {
 
     try {
       const response = await loginUser(email, password);
-
       if (response) {
         login(response);
-
         setModalMessage("Login realizado com sucesso!");
         setIsSuccess(true);
         setModalVisible(true);
@@ -46,41 +46,50 @@ export default function Login() {
     }
   };
 
+  const logoSource = theme === "light" ? appLogo : appLogoDark;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={appLogo} style={styles.logo} resizeMode="contain" />
-      </View>
-      <View style={styles.form}>
-        <Text style={styles.formTitle}>Login</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={styles.body}>
+        <View style={styles.header}>
+          <Image source={logoSource} style={styles.logo} resizeMode="contain" />
+        </View>
 
-        <FormInput
-          label="E-mail"
-          placeholder="Digite seu e-mail"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          icon={<Fontisto name="email" size={20} color={colors.secundary} />}
-        />
+        <View style={styles.form}>
+          <Text style={[styles.formTitle, { color: colors.text }]}>Login</Text>
 
-        <FormInput
-          label="Senha"
-          placeholder="Digite sua senha"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
-        />
+          <FormInput
+            label="E-mail"
+            placeholder="Digite seu e-mail"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            icon={<Fontisto name="email" size={20} color={colors.secundary} />}
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+          <FormInput
+            label="Senha"
+            placeholder="Digite sua senha"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
+          />
 
-        <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
-          <Text style={styles.linkText}>
-            Não possui conta?<Text style={styles.link}> Cadastre-se</Text>
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.secundary }]}
+            onPress={handleLogin}
+          >
+            <Text style={[styles.buttonText, { color: colors.white }]}>Entrar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+            <Text style={[styles.linkText, { color: colors.text }]}>
+              Não possui conta?
+              <Text style={[styles.link, { color: colors.primary }]}> Cadastre-se</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <MessageModal
@@ -94,54 +103,50 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    width: '100%',
-    marginVertical: 100,
+  container: { 
+    flex: 1, 
+    width: "100%"
   },
-  header: {
-    height: 180,
-    justifyContent: 'center',
-    alignItems: 'center',
+  body: { 
+    marginVertical: 100 
   },
-  logo: {
-    width: 160,
-    height: 110,
-    marginTop: 20,
+  header: { 
+    height: 180, 
+    justifyContent: "center", 
+    alignItems: "center" 
   },
-  form: {
-    flex: 1,
-    padding: 20,
+  logo: { 
+    width: 160, 
+    height: 110, 
+    marginTop: 20 
   },
-  formTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: colors.text,
-    textAlign: 'center',
-    marginBottom: 20,
+  form: { 
+    flex: 1, 
+    padding: 20 
   },
-  button: {
-    backgroundColor: colors.secundary,
-    padding: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  linkText: {
-    marginTop: 15, 
+  formTitle: { 
+    fontSize: 24, 
+    fontWeight: "bold", 
     textAlign: "center", 
-    color: colors.text,
+    marginBottom: 20 
   },
-  link: {
+  button: { 
+    padding: 12, 
+    paddingHorizontal: 20, 
+    borderRadius: 10, 
+    marginTop: 20, 
+    alignItems: "center" 
+  },
+  buttonText: { 
+    fontWeight: "bold", 
+    fontSize: 16
+  },
+  linkText: { 
     marginTop: 15, 
-    textAlign: "center", 
-    color: colors.primary,
-  }
+    textAlign: "center" 
+  },
+  link: { 
+    marginTop: 15, 
+    textAlign: "center" 
+  },
 });

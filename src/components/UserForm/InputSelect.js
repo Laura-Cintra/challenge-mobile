@@ -1,58 +1,54 @@
 import { View, Text, StyleSheet } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import colors from "../../theme/colors";
+import DropDownPicker from "react-native-dropdown-picker";
+import { useState } from "react";
+import { useTheme } from "../../providers/ThemeContext";
 
-export default function InputSelect({
-  label,
-  selectedValue,
-  onValueChange,
-  items,
+export default function InputSelectDropdown({ 
+  label, 
+  selectedValue, 
+  onValueChange, 
+  items, 
+  zIndex = 1000
 }) {
+  const { colors } = useTheme();
+  const [open, setOpen] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.selectContainer}>
-        <Picker
-          selectedValue={selectedValue}
-          onValueChange={onValueChange}
-          style={styles.select}
-        >
-          <Picker.Item
-            label={`Selecione ${label.toLowerCase()}...`}
-            value=""
-            color={colors.placeholder}
-          />
-          {items.map((item) => (
-            <Picker.Item
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={colors.text}
-            />
-          ))}
-        </Picker>
-      </View>
+    <View style={[styles.container, { zIndex }]}>
+      <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
+      <DropDownPicker
+        open={open}
+        value={selectedValue}
+        items={items}
+        setOpen={setOpen}
+        setValue={onValueChange}
+        listMode="SCROLLVIEW"
+        style={{
+          backgroundColor: colors.background,
+          borderColor: colors.border,
+        }}
+        dropDownContainerStyle={{
+          backgroundColor: colors.background,
+          borderColor: colors.border,
+          zIndex: zIndex + 1000,
+          elevation: 1000,
+        }}
+        textStyle={{
+          color: colors.text,
+        }}
+        placeholder={`Selecione ${label.toLowerCase()}...`}
+        placeholderStyle={{ color: colors.placeholder }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
+  container: { 
+    marginBottom: 16 
   },
-  label: {
-    marginBottom: 4,
-    fontWeight: "600",
-    color: colors.text,
-  },
-  selectContainer: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  select: {
-    height: 55,
-    paddingHorizontal: 10,
+  label: { 
+    marginBottom: 4, 
+    fontWeight: "600" 
   },
 });

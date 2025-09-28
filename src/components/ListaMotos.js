@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../theme/colors";
+import { useTheme } from "../providers/ThemeContext";
 
 export default function ListaMotos({
   titulo,
@@ -24,6 +24,7 @@ export default function ListaMotos({
   permitirExcluir = false,
   permitirLocalizar = true,
 }) {
+  const { colors } = useTheme();
   const textoBusca = (busca || "").toLowerCase().trim();
 
   const motosFiltradas = textoBusca
@@ -37,23 +38,33 @@ export default function ListaMotos({
 
   return (
     <View style={{ flex: 1 }}>
-      {titulo && <Text style={styles.modalTitle}>{titulo}</Text>}
+      {titulo && <Text style={[styles.modalTitle, { color: colors.text }]}>{titulo}</Text>}
 
       {mostrarFiltro && (
         <TextInput
           placeholder={
-            motos.some(moto => moto.zona === 3)
-              ? "Digite o chassi ou modelo" 
+            motos.some((moto) => moto.zona === 3)
+              ? "Digite o chassi ou modelo"
               : "Digite a placa ou modelo"
           }
+          placeholderTextColor={colors.placeholder}
           value={busca}
           onChangeText={setBusca}
-          style={styles.searchInput}
+          style={[
+            styles.searchInput,
+            {
+              borderColor: colors.border,
+              backgroundColor: colors.white,
+              color: colors.text,
+            },
+          ]}
         />
       )}
 
       {textoBusca.length > 0 && motosFiltradas.length === 0 && (
-        <Text style={styles.errorMessage}>Moto não encontrada</Text>
+        <Text style={[styles.errorMessage, { color: colors.modalRed }]}>
+          Moto não encontrada
+        </Text>
       )}
 
       <FlatList
@@ -62,19 +73,32 @@ export default function ListaMotos({
           item?.idCarrapato || item?.id?.toString() || i.toString()
         }
         renderItem={({ item }) => (
-          <View style={styles.item}>
+          <View
+            style={[
+              styles.item,
+              { backgroundColor: colors.white, shadowColor: colors.text },
+            ]}
+          >
             <View>
               {item?.idCarrapato && (
-                <Text style={styles.deviceText}>Carrapato: {item.idCarrapato}</Text>
+                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                  Carrapato: {item.idCarrapato}
+                </Text>
               )}
 
               {item?.zona === 3 ? (
-                <Text style={styles.text}>Chassi: {item.chassi}</Text>
+                <Text style={[styles.text, { color: colors.text }]}>
+                  Chassi: {item.chassi}
+                </Text>
               ) : (
-                <Text style={styles.text}>Placa: {item?.placa}</Text>
+                <Text style={[styles.text, { color: colors.text }]}>
+                  Placa: {item?.placa}
+                </Text>
               )}
               {item?.modelo && (
-                <Text style={styles.deviceText}>Modelo: {item.modelo}</Text>
+                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                  Modelo: {item.modelo}
+                </Text>
               )}
             </View>
 
@@ -104,7 +128,7 @@ export default function ListaMotos({
                   <MaterialCommunityIcons
                     name="pencil-outline"
                     size={20}
-                    color="#0b2c04ff"
+                    color={colors.primary}
                   />
                 </TouchableOpacity>
               )}
@@ -131,20 +155,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     textAlign: "center",
-    color: "#333",
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: colors.border,
     borderRadius: 8,
     padding: 12,
     marginBottom: 15,
-    backgroundColor: colors.white,
   },
   errorMessage: {
     fontSize: 16,
     textAlign: "center",
-    color: "red",
     marginVertical: 15,
   },
   item: {
@@ -152,11 +172,9 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: colors.white,
     padding: 14,
     borderRadius: 8,
     marginBottom: 14,
-    shadowColor: colors.text,
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
@@ -164,11 +182,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: "500",
-    color: colors.text,
   },
   deviceText: {
     fontSize: 13,
-    color: colors.textSecondary,
     marginTop: 2,
   },
   buttonsContainer: {
@@ -182,7 +198,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   buttonText: {
-    color: colors.white,
+    color: "#fff",
     fontWeight: "bold",
   },
 });

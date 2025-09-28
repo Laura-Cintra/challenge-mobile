@@ -19,8 +19,6 @@ function handleApiError(error, defaultMessage) {
     defaultMessage ||
     "Erro inesperado.";
   const status = error.response?.status || 500;
-
-  console.error(defaultMessage, mensagem);
   return { mensagem, status, raw: error };
 }
 

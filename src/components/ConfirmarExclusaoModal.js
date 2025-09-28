@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../theme/colors";
+import { useTheme } from "../providers/ThemeContext";
 
 export default function ConfirmarExclusaoModal({
   visible,
@@ -8,31 +8,35 @@ export default function ConfirmarExclusaoModal({
   onConfirm,
   mensagem,
 }) {
+  const { colors } = useTheme();
+
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
+        <View style={[styles.modalContainer, { backgroundColor: colors.white }]}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={styles.title}>Confirmar Exclusão</Text>
-          <Text style={styles.message}>{mensagem}</Text>
-          <Text style={styles.messageWarn}>Esta ação não poderá ser desfeita.</Text>
+          <Text style={[styles.title, { color: colors.text }]}>Confirmar Exclusão</Text>
+          <Text style={[styles.message, { color: colors.text }]}>{mensagem}</Text>
+          <Text style={[styles.messageWarn, { color: colors.modalRed }]}>
+            Esta ação não poderá ser desfeita.
+          </Text>
 
           <View style={styles.buttonsRow}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.modalRed }]}
               onPress={onConfirm}
             >
-              <Text style={styles.buttonText}>Excluir</Text>
+              <Text style={[styles.buttonText, { color: colors.white }]}>Excluir</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles.buttonText}>Cancelar</Text>
+              <Text style={[styles.buttonText, { color: colors.white }]}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -50,25 +54,21 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "85%",
-    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 26,
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    color: colors.text,
     marginVertical: 10,
     textAlign: "center",
   },
   message: {
     fontSize: 15,
-    color: colors.text,
     textAlign: "center",
     marginBottom: 8,
   },
   messageWarn: {
-    color: colors.modalRed,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: colors.white,
     fontWeight: "bold",
   },
 });

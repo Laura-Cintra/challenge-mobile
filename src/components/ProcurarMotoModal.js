@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListaMotos from "./ListaMotos";
-import colors from "../theme/colors";
 import { getMotos, getPatioById } from "../services/actions";
 import { useUser } from "../providers/UserContext";
+import { useTheme } from "../providers/ThemeContext";
 
 export default function ProcurarMotoModal({ visible, onClose }) {
   const { user } = useUser();
+  const { colors } = useTheme();
 
   const [busca, setBusca] = useState("");
   const [selected, setSelected] = useState(null);
@@ -49,7 +50,9 @@ export default function ProcurarMotoModal({ visible, onClose }) {
       }
 
       if ((motosDoPatio?.length ?? 0) === 0 && user?.nomePatio) {
-        motosDoPatio = todas.filter((m) => (m.nomePatio ?? "").toLowerCase() === String(user.nomePatio).toLowerCase());
+        motosDoPatio = todas.filter(
+          (m) => (m.nomePatio ?? "").toLowerCase() === String(user.nomePatio).toLowerCase()
+        );
       }
 
       if ((motosDoPatio?.length ?? 0) === 0) {
@@ -67,7 +70,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
 
   return (
     <Modal visible={visible} animationType="slide">
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         {loading ? (
           <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 50 }} />
         ) : (
@@ -92,11 +95,12 @@ export default function ProcurarMotoModal({ visible, onClose }) {
           </>
         )}
 
-        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+        <TouchableOpacity
+          style={[styles.closeButton, { backgroundColor: colors.primary }]}
+          onPress={onClose}
+        >
           <MaterialCommunityIcons name="close" size={20} color={colors.white} />
-          <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>
-            Fechar
-          </Text>
+          <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>Fechar</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -107,14 +111,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: colors.background,
   },
   closeButton: {
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.primary,
     padding: 12,
     borderRadius: 10,
   },

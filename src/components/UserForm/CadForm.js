@@ -4,16 +4,18 @@ import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../providers/UserContext";
 import { createUser, getPatios } from "../../services/actions";
 import FormInput from "./FormInput";
-import InputSelect from "./InputSelect";
+import InputSelectDropdown from "./InputSelect";
 import appLogo from "../../../assets/logo-app.png";
-import colors from "../../theme/colors";
+import appLogoDark from "../../../assets/logo-app-dark.png";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
+import { useTheme } from "../../providers/ThemeContext";
 
 export default function CadastroForm() {
   const navigation = useNavigation();
   const { login } = useUser();
+  const { colors, theme } = useTheme();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -75,66 +77,84 @@ export default function CadastroForm() {
     }
   };
 
+  const logoSource = theme === "light" ? appLogo : appLogoDark;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={appLogo} style={styles.logo} resizeMode="contain" />
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={styles.body}>
+        <View style={styles.header}>
+          <Image source={logoSource} style={styles.logo} resizeMode="contain" />
+        </View>
+
+        <View style={styles.form}>
+          <Text style={[styles.formTitle, { color: colors.text }]}>Cadastro</Text>
+
+          <FormInput
+            label="Nome"
+            placeholder="Digite seu nome"
+            value={name}
+            onChangeText={setName}
+            icon={<AntDesign name="user" size={20} color={colors.secundary} />}
+          />
+
+          <FormInput
+            label="E-mail"
+            placeholder="Digite seu e-mail"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            icon={<Fontisto name="email" size={20} color={colors.secundary} />}
+          />
+
+          <FormInput
+            label="Senha"
+            placeholder="Digite sua senha"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
+          />
+
+          <InputSelectDropdown
+            label="Pátio"
+            selectedValue={patio}
+            onValueChange={(value) => setPatio(value)}
+            items={patiosDisponiveis}
+          />
+
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.secundary }]}
+            onPress={handleCadastro}
+          >
+            <Text style={[styles.buttonText, { color: colors.white }]}>Cadastrar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={[styles.linkText, { color: colors.text }]}>
+              Já possui conta?
+              <Text style={[styles.link, { color: colors.primary }]}> Fazer login</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.form}>
-        <Text style={styles.formTitle}>Cadastro</Text>
 
-        <FormInput
-          label="Nome"
-          placeholder="Digite seu nome"
-          value={name}
-          onChangeText={setName}
-          icon={<AntDesign name="user" size={20} color={colors.secundary} />}
-        />
-        <FormInput
-          label="E-mail"
-          placeholder="Digite seu e-mail"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          icon={<Fontisto name="email" size={20} color={colors.secundary} />}
-        />
-        <FormInput
-          label="Senha"
-          placeholder="Digite sua senha"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
-        />
-        <InputSelect
-          label="Pátio"
-          selectedValue={patio}
-          onValueChange={(value) => setPatio(value)}
-          items={patiosDisponiveis}
-        />
-
-        <TouchableOpacity style={styles.button} onPress={handleCadastro}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.linkText}>
-            Já possui conta?<Text style={styles.link}> Fazer login</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <MessageModal visible={modalVisible} message={modalMessage} isSuccess={isSuccess} onClose={() => setModalVisible(false)} />
+      <MessageModal
+        visible={modalVisible}
+        message={modalMessage}
+        isSuccess={isSuccess}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { 
-    flex: 1, 
-    backgroundColor: colors.background,
-    width: '100%',
-    marginVertical: 30,
+    flex: 1, width: 
+    "100%" 
+  },
+  body: { 
+    marginVertical: 30 
   },
   header: { 
     height: 150, 
@@ -150,33 +170,28 @@ const styles = StyleSheet.create({
     flex: 1, 
     padding: 20 
   },
-  formTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.text,
-    textAlign: "center",
-    marginBottom: 20,
+  formTitle: { 
+    fontSize: 24, 
+    fontWeight: "bold", 
+    textAlign: "center", 
+    marginBottom: 20 
   },
-  button: {
-    backgroundColor: colors.secundary,
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 20,
-    alignItems: "center",
+  button: { 
+    padding: 12, 
+    borderRadius: 10, 
+    marginTop: 20, 
+    alignItems: "center" 
   },
   buttonText: { 
-    color: colors.white, 
     fontWeight: "bold", 
     fontSize: 16 
   },
-  linkText: {
+  linkText: { 
     marginTop: 15, 
-    textAlign: "center", 
-    color: colors.text,
+    textAlign: "center" 
   },
-  link: {
+  link: { 
     marginTop: 15, 
-    textAlign: "center", 
-    color: colors.primary,
-  }
+    textAlign: "center" 
+  },
 });
