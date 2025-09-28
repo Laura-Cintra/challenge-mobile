@@ -1,6 +1,9 @@
 const colors = {
   white: '#FBFBFB',
 
+  modalGreen: '#2ecc71',
+  modalRed: '#e74c3c',
+
   zona1: '#2679B8',
   zona2: '#E58A3A',
   zona3: '#C760B3',
