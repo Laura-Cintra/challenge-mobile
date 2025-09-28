@@ -196,7 +196,7 @@ export default function RegistrarMoto() {
 
           {step === 3 && !erroCarrapato ? (
             <View style={styles.successBox}>
-              <View style={[styles.checkCircle, { backgroundColor: colors.success }]}>
+              <View style={[styles.checkCircle, { backgroundColor: colors.primary }]}>
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
               <View>
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   checkCircle: {
     width: 60,
     height: 60,
-    borderRadius: 30,
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
   },

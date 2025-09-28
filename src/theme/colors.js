@@ -1,6 +1,7 @@
 const colors = {
   white: '#FBFBFB',
-
+  primary: "#009B30",
+  secundary: "#1BA857",
   modalGreen: '#2ecc71',
   modalRed: '#e74c3c',
 
