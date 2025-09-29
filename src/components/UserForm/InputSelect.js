@@ -3,12 +3,12 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { useState } from "react";
 import { useTheme } from "../../providers/ThemeContext";
 
-export default function InputSelectDropdown({ 
-  label, 
-  selectedValue, 
-  onValueChange, 
-  items, 
-  zIndex = 1000 
+export default function InputSelectDropdown({
+  label,
+  selectedValue,
+  onValueChange,
+  items,
+  zIndex = 1000,
 }) {
   const { colors } = useTheme();
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function InputSelectDropdown({
           zIndex: zIndex + 1000,
           elevation: 1000,
           maxHeight: 280,
-          overflow: 'hidden',
+          overflow: "hidden",
         }}
         zIndex={zIndex}
         zIndexInverse={zIndex}
@@ -48,11 +48,11 @@ export default function InputSelectDropdown({
 }
 
 const styles = StyleSheet.create({
-  container: { 
+  container: {
     marginTop: 10,
   },
   label: {
-    marginBottom: 4, 
-    fontWeight: "600" 
+    marginBottom: 4,
+    fontWeight: "600",
   },
 });

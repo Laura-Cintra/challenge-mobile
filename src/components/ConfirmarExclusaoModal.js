@@ -13,13 +13,23 @@ export default function ConfirmarExclusaoModal({
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
-        <View style={[styles.modalContainer, { backgroundColor: colors.white }]}>
+        <View
+          style={[styles.modalContainer, { backgroundColor: colors.white }]}
+        >
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
+            <MaterialCommunityIcons
+              name="close"
+              size={22}
+              color={colors.text}
+            />
           </TouchableOpacity>
 
-          <Text style={[styles.title, { color: colors.text }]}>Confirmar Exclusão</Text>
-          <Text style={[styles.message, { color: colors.text }]}>{mensagem}</Text>
+          <Text style={[styles.title, { color: colors.text }]}>
+            Confirmar Exclusão
+          </Text>
+          <Text style={[styles.message, { color: colors.text }]}>
+            {mensagem}
+          </Text>
           <Text style={[styles.messageWarn, { color: colors.modalRed }]}>
             Esta ação não poderá ser desfeita.
           </Text>
@@ -29,14 +39,18 @@ export default function ConfirmarExclusaoModal({
               style={[styles.button, { backgroundColor: colors.modalRed }]}
               onPress={onConfirm}
             >
-              <Text style={[styles.buttonText, { color: colors.white }]}>Excluir</Text>
+              <Text style={[styles.buttonText, { color: colors.white }]}>
+                Excluir
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={[styles.buttonText, { color: colors.white }]}>Cancelar</Text>
+              <Text style={[styles.buttonText, { color: colors.white }]}>
+                Cancelar
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

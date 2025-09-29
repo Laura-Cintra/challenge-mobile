@@ -1,22 +1,22 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import Home from '../pages/Home';
-import MotoPark from '../pages/MotoPark';
-import Perfil from '../pages/Perfil';
-import RegistrarFrota from '../pages/RegistrarFrota';
+import Home from "../pages/Home";
+import MotoPark from "../pages/MotoPark";
+import Perfil from "../pages/Perfil";
+import RegistrarFrota from "../pages/RegistrarFrota";
 
-import TabIcon from '../components/TabIcon';
+import TabIcon from "../components/TabIcon";
 
-import home from '../../assets/icons/home.png';
-import homeWhite from '../../assets/icons/home-white.png';
-import motoPark from '../../assets/icons/moto-park.png';
-import motoParkWhite from '../../assets/icons/moto-park-white.png';
-import moto from '../../assets/icons/moto.png';
-import motoWhite from '../../assets/icons/moto-white.png';
-import perfil from '../../assets/icons/user.png';
-import perfilWhite from '../../assets/icons/user-white.png';
+import home from "../../assets/icons/home.png";
+import homeWhite from "../../assets/icons/home-white.png";
+import motoPark from "../../assets/icons/moto-park.png";
+import motoParkWhite from "../../assets/icons/moto-park-white.png";
+import moto from "../../assets/icons/moto.png";
+import motoWhite from "../../assets/icons/moto-white.png";
+import perfil from "../../assets/icons/user.png";
+import perfilWhite from "../../assets/icons/user-white.png";
 
-import { useTheme } from '../providers/ThemeContext';
+import { useTheme } from "../providers/ThemeContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -42,13 +42,16 @@ export default function Menu() {
           borderTopWidth: 2,
           borderTopColor: colors.borderTop,
           height: 65,
-          position: 'absolute',
+          position: "absolute",
         },
         tabBarIcon: ({ focused }) => {
           const icons = iconMap[route.name];
-          const icon = theme === 'light'
-            ? (focused ? icons.lightFocused : icons.light)
-            : icons.dark;
+          const icon =
+            theme === "light"
+              ? focused
+                ? icons.lightFocused
+                : icons.light
+              : icons.dark;
           return <TabIcon focused={focused} icon={icon} iconFocused={icon} />;
         },
       })}

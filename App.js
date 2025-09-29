@@ -1,12 +1,12 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Menu from './src/components/Menu';
-import Login from './src/pages/Login';
-import Cadastro from './src/pages/Cadastro';
-import UserProvider, { useUser } from './src/providers/UserContext';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider } from './src/providers/ThemeContext';
+import Menu from "./src/components/Menu";
+import Login from "./src/pages/Login";
+import Cadastro from "./src/pages/Cadastro";
+import UserProvider, { useUser } from "./src/providers/UserContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ThemeProvider } from "./src/providers/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 

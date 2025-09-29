@@ -22,7 +22,9 @@ export default function PatioZonas() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.title }]}>Zonas do Pátio</Text>
+      <Text style={[styles.title, { color: colors.title }]}>
+        Zonas do Pátio
+      </Text>
 
       <View style={styles.grid}>
         {lista.map((zona) => (

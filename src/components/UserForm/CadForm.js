@@ -87,7 +87,9 @@ export default function CadastroForm() {
         </View>
 
         <View style={styles.form}>
-          <Text style={[styles.formTitle, { color: colors.text }]}>Cadastro</Text>
+          <Text style={[styles.formTitle, { color: colors.text }]}>
+            Cadastro
+          </Text>
 
           <FormInput
             label="Nome"
@@ -126,13 +128,18 @@ export default function CadastroForm() {
             style={[styles.button, { backgroundColor: colors.secundary }]}
             onPress={handleCadastro}
           >
-            <Text style={[styles.buttonText, { color: colors.white }]}>Cadastrar</Text>
+            <Text style={[styles.buttonText, { color: colors.white }]}>
+              Cadastrar
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={[styles.linkText, { color: colors.text }]}>
               Já possui conta?
-              <Text style={[styles.link, { color: colors.primary }]}> Fazer login</Text>
+              <Text style={[styles.link, { color: colors.primary }]}>
+                {" "}
+                Fazer login
+              </Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -149,49 +156,49 @@ export default function CadastroForm() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, width: 
-    "100%" 
+  container: {
+    flex: 1,
+    width: "100%",
   },
-  body: { 
-    marginVertical: 30 
+  body: {
+    marginVertical: 30,
   },
-  header: { 
-    height: 150, 
-    justifyContent: "center", 
-    alignItems: "center" 
+  header: {
+    height: 150,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  logo: { 
-    width: 160, 
-    height: 110, 
-    marginTop: 20 
+  logo: {
+    width: 160,
+    height: 110,
+    marginTop: 20,
   },
-  form: { 
-    flex: 1, 
-    padding: 20 
+  form: {
+    flex: 1,
+    padding: 20,
   },
-  formTitle: { 
-    fontSize: 24, 
-    fontWeight: "bold", 
-    textAlign: "center", 
-    marginBottom: 20 
+  formTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
   },
-  button: { 
-    padding: 12, 
-    borderRadius: 10, 
-    marginTop: 20, 
-    alignItems: "center" 
+  button: {
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 20,
+    alignItems: "center",
   },
-  buttonText: { 
-    fontWeight: "bold", 
-    fontSize: 16 
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
-  linkText: { 
-    marginTop: 15, 
-    textAlign: "center" 
+  linkText: {
+    marginTop: 15,
+    textAlign: "center",
   },
-  link: { 
-    marginTop: 15, 
-    textAlign: "center" 
+  link: {
+    marginTop: 15,
+    textAlign: "center",
   },
 });

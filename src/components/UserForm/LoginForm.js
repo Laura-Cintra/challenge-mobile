@@ -80,13 +80,18 @@ export default function Login() {
             style={[styles.button, { backgroundColor: colors.secundary }]}
             onPress={handleLogin}
           >
-            <Text style={[styles.buttonText, { color: colors.white }]}>Entrar</Text>
+            <Text style={[styles.buttonText, { color: colors.white }]}>
+              Entrar
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
             <Text style={[styles.linkText, { color: colors.text }]}>
               Não possui conta?
-              <Text style={[styles.link, { color: colors.primary }]}> Cadastre-se</Text>
+              <Text style={[styles.link, { color: colors.primary }]}>
+                {" "}
+                Cadastre-se
+              </Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -103,50 +108,50 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    width: "100%"
+  container: {
+    flex: 1,
+    width: "100%",
   },
-  body: { 
-    marginVertical: 100 
+  body: {
+    marginVertical: 100,
   },
-  header: { 
-    height: 180, 
-    justifyContent: "center", 
-    alignItems: "center" 
+  header: {
+    height: 180,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  logo: { 
-    width: 160, 
-    height: 110, 
-    marginTop: 20 
+  logo: {
+    width: 160,
+    height: 110,
+    marginTop: 20,
   },
-  form: { 
-    flex: 1, 
-    padding: 20 
+  form: {
+    flex: 1,
+    padding: 20,
   },
-  formTitle: { 
-    fontSize: 24, 
-    fontWeight: "bold", 
-    textAlign: "center", 
-    marginBottom: 20 
+  formTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
   },
-  button: { 
-    padding: 12, 
-    paddingHorizontal: 20, 
-    borderRadius: 10, 
-    marginTop: 20, 
-    alignItems: "center" 
+  button: {
+    padding: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 20,
+    alignItems: "center",
   },
-  buttonText: { 
-    fontWeight: "bold", 
-    fontSize: 16
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
-  linkText: { 
-    marginTop: 15, 
-    textAlign: "center" 
+  linkText: {
+    marginTop: 15,
+    textAlign: "center",
   },
-  link: { 
-    marginTop: 15, 
-    textAlign: "center" 
+  link: {
+    marginTop: 15,
+    textAlign: "center",
   },
 });

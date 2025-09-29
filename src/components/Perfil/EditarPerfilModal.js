@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MessageModal from "../MessageModal";
 import { useUser } from "../../providers/UserContext";
@@ -65,8 +72,15 @@ export default function EditarPerfilModal({ visible, onClose }) {
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles(colors).overlay}>
         <View style={styles(colors).modalContainer}>
-          <TouchableOpacity style={styles(colors).closeButton} onPress={onClose}>
-            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
+          <TouchableOpacity
+            style={styles(colors).closeButton}
+            onPress={onClose}
+          >
+            <MaterialCommunityIcons
+              name="close"
+              size={22}
+              color={colors.text}
+            />
           </TouchableOpacity>
 
           <Text style={styles(colors).title}>Editar Perfil</Text>
@@ -112,14 +126,20 @@ export default function EditarPerfilModal({ visible, onClose }) {
 
           <View style={styles(colors).buttonsRow}>
             <TouchableOpacity
-              style={[styles(colors).button, { backgroundColor: colors.secundary }]}
+              style={[
+                styles(colors).button,
+                { backgroundColor: colors.secundary },
+              ]}
               onPress={handleSalvar}
             >
               <Text style={styles(colors).buttonText}>Salvar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles(colors).button, { backgroundColor: colors.inative }]}
+              style={[
+                styles(colors).button,
+                { backgroundColor: colors.inative },
+              ]}
               onPress={onClose}
             >
               <Text style={styles(colors).buttonText}>Cancelar</Text>
@@ -152,11 +172,11 @@ const styles = (colors) =>
       borderRadius: 12,
       padding: 20,
     },
-    closeButton: { 
-      position: "absolute", 
-      right: 12, 
-      top: 12, 
-      padding: 4 
+    closeButton: {
+      position: "absolute",
+      right: 12,
+      top: 12,
+      padding: 4,
     },
     title: {
       fontSize: 20,
@@ -165,12 +185,12 @@ const styles = (colors) =>
       marginBottom: 15,
       textAlign: "center",
     },
-    label: { 
-      fontWeight: "bold", 
-      fontSize: 14, 
-      marginTop: 10, 
-      marginBottom: 4, 
-      color: colors.text 
+    label: {
+      fontWeight: "bold",
+      fontSize: 14,
+      marginTop: 10,
+      marginBottom: 4,
+      color: colors.text,
     },
     input: {
       borderWidth: 1,
@@ -179,20 +199,20 @@ const styles = (colors) =>
       padding: 10,
       color: colors.text,
     },
-    buttonsRow: { 
-      flexDirection: "row", 
-      justifyContent: "space-between", 
-      marginTop: 20 
+    buttonsRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 20,
     },
-    button: { 
-      flex: 1, 
-      padding: 12, 
-      marginHorizontal: 5, 
-      borderRadius: 8, 
-      alignItems: "center" 
+    button: {
+      flex: 1,
+      padding: 12,
+      marginHorizontal: 5,
+      borderRadius: 8,
+      alignItems: "center",
     },
-    buttonText: { 
-      color: '#FBFBFB', 
-      fontWeight: "bold" 
+    buttonText: {
+      color: "#FBFBFB",
+      fontWeight: "bold",
     },
   });

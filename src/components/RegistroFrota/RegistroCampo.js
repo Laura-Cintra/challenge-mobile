@@ -33,7 +33,12 @@ export default function RegistroCampo({
   const article = displayIsFeminine ? "a" : "o";
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.white, shadowColor: colors.text }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.white, shadowColor: colors.text },
+      ]}
+    >
       <Text style={[styles.title, { color: colors.text }]}>
         {loading
           ? `Identificando ${labelCapitalized}...`
@@ -49,7 +54,9 @@ export default function RegistroCampo({
       {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
       {!loading && valor && !erro && (
-        <Text style={[styles.success, { color: colors.primary }]}>✓ {valor}</Text>
+        <Text style={[styles.success, { color: colors.primary }]}>
+          ✓ {valor}
+        </Text>
       )}
 
       {erro && (

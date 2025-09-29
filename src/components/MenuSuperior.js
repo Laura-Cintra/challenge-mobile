@@ -1,11 +1,17 @@
-import { View, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import logo from '../../assets/logo.png';
-import logoDark from '../../assets/logo-dark.png';
-import logoutIcon from '../../assets/icons/logout.png';
-import logoutIconDark from '../../assets/icons/logout-dark.png';
-import { useUser } from '../providers/UserContext';
-import { useTheme } from '../providers/ThemeContext';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import logo from "../../assets/logo.png";
+import logoDark from "../../assets/logo-dark.png";
+import logoutIcon from "../../assets/icons/logout.png";
+import logoutIconDark from "../../assets/icons/logout-dark.png";
+import { useUser } from "../providers/UserContext";
+import { useTheme } from "../providers/ThemeContext";
 
 export default function MenuSuperior() {
   const navigation = useNavigation();
@@ -13,7 +19,7 @@ export default function MenuSuperior() {
   const { colors, theme } = useTheme();
 
   const handleHome = () => {
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   const handleLogout = async () => {
@@ -25,14 +31,14 @@ export default function MenuSuperior() {
       <View style={[styles.header, { borderColor: colors.border }]}>
         <TouchableOpacity onPress={handleHome}>
           <Image
-            source={theme === 'light' ? logo : logoDark}
+            source={theme === "light" ? logo : logoDark}
             style={styles.logo}
             resizeMode="contain"
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout}>
           <Image
-            source={theme === 'light' ? logoutIcon : logoutIconDark}
+            source={theme === "light" ? logoutIcon : logoutIconDark}
             style={styles.logoutIcon}
             resizeMode="contain"
           />
@@ -45,9 +51,9 @@ export default function MenuSuperior() {
 const styles = StyleSheet.create({
   header: {
     marginTop: 25,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 12,
     borderBottomWidth: 1,
   },

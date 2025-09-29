@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, Text, Modal, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Client, Message } from "paho-mqtt";
 import ListaMotos from "./ListaMotos";
@@ -54,13 +61,17 @@ export default function ProcurarMotoModal({ visible, onClose }) {
     };
 
     client.onMessageArrived = (message) => {
-      console.log("MQTT message:", message.destinationName, message.payloadString);
+      console.log(
+        "MQTT message:",
+        message.destinationName,
+        message.payloadString
+      );
     };
 
     client.connect({
       onSuccess: () => {
         console.log("MQTT conectado!");
-        setConnected(true)
+        setConnected(true);
         setIsConnecting(false);
         client.subscribe("smartpatio/status");
       },
@@ -100,7 +111,9 @@ export default function ProcurarMotoModal({ visible, onClose }) {
 
       if ((motosDoPatio?.length ?? 0) === 0 && user?.nomePatio) {
         motosDoPatio = todas.filter(
-          (m) => (m.nomePatio ?? "").toLowerCase() === String(user.nomePatio).toLowerCase()
+          (m) =>
+            (m.nomePatio ?? "").toLowerCase() ===
+            String(user.nomePatio).toLowerCase()
         );
       }
 
@@ -159,18 +172,31 @@ export default function ProcurarMotoModal({ visible, onClose }) {
     <Modal visible={visible} animationType="slide">
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={[styles.statusBox, { backgroundColor: colors.white }]}>
-          <Text style={{ color: connected ? "green" : "red", fontWeight: "bold" }}>
-            MQTT: {connected ? "Conectado" : isConnecting ? "Conectando..." : "Desconectado"}
+          <Text
+            style={{ color: connected ? "green" : "red", fontWeight: "bold" }}
+          >
+            MQTT:{" "}
+            {connected
+              ? "Conectado"
+              : isConnecting
+              ? "Conectando..."
+              : "Desconectado"}
           </Text>
         </View>
 
         {loading ? (
-          <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 50 }} />
+          <ActivityIndicator
+            size="large"
+            color={colors.primary}
+            style={{ marginTop: 50 }}
+          />
         ) : (
           <>
             {erroMsg ? (
               <View style={{ padding: 20, alignItems: "center" }}>
-                <Text style={{ color: colors.text, fontSize: 16 }}>{erroMsg}</Text>
+                <Text style={{ color: colors.text, fontSize: 16 }}>
+                  {erroMsg}
+                </Text>
               </View>
             ) : (
               <ListaMotos
@@ -192,8 +218,10 @@ export default function ProcurarMotoModal({ visible, onClose }) {
           style={[styles.closeButton, { backgroundColor: colors.primary }]}
           onPress={onClose}
         >
-          <MaterialCommunityIcons name="close" size={20} color='#FBFBFB' />
-          <Text style={{ color: '#FBFBFB', fontSize: 16, marginLeft: 6 }}>Fechar</Text>
+          <MaterialCommunityIcons name="close" size={20} color="#FBFBFB" />
+          <Text style={{ color: "#FBFBFB", fontSize: 16, marginLeft: 6 }}>
+            Fechar
+          </Text>
         </TouchableOpacity>
 
         <MessageModal

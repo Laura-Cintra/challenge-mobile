@@ -7,7 +7,13 @@ import EditarMotoModal from "./EditarMoto";
 import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
 
-export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFiltroBusca }) {
+export default function ZonaModal({
+  visible,
+  onClose,
+  zona,
+  filtroBusca,
+  setFiltroBusca,
+}) {
   const { motos, editarMoto, deletarMotoPorId } = useMotos();
   const { colors } = useTheme();
 
@@ -45,14 +51,24 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
 
   return (
     <Modal visible={visible} animationType="slide">
-      <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
-        <Text style={[styles.modalTitle, { color: colors.title }]}>{zona?.nome}</Text>
+      <View
+        style={[styles.modalContent, { backgroundColor: colors.background }]}
+      >
+        <Text style={[styles.modalTitle, { color: colors.title }]}>
+          {zona?.nome}
+        </Text>
         <Text style={[styles.modalSubtitle, { color: colors.text }]}>
           Total: {motosDaZona.length} motos
         </Text>
 
         {motosDaZona.length === 0 ? (
-          <Text style={{ textAlign: "center", marginTop: 20, color: colors.placeholder }}>
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 20,
+              color: colors.placeholder,
+            }}
+          >
             Nenhuma moto nessa zona
           </Text>
         ) : (
@@ -73,9 +89,14 @@ export default function ZonaModal({ visible, onClose, zona, filtroBusca, setFilt
           />
         )}
 
-        <TouchableOpacity style={[styles.fecharBotao, { backgroundColor: colors.primary }]} onPress={onClose}>
+        <TouchableOpacity
+          style={[styles.fecharBotao, { backgroundColor: colors.primary }]}
+          onPress={onClose}
+        >
           <MaterialCommunityIcons name="close" size={20} color={colors.white} />
-          <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>Fechar</Text>
+          <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>
+            Fechar
+          </Text>
         </TouchableOpacity>
 
         <ConfirmarExclusaoModal

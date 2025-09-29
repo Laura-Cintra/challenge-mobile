@@ -1,7 +1,7 @@
-import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
-import colors from '../../theme/colors';
+import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
+import colors from "../../theme/colors";
 
-const screen_width = Dimensions.get('window').width;
+const screen_width = Dimensions.get("window").width;
 
 export default function ZonaCard({ zona, onPress, isDoubleSize }) {
   return (
@@ -13,7 +13,7 @@ export default function ZonaCard({ zona, onPress, isDoubleSize }) {
       ]}
       onPress={() => onPress(zona)}
     >
-      <Text style={styles.cardText}>{zona?.nome ?? '—'}</Text>
+      <Text style={styles.cardText}>{zona?.nome ?? "—"}</Text>
     </TouchableOpacity>
   );
 }
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     height: screen_width / 2.41,
     borderRadius: 12,
     marginBottom: 9,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   doubleSize: {
     width: screen_width / 1.1,
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
   },
   cardText: {
     color: colors.white,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     fontSize: 16,
   },
 });

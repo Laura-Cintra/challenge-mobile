@@ -1,18 +1,7 @@
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import colors from '../theme/colors';
+import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import colors from "../theme/colors";
 
-export default function MessageModal({
-  visible,
-  message,
-  isSuccess,
-  onClose,
-}) {
+export default function MessageModal({ visible, message, isSuccess, onClose }) {
   return (
     <Modal
       animationType="fade"

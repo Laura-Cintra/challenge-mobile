@@ -24,14 +24,14 @@ function handleApiError(error, defaultMessage) {
 
 // ================= Motos =================
 
-export async function getMotos(){
+export async function getMotos() {
   try {
     const response = await api.get("/mottu/motos");
     return response.data;
   } catch (error) {
     throw handleApiError(error, "Erro ao buscar motos:");
   }
-};
+}
 
 export async function getMotoById(id) {
   try {
@@ -126,23 +126,23 @@ export async function createUser(userData) {
   }
 }
 
-export async function getUsers(){
+export async function getUsers() {
   try {
     const response = await api.get("/usuarios");
     return response.data;
   } catch (error) {
     throw handleApiError(error, "Erro ao buscar usuários:");
   }
-};
+}
 
-export async function getUserById(){
+export async function getUserById() {
   try {
     const response = await api.get(`/usuarios/${id}`);
     return response.data;
   } catch (error) {
     throw handleApiError(error, `Erro ao buscar usuário com id ${id}:`);
   }
-};
+}
 
 export async function loginUser(email, senha) {
   try {
@@ -160,13 +160,13 @@ export async function updateUserApi(id, novosDados) {
   } catch (error) {
     throw handleApiError(error, "Erro ao atualizar o usuário:");
   }
-};
+}
 
-export async function deleteUserApi(id){
+export async function deleteUserApi(id) {
   try {
     await api.delete(`/usuarios/${id}`);
     return true;
   } catch (error) {
     throw handleApiError(error, `Erro ao excluir usuário com id ${id}:`);
   }
-};
+}

@@ -6,7 +6,10 @@ export default function ThemeToggleButton({ topOffset = 105 }) {
   const { toggleTheme, colors, theme } = useTheme();
 
   return (
-    <TouchableOpacity style={[styles.button, { top: topOffset }]} onPress={toggleTheme}>
+    <TouchableOpacity
+      style={[styles.button, { top: topOffset }]}
+      onPress={toggleTheme}
+    >
       <Feather
         name={theme === "light" ? "moon" : "sun"}
         size={24}

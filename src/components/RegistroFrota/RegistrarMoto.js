@@ -163,7 +163,9 @@ export default function RegistrarMoto() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {!finalizado ? (
         <>
-          <Text style={[styles.title, { color: colors.title }]}>Registro de Nova Moto</Text>
+          <Text style={[styles.title, { color: colors.title }]}>
+            Registro de Nova Moto
+          </Text>
 
           {step >= 1 && (
             <RegistroCampo
@@ -196,31 +198,46 @@ export default function RegistrarMoto() {
 
           {step === 3 && !erroCarrapato ? (
             <View style={styles.successBox}>
-              <View style={[styles.checkCircle, { backgroundColor: colors.primary }]}>
+              <View
+                style={[
+                  styles.checkCircle,
+                  { backgroundColor: colors.primary },
+                ]}
+              >
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
               <View>
                 <Text style={[styles.successFinal, { color: colors.text }]}>
                   Moto identificada com sucesso!
                 </Text>
-                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.detailText, { color: colors.textSecondary }]}
+                >
                   Modelo: {modelo}
                 </Text>
-                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.detailText, { color: colors.textSecondary }]}
+                >
                   Zona atual: {zonasMap[zona]?.nome || "Zona não definida"}
                 </Text>
               </View>
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: colors.primary, flex: 1 }]}
+                  style={[
+                    styles.button,
+                    { backgroundColor: colors.primary, flex: 1 },
+                  ]}
                   onPress={handleRegistrarFrota}
                 >
                   <Text style={styles.buttonText}>Registrar outra</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: colors.inative, flex: 1 }]}
+                  style={[
+                    styles.button,
+                    { backgroundColor: colors.inative, flex: 1 },
+                  ]}
                   onPress={handleFinalizar}
                 >
                   <Text style={styles.buttonText}>Finalizar</Text>
@@ -237,7 +254,10 @@ export default function RegistrarMoto() {
               </Text>
 
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.modalRed, marginTop: 15 }]}
+                style={[
+                  styles.button,
+                  { backgroundColor: colors.modalRed, marginTop: 15 },
+                ]}
                 onPress={handleFinalizar}
               >
                 <Text style={styles.buttonText}>Quitar operação</Text>
@@ -248,7 +268,10 @@ export default function RegistrarMoto() {
       ) : (
         <View style={styles.successBox}>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary, width: "70%" }]}
+            style={[
+              styles.button,
+              { backgroundColor: colors.primary, width: "70%" },
+            ]}
             onPress={handleRegistrarFrota}
           >
             <Text style={styles.buttonText}>Registrar Frota</Text>

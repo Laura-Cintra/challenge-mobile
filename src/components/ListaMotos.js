@@ -38,7 +38,11 @@ export default function ListaMotos({
 
   return (
     <View style={{ flex: 1 }}>
-      {titulo && <Text style={[styles.modalTitle, { color: colors.text }]}>{titulo}</Text>}
+      {titulo && (
+        <Text style={[styles.modalTitle, { color: colors.text }]}>
+          {titulo}
+        </Text>
+      )}
 
       {mostrarFiltro && (
         <TextInput
@@ -81,7 +85,9 @@ export default function ListaMotos({
           >
             <View>
               {item?.idCarrapato && (
-                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.deviceText, { color: colors.textSecondary }]}
+                >
                   Carrapato: {item.idCarrapato}
                 </Text>
               )}
@@ -96,7 +102,9 @@ export default function ListaMotos({
                 </Text>
               )}
               {item?.modelo && (
-                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.deviceText, { color: colors.textSecondary }]}
+                >
                   Modelo: {item.modelo}
                 </Text>
               )}
@@ -106,7 +114,10 @@ export default function ListaMotos({
               {permitirLocalizar &&
                 (selected === item?.placa ? (
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: colors.modalRed }]}
+                    style={[
+                      styles.button,
+                      { backgroundColor: colors.modalRed },
+                    ]}
                     onPress={() => onParar(item)}
                   >
                     <Text style={styles.buttonText}>Parar</Text>

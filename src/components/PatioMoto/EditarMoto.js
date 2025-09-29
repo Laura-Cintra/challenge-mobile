@@ -5,7 +5,6 @@ import {
   Modal,
   StyleSheet,
   TextInput,
-  ActivityIndicator,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MessageModal from "../MessageModal";
@@ -152,50 +151,57 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.overlay}>
-        <View style={[styles.modalContainer, { backgroundColor: colors.white }]}>
+        <View
+          style={[styles.modalContainer, { backgroundColor: colors.white }]}
+        >
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
+            <MaterialCommunityIcons
+              name="close"
+              size={22}
+              color={colors.text}
+            />
           </TouchableOpacity>
 
-          <Text style={[styles.title, { color: colors.text }]}>Editar Moto</Text>
+          <Text style={[styles.title, { color: colors.text }]}>
+            Editar Moto
+          </Text>
 
-        <View>
-          <Text style={[styles.label, { color: colors.text }]}>Placa</Text>
-          <TextInput
-            style={[
-              styles.input,
-              { borderColor: colors.border, color: colors.text },
-              erroPlaca && { borderColor: colors.modalRed },
-            ]}
-            value={placa}
-            onChangeText={(t) => setPlaca(t.toUpperCase())}
-            placeholder="Digite a placa"
-            placeholderTextColor={colors.placeholder}
-          />
-          {erroPlaca && <Text style={[styles.errorText]}>{erroPlaca}</Text>}
+          <View>
+            <Text style={[styles.label, { color: colors.text }]}>Placa</Text>
+            <TextInput
+              style={[
+                styles.input,
+                { borderColor: colors.border, color: colors.text },
+                erroPlaca && { borderColor: colors.modalRed },
+              ]}
+              value={placa}
+              onChangeText={(t) => setPlaca(t.toUpperCase())}
+              placeholder="Digite a placa"
+              placeholderTextColor={colors.placeholder}
+            />
+            {erroPlaca && <Text style={[styles.errorText]}>{erroPlaca}</Text>}
 
-          <InputSelectDropdown
-            label="Modelo"
-            selectedValue={modelo}
-            onValueChange={setModelo}
-            items={modelos}
-            zIndex={3000}
-          />
-          {erroModelo && <Text style={styles.errorText}>{erroModelo}</Text>}
+            <InputSelectDropdown
+              label="Modelo"
+              selectedValue={modelo}
+              onValueChange={setModelo}
+              items={modelos}
+              zIndex={3000}
+            />
+            {erroModelo && <Text style={styles.errorText}>{erroModelo}</Text>}
 
-          <InputSelectDropdown
-            label="Zona"
-            selectedValue={zona}
-            onValueChange={setZona}
-            items={zonasLista.map((z) => ({
-              value: z.id.toString(),
-              label: z.nome,
-            }))}
-            zIndex={2000}
-          />
-          {erroZona && <Text style={styles.errorText}>{erroZona}</Text>}
-        </View>
-
+            <InputSelectDropdown
+              label="Zona"
+              selectedValue={zona}
+              onValueChange={setZona}
+              items={zonasLista.map((z) => ({
+                value: z.id.toString(),
+                label: z.nome,
+              }))}
+              zIndex={2000}
+            />
+            {erroZona && <Text style={styles.errorText}>{erroZona}</Text>}
+          </View>
 
           <View style={styles.buttonsRow}>
             <TouchableOpacity
