@@ -117,7 +117,26 @@ npm start
 4. Escaneie o QR Code com o app Expo Go no seu celular
 ---
 
-## 4. Integrantes
+## 📊 5. Execução do BD para as requisições
+
+1. Clone o repositório .NET e siga as instruções de configuração das credenciais do BD:
+
+```bash
+git clone https://github.com/ViniciuSaeSouza/Mottu-CSharp.git
+```
+
+---
+
+## 🔌6. Execução do IoT no Wokwi
+
+1. Clone o repositório IOT e siga as instruções do documento:
+
+```bash
+git clone https://github.com/ViniciuSaeSouza/Mottu-IoT.git
+```
+---
+
+## 7. Integrantes
 
 | Nome                              | RM     | GitHub                                             |
 | --------------------------------- | ------ | -------------------------------------------------- |
