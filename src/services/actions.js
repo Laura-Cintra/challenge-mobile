@@ -149,7 +149,16 @@ export async function loginUser(email, senha) {
     const response = await api.post("/usuarios/login", { email, senha });
     return response.data;
   } catch (error) {
-    throw handleApiError(error, "Erro no login:");
+    if (!error.response) {
+      throw { mensagem: "Sem conexão com o servidor", status: 0 };
+    }
+    if (error.response.status >= 500) {
+      throw { mensagem: "Servidor fora do ar", status: error.response.status };
+    }
+    throw {
+      mensagem: error.response?.data?.mensagem || "Email ou senha inválidos.",
+      status: error.response?.status || 400,
+    };
   }
 }
 

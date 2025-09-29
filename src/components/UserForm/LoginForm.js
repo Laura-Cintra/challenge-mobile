@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../providers/UserContext";
 import { loginUser } from "../../services/actions";
@@ -22,6 +29,7 @@ export default function Login() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -31,18 +39,27 @@ export default function Login() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const response = await loginUser(email, password);
+
       if (response) {
-        login(response);
+        await login(response);
         setModalMessage("Login realizado com sucesso!");
         setIsSuccess(true);
         setModalVisible(true);
       }
     } catch (error) {
-      setModalMessage("Email ou senha inválidos.");
+      const errorMessage =
+        error?.mensagem ||
+        "Erro inesperado ao logar. Tente novamente mais tarde.";
+
+      setModalMessage(errorMessage);
       setIsSuccess(false);
       setModalVisible(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,10 +96,15 @@ export default function Login() {
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.secundary }]}
             onPress={handleLogin}
+            disabled={isLoading}
           >
-            <Text style={[styles.buttonText, { color: colors.white }]}>
-              Entrar
-            </Text>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={colors.white} />
+            ) : (
+              <Text style={[styles.buttonText, { color: colors.white }]}>
+                Entrar
+              </Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>

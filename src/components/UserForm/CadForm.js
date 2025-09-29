@@ -27,6 +27,15 @@ export default function CadastroForm() {
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
+  const isValidPassword = (password) => {
+    return password.length >= 6;
+  };
+
   useEffect(() => {
     const fetchPatios = async () => {
       try {
@@ -46,6 +55,20 @@ export default function CadastroForm() {
   const handleCadastro = async () => {
     if (!name || !email || !password || !patio) {
       setModalMessage("Preencha todos os campos.");
+      setIsSuccess(false);
+      setModalVisible(true);
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setModalMessage("Por favor, insira um e-mail válido.");
+      setIsSuccess(false);
+      setModalVisible(true);
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setModalMessage("A senha deve ter pelo menos 6 caracteres.");
       setIsSuccess(false);
       setModalVisible(true);
       return;
