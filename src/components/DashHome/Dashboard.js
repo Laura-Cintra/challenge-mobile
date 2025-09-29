@@ -35,8 +35,8 @@ export default function Dashboard() {
               style={[styles.button, { backgroundColor: colors.secundary }]} 
               onPress={() => navigation.navigate('RegistrarFrota')}
             >
-              <MaterialIcons name="add-circle-outline" size={20} color={colors.white} />
-              <Text style={[styles.buttonText, { color: colors.white }]}>Nova Moto</Text>
+              <MaterialIcons name="add-circle-outline" size={20} color='#FBFBFB' />
+              <Text style={[styles.buttonText, { color: '#FBFBFB' }]}>Nova Moto</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -48,7 +48,7 @@ export default function Dashboard() {
         style={[styles.buttonSearch, { backgroundColor: colors.primary }]}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={[styles.buttonTextSearch, { color: colors.background }]}>
+        <Text style={[styles.buttonTextSearch, { color: '#FBFBFB' }]}>
           Procurar Moto
         </Text>
       </TouchableOpacity>
