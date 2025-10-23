@@ -7,6 +7,8 @@ import Cadastro from "./src/pages/Cadastro";
 import UserProvider, { useUser } from "./src/providers/UserContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "./src/providers/ThemeContext";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./src/services/i18n";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,13 +32,15 @@ function Routes() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <UserProvider>
-          <NavigationContainer>
-            <Routes />
-          </NavigationContainer>
-        </UserProvider>
-      </ThemeProvider>
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider>
+          <UserProvider>
+            <NavigationContainer>
+              <Routes />
+            </NavigationContainer>
+          </UserProvider>
+        </ThemeProvider>
+      </I18nextProvider>
     </SafeAreaProvider>
   );
 }
