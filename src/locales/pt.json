@@ -15,5 +15,28 @@
     "4": "BO",
     "5": "Aluguel",
     "6": "Motor Defeituoso"
+  },
+  "editMotorcycle": {
+    "title": "Editar Moto",
+    "licensePlate": "Placa",
+    "model": "Modelo",
+    "zone": "Zona",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "licensePlateRequired": "Placa é obrigatória.",
+    "modelRequired": "Modelo é obrigatório.",
+    "zoneRequired": "Zona é obrigatória.",
+    "invalidLicensePlate": "Formato inválido (use ABC1A23).",
+    "success": "Moto editada com sucesso!",
+    "error": "Erro ao editar moto."
+  },
+  "parkingZones": {
+    "title": "Zonas do Pátio"
+  },
+  "zoneModal": {
+    "total": "Total: {{count}} motos",
+    "noMotorcycle": "Nenhuma moto nessa zona",
+    "close": "Fechar",
+    "confirmDeletion": "Tem certeza que deseja excluir a moto {{placa}}?"
   }
 }

@@ -2,6 +2,7 @@ import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import MenuSuperior from "../components/MenuSuperior";
 import ProfileInfo from "../components/Perfil/ProfileInfo";
 import ThemeToggleButton from "../components/ThemeToggleButton";
+import LanguageButton from "../components/LanguageButton";
 
 export default function Perfil() {
   return (
@@ -10,6 +11,7 @@ export default function Perfil() {
         <MenuSuperior />
         <ProfileInfo />
         <ThemeToggleButton />
+        <LanguageButton />
       </ScrollView>
     </SafeAreaView>
   );

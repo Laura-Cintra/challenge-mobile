@@ -13,9 +13,11 @@ import { zonasLista } from "../../data/zonas";
 import { getModelos } from "../../services/actions";
 import { useTheme } from "../../providers/ThemeContext";
 import InputSelectDropdown from "../UserForm/InputSelect";
+import { useTranslation } from "react-i18next";
 
 export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const [placa, setPlaca] = useState("");
   const [modelo, setModelo] = useState("");
@@ -78,21 +80,20 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
 
   const handleSalvar = async () => {
     let formIsValid = true;
-
     setErroPlaca("");
     setErroModelo("");
     setErroZona("");
 
     if (!placa) {
-      setErroPlaca("Placa é obrigatória.");
+      setErroPlaca(t("editMotorcycle.licensePlateRequired"));
       formIsValid = false;
     }
     if (!modelo) {
-      setErroModelo("Modelo é obrigatório.");
+      setErroModelo(t("editMotorcycle.modelRequired"));
       formIsValid = false;
     }
     if (!zona) {
-      setErroZona("Zona é obrigatória.");
+      setErroZona(t("editMotorcycle.zoneRequired"));
       formIsValid = false;
     }
 
@@ -100,7 +101,7 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
       placa.trim().toUpperCase()
     );
     if (placa && !validarPlaca) {
-      setErroPlaca("Formato inválido (use ABC1A23).");
+      setErroPlaca(t("editMotorcycle.invalidLicensePlate"));
       formIsValid = false;
     }
 
@@ -115,9 +116,8 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
 
     try {
       const response = await onSave(moto.id, dados);
-
       if (response && response.id) {
-        setModalMessage("Moto editada com sucesso!");
+        setModalMessage(t("editMotorcycle.success"));
         setIsSuccess(true);
         setModalVisible(true);
 
@@ -126,23 +126,10 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
           onClose();
         }, 1500);
       } else {
-        throw new Error("A API não retornou a moto atualizada.");
+        throw new Error(t("editMotorcycle.error"));
       }
     } catch (error) {
-      console.error("Erro ao editar moto:", error);
-
-      const apiErrors = error.response?.data?.errors || {};
-      const apiMessage =
-        error.response?.data?.mensagem ||
-        error.response?.data?.erro ||
-        error.message ||
-        "Erro ao editar moto.";
-
-      if (apiErrors.placa) setErroPlaca(apiErrors.placa);
-      if (apiErrors.modelo) setErroModelo(apiErrors.modelo);
-      if (apiErrors.zona) setErroZona(apiErrors.zona);
-
-      setModalMessage(apiMessage);
+      setModalMessage(t("editMotorcycle.error"));
       setIsSuccess(false);
       setModalVisible(true);
     }
@@ -151,23 +138,19 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.overlay}>
-        <View
-          style={[styles.modalContainer, { backgroundColor: colors.white }]}
-        >
+        <View style={[styles.modalContainer, { backgroundColor: colors.white }]}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <MaterialCommunityIcons
-              name="close"
-              size={22}
-              color={colors.text}
-            />
+            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
           <Text style={[styles.title, { color: colors.text }]}>
-            Editar Moto
+            {t("editMotorcycle.title")}
           </Text>
 
           <View>
-            <Text style={[styles.label, { color: colors.text }]}>Placa</Text>
+            <Text style={[styles.label, { color: colors.text }]}>
+              {t("editMotorcycle.licensePlate")}
+            </Text>
             <TextInput
               style={[
                 styles.input,
@@ -176,13 +159,13 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
               ]}
               value={placa}
               onChangeText={(t) => setPlaca(t.toUpperCase())}
-              placeholder="Digite a placa"
+              placeholder={t("editMotorcycle.licensePlate")}
               placeholderTextColor={colors.placeholder}
             />
-            {erroPlaca && <Text style={[styles.errorText]}>{erroPlaca}</Text>}
+            {erroPlaca && <Text style={styles.errorText}>{erroPlaca}</Text>}
 
             <InputSelectDropdown
-              label="Modelo"
+              label={t("editMotorcycle.model")}
               selectedValue={modelo}
               onValueChange={setModelo}
               items={modelos}
@@ -191,12 +174,12 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
             {erroModelo && <Text style={styles.errorText}>{erroModelo}</Text>}
 
             <InputSelectDropdown
-              label="Zona"
+              label={t("editMotorcycle.zone")}
               selectedValue={zona}
               onValueChange={setZona}
               items={zonasLista.map((z) => ({
                 value: z.id.toString(),
-                label: z.nome,
+                label: t(`zones.${z.id}`),
               }))}
               zIndex={2000}
             />
@@ -208,14 +191,14 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
               style={[styles.button, { backgroundColor: colors.secundary }]}
               onPress={handleSalvar}
             >
-              <Text style={styles.buttonText}>Salvar</Text>
+              <Text style={styles.buttonText}>{t("editMotorcycle.save")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles.buttonText}>Cancelar</Text>
+              <Text style={styles.buttonText}>{t("editMotorcycle.cancel")}</Text>
             </TouchableOpacity>
           </View>
         </View>

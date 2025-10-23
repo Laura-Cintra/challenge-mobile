@@ -15,5 +15,28 @@
     "4": "Denuncia Policial",
     "5": "Alquiler",
     "6": "Motor Defectuoso"
+  },
+  "editMotorcycle": {
+    "title": "Editar Motocicleta",
+    "licensePlate": "Placa",
+    "model": "Modelo",
+    "zone": "Zona",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "licensePlateRequired": "La Placa es obligatoria.",
+    "modelRequired": "El Modelo es obligatorio.",
+    "zoneRequired": "La Zona es obligatoria.",
+    "invalidLicensePlate": "Formato inválido (use ABC1A23).",
+    "success": "¡Motocicleta editada con éxito!",
+    "error": "Error al editar la motocicleta."
+  },
+  "parkingZones": {
+    "title": "Zonas del Patio"
+  },
+  "zoneModal": {
+    "total": "Total: {{count}} motocicletas",
+    "noMotorcycle": "Ninguna motocicleta en esta zona",
+    "close": "Cerrar",
+    "confirmDeletion": "¿Está seguro de que desea eliminar la motocicleta {{placa}}?"
   }
 }

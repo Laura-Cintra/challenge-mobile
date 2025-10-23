@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ptFlag from "../../assets/flag/flag-br.png";
 import mexFlag from "../../assets/flag/flag-mex.png";
 
-export default function LanguageButton() {
+export default function LanguageButton({ topOffset = 88 }) {
   const { colors } = useTheme();
   const { i18n } = useTranslation();
 
@@ -15,7 +15,7 @@ export default function LanguageButton() {
   };
 
   return (
-    <View style={styles.langContainer}>
+    <View style={[styles.langContainer, { top: topOffset }]}>
       {i18n.language === "pt" && (
         <TouchableOpacity onPress={() => mudarIdioma("es")}>
           <Image

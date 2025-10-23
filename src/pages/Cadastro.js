@@ -1,6 +1,7 @@
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import CadastroForm from "../components/UserForm/CadForm";
 import ThemeToggleButton from "../components/ThemeToggleButton";
+import LanguageButton from "../components/LanguageButton";
 
 export default function Cadastro() {
   return (
@@ -8,6 +9,7 @@ export default function Cadastro() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <CadastroForm />
         <ThemeToggleButton topOffset={235} />
+        <LanguageButton topOffset={219} />
       </ScrollView>
     </SafeAreaView>
   );

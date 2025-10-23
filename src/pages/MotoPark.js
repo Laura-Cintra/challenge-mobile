@@ -2,6 +2,7 @@ import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import PatioZonas from "../components/PatioMoto/PatioZonas";
 import MenuSuperior from "../components/MenuSuperior";
 import ThemeToggleButton from "../components/ThemeToggleButton";
+import LanguageButton from "../components/LanguageButton";
 
 export default function NovaMoto() {
   return (
@@ -10,6 +11,7 @@ export default function NovaMoto() {
         <MenuSuperior />
         <PatioZonas />
         <ThemeToggleButton />
+        <LanguageButton />
       </ScrollView>
     </SafeAreaView>
   );

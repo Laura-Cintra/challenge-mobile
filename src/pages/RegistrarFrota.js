@@ -2,6 +2,7 @@ import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import MenuSuperior from "../components/MenuSuperior";
 import RegistrarMoto from "../components/RegistroFrota/RegistrarMoto";
 import ThemeToggleButton from "../components/ThemeToggleButton";
+import LanguageButton from "../components/LanguageButton";
 
 export default function RegistrarFrota() {
   return (
@@ -10,6 +11,7 @@ export default function RegistrarFrota() {
         <MenuSuperior />
         <RegistrarMoto />
         <ThemeToggleButton />
+        <LanguageButton />
       </ScrollView>
     </SafeAreaView>
   );
