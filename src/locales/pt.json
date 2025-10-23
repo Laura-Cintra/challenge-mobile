@@ -38,5 +38,41 @@
     "noMotorcycle": "Nenhuma moto nessa zona",
     "close": "Fechar",
     "confirmDeletion": "Tem certeza que deseja excluir a moto {{placa}}?"
+  },
+  "editProfile": {
+    "title": "Editar Perfil",
+    "name": "Nome",
+    "email": "E-mail",
+    "newPassword": "Nova Senha",
+    "confirmPassword": "Confirmar Senha",
+    "placeholderName": "Digite seu nome",
+    "placeholderEmail": "Digite seu e-mail",
+    "placeholderPassword": "Digite sua nova senha",
+    "placeholderConfirm": "Confirme sua senha",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "errorFields": "Preencha todos os campos.",
+    "errorPasswords": "As senhas não coincidem.",
+    "success": "Perfil atualizado com sucesso!",
+    "errorUpdate": "Erro ao atualizar perfil."
+  },
+  "profile": {
+    "edit": "Editar",
+    "delete": "Excluir",
+    "shortcuts": "Atalhos",
+    "dashboard": "Dashboard",
+    "viewParking": "Ver Pátio",
+    "registerMotorcycle": "Registrar Moto",
+    "locateMotorcycle": "Localizar Moto",
+    "parking": "Pátio - {{name}}",
+    "address": "Endereço",
+    "motorcyclesInParking": "Motos no pátio",
+    "confirmAccountDeletion": "Tem certeza que deseja excluir sua conta?"
+  },
+  "confirmDeletion": {
+    "title": "Confirmar Exclusão",
+    "warning": "Esta ação não poderá ser desfeita.",
+    "delete": "Excluir",
+    "cancel": "Cancelar"
   }
 }

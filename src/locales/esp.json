@@ -38,5 +38,41 @@
     "noMotorcycle": "Ninguna motocicleta en esta zona",
     "close": "Cerrar",
     "confirmDeletion": "¿Está seguro de que desea eliminar la motocicleta {{placa}}?"
+  },
+  "editProfile": {
+    "title": "Editar Perfil",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "placeholderName": "Escribe tu nombre",
+    "placeholderEmail": "Escribe tu correo electrónico",
+    "placeholderPassword": "Escribe tu nueva contraseña",
+    "placeholderConfirm": "Confirma tu contraseña",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "errorFields": "Rellena todos los campos.",
+    "errorPasswords": "Las contraseñas no coinciden.",
+    "success": "¡Perfil actualizado con éxito!",
+    "errorUpdate": "Error al actualizar perfil."
+  },
+  "profile": {
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "shortcuts": "Atajos",
+    "dashboard": "Panel de Control",
+    "viewParking": "Ver Patio",
+    "registerMotorcycle": "Registrar Motocicleta",
+    "locateMotorcycle": "Localizar Motocicleta",
+    "parking": "Patio - {{name}}",
+    "address": "Dirección",
+    "motorcyclesInParking": "Motocicletas en el patio",
+    "confirmAccountDeletion": "¿Está seguro de que desea eliminar su cuenta?"
+  },
+  "confirmDeletion": {
+    "title": "Confirmar Eliminación",
+    "warning": "Esta acción no se podrá deshacer.",
+    "delete": "Eliminar",
+    "cancel": "Cancelar"
   }
 }

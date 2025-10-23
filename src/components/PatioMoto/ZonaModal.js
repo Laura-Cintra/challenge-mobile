@@ -6,6 +6,7 @@ import ListaMotos from "../ListaMotos";
 import EditarMotoModal from "./EditarMoto";
 import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function ZonaModal({
   visible,
@@ -16,6 +17,7 @@ export default function ZonaModal({
 }) {
   const { motos, editarMoto, deletarMotoPorId } = useMotos();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const [selected, setSelected] = useState(null);
   const [editarVisible, setEditarVisible] = useState(false);
@@ -24,41 +26,14 @@ export default function ZonaModal({
 
   const motosDaZona = motos.filter((moto) => moto.zona === zona?.id);
 
-  const localizar = (moto) => setSelected(moto.placa);
-  const parar = () => setSelected(null);
-
-  const editar = (moto) => {
-    setMotoSelecionada(moto);
-    setEditarVisible(true);
-  };
-
-  const confirmarExclusao = (moto) => {
-    setMotoSelecionada(moto);
-    setConfirmVisible(true);
-  };
-
-  const excluir = async () => {
-    if (motoSelecionada) {
-      try {
-        await deletarMotoPorId(motoSelecionada.id);
-      } catch (error) {
-        console.error("Erro ao excluir moto:", error);
-      }
-    }
-    setConfirmVisible(false);
-    setMotoSelecionada(null);
-  };
-
   return (
     <Modal visible={visible} animationType="slide">
-      <View
-        style={[styles.modalContent, { backgroundColor: colors.background }]}
-      >
+      <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
         <Text style={[styles.modalTitle, { color: colors.title }]}>
-          {zona?.nome}
+          {zona ? t(`zones.${zona.id}`) : ""}
         </Text>
         <Text style={[styles.modalSubtitle, { color: colors.text }]}>
-          Total: {motosDaZona.length} motos
+          {t("zoneModal.total", { count: motosDaZona.length })}
         </Text>
 
         {motosDaZona.length === 0 ? (
@@ -69,7 +44,7 @@ export default function ZonaModal({
               color: colors.placeholder,
             }}
           >
-            Nenhuma moto nessa zona
+            {t("zoneModal.noMotorcycle")}
           </Text>
         ) : (
           <ListaMotos
@@ -78,10 +53,16 @@ export default function ZonaModal({
             busca={filtroBusca}
             setBusca={setFiltroBusca}
             selected={selected}
-            onLocalizar={localizar}
-            onParar={parar}
-            onEdit={editar}
-            onDelete={confirmarExclusao}
+            onLocalizar={(m) => setSelected(m.placa)}
+            onParar={() => setSelected(null)}
+            onEdit={(m) => {
+              setMotoSelecionada(m);
+              setEditarVisible(true);
+            }}
+            onDelete={(m) => {
+              setMotoSelecionada(m);
+              setConfirmVisible(true);
+            }}
             mostrarFiltro={true}
             permitirLocalizar={true}
             permitirEditar={true}
@@ -95,30 +76,28 @@ export default function ZonaModal({
         >
           <MaterialCommunityIcons name="close" size={20} color={colors.white} />
           <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>
-            Fechar
+            {t("zoneModal.close")}
           </Text>
         </TouchableOpacity>
 
         <ConfirmarExclusaoModal
           visible={confirmVisible}
           onClose={() => setConfirmVisible(false)}
-          onConfirm={excluir}
-          mensagem={`Tem certeza que deseja excluir a moto ${motoSelecionada?.placa}?`}
+          onConfirm={async () => {
+            await deletarMotoPorId(motoSelecionada.id);
+            setConfirmVisible(false);
+            setMotoSelecionada(null);
+          }}
+          mensagem={t("zoneModal.confirmDeletion", {
+            placa: motoSelecionada?.placa,
+          })}
         />
 
         <EditarMotoModal
           visible={editarVisible}
           onClose={() => setEditarVisible(false)}
           moto={motoSelecionada}
-          onSave={async (id, dados) => {
-            try {
-              const response = await editarMoto(id, dados);
-              return response;
-            } catch (error) {
-              console.error("Erro ao editar moto:", error);
-              throw error;
-            }
-          }}
+          onSave={editarMoto}
         />
       </View>
     </Modal>

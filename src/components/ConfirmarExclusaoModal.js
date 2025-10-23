@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmarExclusaoModal({
   visible,
@@ -9,6 +10,7 @@ export default function ConfirmarExclusaoModal({
   mensagem,
 }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
@@ -25,13 +27,13 @@ export default function ConfirmarExclusaoModal({
           </TouchableOpacity>
 
           <Text style={[styles.title, { color: colors.text }]}>
-            Confirmar Exclusão
+            {t("confirmDeletion.title")}
           </Text>
           <Text style={[styles.message, { color: colors.text }]}>
             {mensagem}
           </Text>
           <Text style={[styles.messageWarn, { color: colors.modalRed }]}>
-            Esta ação não poderá ser desfeita.
+            {t("confirmDeletion.warning")}
           </Text>
 
           <View style={styles.buttonsRow}>
@@ -40,7 +42,7 @@ export default function ConfirmarExclusaoModal({
               onPress={onConfirm}
             >
               <Text style={[styles.buttonText, { color: colors.white }]}>
-                Excluir
+                {t("confirmDeletion.delete")}
               </Text>
             </TouchableOpacity>
 
@@ -49,7 +51,7 @@ export default function ConfirmarExclusaoModal({
               onPress={onClose}
             >
               <Text style={[styles.buttonText, { color: colors.white }]}>
-                Cancelar
+                {t("confirmDeletion.cancel")}
               </Text>
             </TouchableOpacity>
           </View>

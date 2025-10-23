@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useTheme } from "../../providers/ThemeContext";
-
 import ZonaCard from "./ZonaCard";
 import ZonaModal from "./ZonaModal";
 import { zonasLista } from "../../data/zonas";
+import { useTranslation } from "react-i18next";
 
 export default function PatioZonas() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [zonaSelecionada, setZonaSelecionada] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [filtroBusca, setFiltroBusca] = useState("");
@@ -23,16 +24,16 @@ export default function PatioZonas() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.title, { color: colors.title }]}>
-        Zonas do Pátio
+        {t("parkingZones.title")}
       </Text>
 
       <View style={styles.grid}>
         {lista.map((zona) => (
           <ZonaCard
             key={zona.id}
-            zona={zona}
+            zona={{ ...zona, nome: t(`zones.${zona.id}`) }}
             onPress={abrirModalZona}
-            isDoubleSize={zona.nome === "Saguão"}
+            isDoubleSize={zona.id === 0}
           />
         ))}
       </View>
