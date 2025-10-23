@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "greeting": "Olá, {{nome}}",
+    "subtitle": "Esses são os dados do seu pátio",
+    "totalMotorcycles": "Total de motos",
+    "newMotorcycle": "Nova Moto",
+    "searchMotorcycle": "Procurar Moto",
+    "zonesChart": "Gráfico de Zonas"
+  },
+  "zones": {
+    "0": "Saguão",
+    "1": "Manutenção Rápida",
+    "2": "Danos Estruturais",
+    "3": "Sem Placa",
+    "4": "BO",
+    "5": "Aluguel",
+    "6": "Motor Defeituoso"
+  }
+}

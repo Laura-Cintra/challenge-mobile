@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "greeting": "Hola, {{nome}}",
+    "subtitle": "Estos son los datos de tu patio",
+    "totalMotorcycles": "Total de motocicletas",
+    "newMotorcycle": "Nueva Motocicleta",
+    "searchMotorcycle": "Buscar Motocicleta",
+    "zonesChart": "Gráfico de Zonas"
+  },
+  "zones": {
+    "0": "Vestíbulo",
+    "1": "Mantenimiento Rápido",
+    "2": "Daños Estructurales",
+    "3": "Sin Placa",
+    "4": "Denuncia Policial",
+    "5": "Alquiler",
+    "6": "Motor Defectuoso"
+  }
+}
