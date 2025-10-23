@@ -2,6 +2,7 @@ import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import MenuSuperior from "../components/MenuSuperior";
 import Dashboard from "../components/DashHome/Dashboard";
 import ThemeToggleButton from "../components/ThemeToggleButton";
+import LanguageButton from "../components/LanguageButton";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <MenuSuperior />
         <Dashboard />
         <ThemeToggleButton />
+        <LanguageButton />
       </ScrollView>
     </SafeAreaView>
   );

@@ -7,12 +7,14 @@ import ProcurarMotoModal from "../ProcurarMotoModal";
 import { useState } from "react";
 import { useTheme } from "../../providers/ThemeContext";
 import GraficoZonas from "./GraficoZonas";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { user } = useUser();
   const navigation = useNavigation();
   const { motos } = useMotos();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const total = motos.length;
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,10 +22,10 @@ export default function Dashboard() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.title, { color: colors.title }]}>
-        Olá, {user?.nome}
+        {t("dashboard.greeting", { nome: user?.nome })}
       </Text>
       <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-        Esses são os dados do seu pátio
+        {t("dashboard.subtitle")}
       </Text>
 
       <View
@@ -35,7 +37,7 @@ export default function Dashboard() {
         <FontAwesome5 name="motorcycle" size={28} color={colors.secundary} />
         <View style={styles.atalhoContainer}>
           <Text style={[styles.atalhoText, { color: colors.textSecondary }]}>
-            Total de motos
+            {t("dashboard.totalMotorcycles")}
           </Text>
 
           <View>
@@ -52,7 +54,7 @@ export default function Dashboard() {
                 color="#FBFBFB"
               />
               <Text style={[styles.buttonText, { color: "#FBFBFB" }]}>
-                Nova Moto
+                {t("dashboard.newMotorcycle")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -66,7 +68,7 @@ export default function Dashboard() {
         onPress={() => setModalVisible(true)}
       >
         <Text style={[styles.buttonTextSearch, { color: "#FBFBFB" }]}>
-          Procurar Moto
+          {t("dashboard.searchMotorcycle")}
         </Text>
       </TouchableOpacity>
 

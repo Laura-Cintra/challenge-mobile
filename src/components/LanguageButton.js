@@ -19,7 +19,7 @@ export default function LanguageButton() {
       {i18n.language === "pt" && (
         <TouchableOpacity onPress={() => mudarIdioma("es")}>
           <Image
-            source={mexFlag}
+            source={ptFlag}
             style={[styles.flagIcon, { borderColor: colors.text }]}
           />
         </TouchableOpacity>
@@ -28,7 +28,7 @@ export default function LanguageButton() {
       {i18n.language === "es" && (
         <TouchableOpacity onPress={() => mudarIdioma("pt")}>
           <Image
-            source={ptFlag}
+            source={mexFlag}
             style={[styles.flagIcon, { borderColor: colors.text }]}
           />
         </TouchableOpacity>

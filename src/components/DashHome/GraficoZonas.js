@@ -3,10 +3,12 @@ import { View, Text, StyleSheet } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { zonasLista } from "../../data/zonas";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function GraficoZonas({ motos }) {
   const [dadosZonas, setDadosZonas] = useState([]);
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const contagem = zonasLista.map((zona) => {
@@ -28,7 +30,7 @@ export default function GraficoZonas({ motos }) {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: colors.title }]}>
-        Gráfico de Zonas
+        {t("dashboard.zonesChart")}
       </Text>
       <BarChart
         data={dadosGrafico}
@@ -49,7 +51,7 @@ export default function GraficoZonas({ motos }) {
           <View key={zona.id} style={styles.legendaItem}>
             <View style={[styles.legendaCor, { backgroundColor: zona.cor }]} />
             <Text style={[styles.legendaTexto, { color: colors.text }]}>
-              {zona.nome}
+              {t(`zones.${zona.id}`)}
             </Text>
           </View>
         ))}
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
-    gap: 10,
+    gap: 5,
   },
   legendaItem: {
     flexDirection: "row",
