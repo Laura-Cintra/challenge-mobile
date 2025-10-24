@@ -49,8 +49,6 @@
     "placeholderEmail": "Escribe tu correo electrónico",
     "placeholderPassword": "Escribe tu nueva contraseña",
     "placeholderConfirm": "Confirma tu contraseña",
-    "save": "Guardar",
-    "cancel": "Cancelar",
     "errorFields": "Rellena todos los campos.",
     "errorPasswords": "Las contraseñas no coinciden.",
     "success": "¡Perfil actualizado con éxito!",
@@ -64,7 +62,7 @@
     "viewParking": "Ver Patio",
     "registerMotorcycle": "Registrar Motocicleta",
     "locateMotorcycle": "Localizar Motocicleta",
-    "parking": "Patio - {{name}}",
+    "parking": "Patio - {{nome}}",
     "address": "Dirección",
     "motorcyclesInParking": "Motocicletas en el patio",
     "confirmAccountDeletion": "¿Está seguro de que desea eliminar su cuenta?"

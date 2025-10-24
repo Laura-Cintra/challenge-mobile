@@ -16,11 +16,13 @@ import EditarPerfilModal from "./EditarPerfilModal";
 import { deleteUserApi, getPatioById } from "../../services/actions";
 import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileInfo() {
-  const { user, logout, setUser } = useUser();
+  const { user, logout } = useUser();
   const navigation = useNavigation();
   const { colors, theme } = useTheme();
+  const { t } = useTranslation();
   const [patioDetails, setPatioDetails] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [editarVisible, setEditarVisible] = useState(false);
@@ -69,7 +71,7 @@ export default function ProfileInfo() {
           >
             <Feather name="edit" size={20} color={colors.primary} />
             <Text style={[styles.actionText, { color: colors.text }]}>
-              Editar
+              {t("profile.edit")}
             </Text>
           </TouchableOpacity>
 
@@ -79,37 +81,31 @@ export default function ProfileInfo() {
           >
             <Feather name="trash-2" size={20} color={colors.modalRed} />
             <Text style={[styles.actionText, { color: colors.text }]}>
-              Excluir
+              {t("profile.delete")}
             </Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={[styles.patioContainer, { borderColor: colors.border }]}>
-        <View
-          style={[styles.patioHeader, { backgroundColor: colors.secundary }]}
-        >
+        <View style={[styles.patioHeader, { backgroundColor: colors.secundary }]}>
           <Entypo name="location-pin" size={24} color="#FBFBFB" />
           <Text style={styles.patioTitle}>
-            Pátio - {user?.nomePatio || "Nome não disponível"}
+            {t("profile.parking", { nome: user?.nomePatio || "—" })}
           </Text>
         </View>
 
         <View style={[styles.patioDiv, { backgroundColor: colors.white }]}>
           <Text style={[styles.patioText, { color: colors.text }]}>
-            Endereço:{" "}
-            <Text
-              style={[styles.patioItemText, { color: colors.textSecondary }]}
-            >
-              {patioDetails?.endereco || "Endereço não disponível"}
+            {t("profile.address")}:{" "}
+            <Text style={[styles.patioItemText, { color: colors.textSecondary }]}>
+              {patioDetails?.endereco || "—"}
             </Text>
           </Text>
           <Text style={[styles.patioText, { color: colors.text }]}>
-            Motos no pátio:{" "}
-            <Text
-              style={[styles.patioItemText, { color: colors.textSecondary }]}
-            >
-              {patioDetails?.motos.length || 0}
+            {t("profile.motorcyclesInParking")}:{" "}
+            <Text style={[styles.patioItemText, { color: colors.textSecondary }]}>
+              {patioDetails?.motos?.length || 0}
             </Text>
           </Text>
         </View>
@@ -117,7 +113,7 @@ export default function ProfileInfo() {
 
       <View style={styles.atalhoContainer}>
         <Text style={[styles.atalhoTitle, { color: colors.title }]}>
-          Atalhos
+          {t("profile.shortcuts")}
         </Text>
 
         <View style={styles.atalhoIcons}>
@@ -127,7 +123,7 @@ export default function ProfileInfo() {
           >
             <Foundation name="graph-bar" size={28} color={colors.secundary} />
             <Text style={[styles.iconText, { color: colors.text }]}>
-              Dashboard
+              {t("profile.dashboard")}
             </Text>
           </TouchableOpacity>
 
@@ -137,7 +133,7 @@ export default function ProfileInfo() {
           >
             <FontAwesome5 name="parking" size={28} color={colors.secundary} />
             <Text style={[styles.iconText, { color: colors.text }]}>
-              Ver Pátio
+              {t("profile.viewParking")}
             </Text>
           </TouchableOpacity>
 
@@ -151,7 +147,7 @@ export default function ProfileInfo() {
               color={colors.secundary}
             />
             <Text style={[styles.iconText, { color: colors.text }]}>
-              Registrar Moto
+              {t("profile.registerMotorcycle")}
             </Text>
           </TouchableOpacity>
 
@@ -161,7 +157,7 @@ export default function ProfileInfo() {
           >
             <MaterialIcons name="search" size={28} color={colors.secundary} />
             <Text style={[styles.iconText, { color: colors.text }]}>
-              Localizar Moto
+              {t("profile.locateMotorcycle")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -181,7 +177,7 @@ export default function ProfileInfo() {
         visible={confirmDelete}
         onClose={() => setConfirmDelete(false)}
         onConfirm={handleDeleteAccount}
-        mensagem={`Tem certeza que deseja excluir sua conta?`}
+        mensagem={t("profile.confirmAccountDeletion")}
       />
     </View>
   );

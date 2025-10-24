@@ -12,10 +12,12 @@ import MessageModal from "../MessageModal";
 import { useUser } from "../../providers/UserContext";
 import { updateUserApi } from "../../services/actions";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
-export default function EditarPerfilModal({ visible, onClose }) {
+export default function editProfileModal({ visible, onClose }) {
   const { user, updateUser } = useUser();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -35,14 +37,14 @@ export default function EditarPerfilModal({ visible, onClose }) {
 
   const handleSalvar = async () => {
     if (!nome.trim() || !email.trim()) {
-      setModalMessage("Preencha todos os campos.");
+      setModalMessage(t("editProfile.errorFields"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
     if (senha && senha !== confirmarSenha) {
-      setModalMessage("As senhas não coincidem.");
+      setModalMessage(t("editProfile.errorPasswords"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
@@ -53,7 +55,7 @@ export default function EditarPerfilModal({ visible, onClose }) {
       const atualizado = await updateUserApi(user.idUsuario, dadosAtualizados);
       await updateUser(atualizado);
 
-      setModalMessage("Perfil atualizado com sucesso!");
+      setModalMessage(t("editProfile.success"));
       setIsSuccess(true);
       setModalVisible(true);
 
@@ -62,7 +64,7 @@ export default function EditarPerfilModal({ visible, onClose }) {
         onClose();
       }, 2000);
     } catch (error) {
-      setModalMessage("Erro ao atualizar perfil.");
+      setModalMessage(t("editProfile.errorUpdate"));
       setIsSuccess(false);
       setModalVisible(true);
     }
@@ -76,73 +78,65 @@ export default function EditarPerfilModal({ visible, onClose }) {
             style={styles(colors).closeButton}
             onPress={onClose}
           >
-            <MaterialCommunityIcons
-              name="close"
-              size={22}
-              color={colors.text}
-            />
+            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={styles(colors).title}>Editar Perfil</Text>
+          <Text style={styles(colors).title}>{t("editProfile.title")}</Text>
 
-          <Text style={styles(colors).label}>Nome</Text>
+          <Text style={styles(colors).label}>{t("editProfile.name")}</Text>
           <TextInput
             style={styles(colors).input}
             value={nome}
             onChangeText={setNome}
-            placeholder="Digite seu nome"
+            placeholder={t("editProfile.placeholderName")}
             placeholderTextColor={colors.placeholder}
           />
 
-          <Text style={styles(colors).label}>E-mail</Text>
+          <Text style={styles(colors).label}>{t("editProfile.email")}</Text>
           <TextInput
             style={styles(colors).input}
             value={email}
             onChangeText={setEmail}
-            placeholder="Digite seu e-mail"
+            placeholder={t("editProfile.placeholderEmail")}
             placeholderTextColor={colors.placeholder}
             keyboardType="email-address"
           />
 
-          <Text style={styles(colors).label}>Nova Senha</Text>
+          <Text style={styles(colors).label}>{t("editProfile.newPassword")}</Text>
           <TextInput
             style={styles(colors).input}
             value={senha}
             onChangeText={setSenha}
-            placeholder="Digite sua nova senha"
+            placeholder={t("editProfile.placeholderPassword")}
             placeholderTextColor={colors.placeholder}
             secureTextEntry
           />
 
-          <Text style={styles(colors).label}>Confirmar Senha</Text>
+          <Text style={styles(colors).label}>
+            {t("editProfile.confirmPassword")}
+          </Text>
           <TextInput
             style={styles(colors).input}
             value={confirmarSenha}
             onChangeText={setConfirmarSenha}
-            placeholder="Confirme sua senha"
+            placeholder={t("editProfile.placeholderConfirm")}
             placeholderTextColor={colors.placeholder}
             secureTextEntry
           />
 
           <View style={styles(colors).buttonsRow}>
             <TouchableOpacity
-              style={[
-                styles(colors).button,
-                { backgroundColor: colors.secundary },
-              ]}
+              style={[styles(colors).button, { backgroundColor: colors.secundary }]}
               onPress={handleSalvar}
             >
-              <Text style={styles(colors).buttonText}>Salvar</Text>
+              <Text style={styles(colors).buttonText}>{t("editMotorcycle.save")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[
-                styles(colors).button,
-                { backgroundColor: colors.inative },
-              ]}
+              style={[styles(colors).button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles(colors).buttonText}>Cancelar</Text>
+              <Text style={styles(colors).buttonText}>{t("editMotorcycle.cancel")}</Text>
             </TouchableOpacity>
           </View>
         </View>
