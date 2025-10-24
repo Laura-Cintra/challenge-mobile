@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function ListaMotos({
   titulo,
@@ -25,8 +26,9 @@ export default function ListaMotos({
   permitirLocalizar = true,
 }) {
   const { colors } = useTheme();
-  const textoBusca = (busca || "").toLowerCase().trim();
+  const { t } = useTranslation();
 
+  const textoBusca = (busca || "").toLowerCase().trim();
   const motosFiltradas = textoBusca
     ? motos.filter(
         (moto) =>
@@ -38,44 +40,34 @@ export default function ListaMotos({
 
   return (
     <View style={{ flex: 1 }}>
-      {titulo && (
-        <Text style={[styles.modalTitle, { color: colors.text }]}>
-          {titulo}
-        </Text>
-      )}
+      {titulo && <Text style={[styles.modalTitle, { color: colors.text }]}>{titulo}</Text>}
 
       {mostrarFiltro && (
         <TextInput
           placeholder={
             motos.some((moto) => moto.zona === 3)
-              ? "Digite o chassi ou modelo"
-              : "Digite a placa ou modelo"
+              ? t("motorcycleList.placeholderChassi")
+              : t("motorcycleList.placeholderLicensePlate")
           }
           placeholderTextColor={colors.placeholder}
           value={busca}
           onChangeText={setBusca}
           style={[
             styles.searchInput,
-            {
-              borderColor: colors.border,
-              backgroundColor: colors.white,
-              color: colors.text,
-            },
+            { borderColor: colors.border, backgroundColor: colors.white, color: colors.text },
           ]}
         />
       )}
 
       {textoBusca.length > 0 && motosFiltradas.length === 0 && (
         <Text style={[styles.errorMessage, { color: colors.modalRed }]}>
-          Moto não encontrada
+          {t("motorcycleList.notFound")}
         </Text>
       )}
 
       <FlatList
         data={motosFiltradas}
-        keyExtractor={(item, i) =>
-          item?.idCarrapato || item?.id?.toString() || i.toString()
-        }
+        keyExtractor={(item, i) => item?.idCarrapato || item?.id?.toString() || i.toString()}
         renderItem={({ item }) => (
           <View
             style={[
@@ -85,27 +77,23 @@ export default function ListaMotos({
           >
             <View>
               {item?.idCarrapato && (
-                <Text
-                  style={[styles.deviceText, { color: colors.textSecondary }]}
-                >
-                  Carrapato: {item.idCarrapato}
+                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                  {t("motorcycleList.iot")}: {item.idCarrapato}
                 </Text>
               )}
 
               {item?.zona === 3 ? (
                 <Text style={[styles.text, { color: colors.text }]}>
-                  Chassi: {item.chassi}
+                  {t("motorcycleList.chassi")}: {item.chassi}
                 </Text>
               ) : (
                 <Text style={[styles.text, { color: colors.text }]}>
-                  Placa: {item?.placa}
+                  {t("editMotorcycle.licensePlate")}: {item?.placa}
                 </Text>
               )}
               {item?.modelo && (
-                <Text
-                  style={[styles.deviceText, { color: colors.textSecondary }]}
-                >
-                  Modelo: {item.modelo}
+                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                  {t("editMotorcycle.model")}: {item.modelo}
                 </Text>
               )}
             </View>
@@ -114,28 +102,22 @@ export default function ListaMotos({
               {permitirLocalizar &&
                 (selected === item?.placa ? (
                   <TouchableOpacity
-                    style={[
-                      styles.button,
-                      { backgroundColor: colors.modalRed },
-                    ]}
+                    style={[styles.button, { backgroundColor: colors.modalRed }]}
                     onPress={() => onParar(item)}
                   >
-                    <Text style={styles.buttonText}>Parar</Text>
+                    <Text style={styles.buttonText}>{t("motorcycleList.stop")}</Text>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
                     style={[styles.button, { backgroundColor: colors.primary }]}
                     onPress={() => onLocalizar(item)}
                   >
-                    <Text style={styles.buttonText}>Localizar</Text>
+                    <Text style={styles.buttonText}>{t("motorcycleList.locate")}</Text>
                   </TouchableOpacity>
                 ))}
 
               {permitirEditar && (
-                <TouchableOpacity
-                  style={{ marginLeft: 10 }}
-                  onPress={() => onEdit(item)}
-                >
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => onEdit(item)}>
                   <MaterialCommunityIcons
                     name="pencil-outline"
                     size={20}
@@ -145,10 +127,7 @@ export default function ListaMotos({
               )}
 
               {permitirExcluir && (
-                <TouchableOpacity
-                  style={{ marginLeft: 10 }}
-                  onPress={() => onDelete(item)}
-                >
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => onDelete(item)}>
                   <Feather name="trash-2" size={20} color={colors.modalRed} />
                 </TouchableOpacity>
               )}

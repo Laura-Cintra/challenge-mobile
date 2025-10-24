@@ -72,5 +72,28 @@
     "warning": "Esta ação não poderá ser desfeita.",
     "delete": "Excluir",
     "cancel": "Cancelar"
+  },
+  "searchMotorcycle": {
+    "title": "Localize uma moto em seu pátio",
+    "status": {
+      "connected": "Conectado",
+      "connecting": "Conectando...",
+      "disconnected": "Desconectado"
+    },
+    "errorNoMotorcycle": "Nenhuma moto cadastrada neste pátio.",
+    "errorNotFound": "Nenhuma moto encontrada para o seu pátio.",
+    "errorLoad": "Erro ao carregar motos. Verifique a conexão.",
+    "mqttNotConnected": "MQTT não conectado",
+    "locating": "Localizando moto {{placa}}",
+    "stopping": "Parando localização da moto {{placa}}"
+  },
+  "motorcycleList": {
+    "placeholderLicensePlate": "Digite a placa ou modelo",
+    "placeholderChassi": "Digite o chassi ou modelo",
+    "notFound": "Moto não encontrada",
+    "iot": "Carrapato",
+    "chassi": "Chassi",
+    "locate": "Localizar",
+    "stop": "Parar"
   }
 }

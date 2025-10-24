@@ -14,10 +14,12 @@ import { getMotos, getPatioById } from "../services/actions";
 import { useUser } from "../providers/UserContext";
 import { useTheme } from "../providers/ThemeContext";
 import MessageModal from "./MessageModal";
+import { useTranslation } from "react-i18next";
 
 export default function ProcurarMotoModal({ visible, onClose }) {
   const { user } = useUser();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const [busca, setBusca] = useState("");
   const [selected, setSelected] = useState(null);
@@ -42,9 +44,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
       setBusca("");
       setSelected(null);
       setErroMsg("");
-      if (mqttClient && mqttClient.isConnected()) {
-        mqttClient.disconnect();
-      }
+      if (mqttClient && mqttClient.isConnected()) mqttClient.disconnect();
     }
   }, [visible, user]);
 
@@ -54,29 +54,17 @@ export default function ProcurarMotoModal({ visible, onClose }) {
     const client = new Client("broker.hivemq.com", 8000, "/mqtt", clientId);
 
     client.onConnectionLost = (responseObject) => {
-      if (responseObject.errorCode !== 0) {
-        setConnected(false);
-      }
+      if (responseObject.errorCode !== 0) setConnected(false);
       setIsConnecting(false);
-    };
-
-    client.onMessageArrived = (message) => {
-      console.log(
-        "MQTT message:",
-        message.destinationName,
-        message.payloadString
-      );
     };
 
     client.connect({
       onSuccess: () => {
-        console.log("MQTT conectado!");
         setConnected(true);
         setIsConnecting(false);
         client.subscribe("smartpatio/status");
       },
-      onFailure: (err) => {
-        console.error("Falha na conexão MQTT:", err.errorMessage);
+      onFailure: () => {
         setConnected(false);
         setIsConnecting(false);
       },
@@ -97,34 +85,20 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         const patio = await getPatioById(user.idPatio);
         const motosDoPatio = patio?.motos ?? [];
         setMotos(motosDoPatio);
-        if ((motosDoPatio?.length ?? 0) === 0) {
-          setErroMsg("Nenhuma moto cadastrada neste pátio.");
-        }
+        if (motosDoPatio.length === 0) setErroMsg(t("searchMotorcycle.errorNoMotorcycle"));
         return;
       }
       const todas = await getMotos();
-
-      let motosDoPatio = [];
-      if (user?.idPatio) {
-        motosDoPatio = todas.filter((m) => m.idPatio === user.idPatio);
-      }
-
-      if ((motosDoPatio?.length ?? 0) === 0 && user?.nomePatio) {
+      let motosDoPatio = todas.filter((m) => m.idPatio === user?.idPatio);
+      if (motosDoPatio.length === 0 && user?.nomePatio) {
         motosDoPatio = todas.filter(
-          (m) =>
-            (m.nomePatio ?? "").toLowerCase() ===
-            String(user.nomePatio).toLowerCase()
+          (m) => (m.nomePatio ?? "").toLowerCase() === user.nomePatio.toLowerCase()
         );
       }
-
-      if ((motosDoPatio?.length ?? 0) === 0) {
-        setErroMsg("Nenhuma moto encontrada para o seu pátio.");
-      }
-
+      if (motosDoPatio.length === 0) setErroMsg(t("searchMotorcycle.errorNotFound"));
       setMotos(motosDoPatio);
-    } catch (err) {
-      console.error("Erro ao carregar motos do pátio:", err);
-      setErroMsg("Erro ao carregar motos. Verifique a conexão.");
+    } catch {
+      setErroMsg(t("searchMotorcycle.errorLoad"));
     } finally {
       setLoading(false);
     }
@@ -132,38 +106,32 @@ export default function ProcurarMotoModal({ visible, onClose }) {
 
   const localizar = (moto) => {
     if (isConnecting || !mqttClient || !connected) {
-      setMessage("MQTT não conectado");
+      setMessage(t("searchMotorcycle.mqttNotConnected"));
       setIsSuccess(false);
       setMessageModalVisible(true);
       return;
     }
-    const command = `ACTIVATE`;
-
-    const message = new Message(command);
-    message.destinationName = `smartpatio/commands/${moto.idCarrapato}`;
-    mqttClient.send(message);
-    setSelected(moto.placa ?? moto.chassi ?? moto.id?.toString());
-
-    setMessage(`Localizando moto ${moto.placa}`);
+    const msg = new Message("ACTIVATE");
+    msg.destinationName = `smartpatio/commands/${moto.idCarrapato}`;
+    mqttClient.send(msg);
+    setSelected(moto.placa);
+    setMessage(t("searchMotorcycle.locating", { placa: moto.placa }));
     setIsSuccess(true);
     setMessageModalVisible(true);
   };
 
   const parar = (moto) => {
     if (isConnecting || !mqttClient || !connected) {
-      setMessage("MQTT não conectado");
+      setMessage(t("searchMotorcycle.mqttNotConnected"));
       setIsSuccess(false);
       setMessageModalVisible(true);
       return;
     }
-    const command = `DEACTIVATE`;
-    const message = new Message(command);
-    message.destinationName = `smartpatio/commands/${moto.idCarrapato}`;
-
-    mqttClient.send(message);
+    const msg = new Message("DEACTIVATE");
+    msg.destinationName = `smartpatio/commands/${moto.idCarrapato}`;
+    mqttClient.send(msg);
     setSelected(null);
-
-    setMessage(`Parando localização da moto ${moto.placa}`);
+    setMessage(t("searchMotorcycle.stopping", { placa: moto.placa }));
     setIsSuccess(false);
     setMessageModalVisible(true);
   };
@@ -172,46 +140,34 @@ export default function ProcurarMotoModal({ visible, onClose }) {
     <Modal visible={visible} animationType="slide">
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={[styles.statusBox, { backgroundColor: colors.white }]}>
-          <Text
-            style={{ color: connected ? "green" : "red", fontWeight: "bold" }}
-          >
+          <Text style={{ color: connected ? "green" : "red", fontWeight: "bold" }}>
             MQTT:{" "}
             {connected
-              ? "Conectado"
+              ? t("searchMotorcycle.status.connected")
               : isConnecting
-              ? "Conectando..."
-              : "Desconectado"}
+              ? t("searchMotorcycle.status.connecting")
+              : t("searchMotorcycle.status.disconnected")}
           </Text>
         </View>
 
         {loading ? (
-          <ActivityIndicator
-            size="large"
-            color={colors.primary}
-            style={{ marginTop: 50 }}
-          />
+          <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 50 }} />
+        ) : erroMsg ? (
+          <Text style={{ color: colors.text, textAlign: "center", marginTop: 30 }}>
+            {erroMsg}
+          </Text>
         ) : (
-          <>
-            {erroMsg ? (
-              <View style={{ padding: 20, alignItems: "center" }}>
-                <Text style={{ color: colors.text, fontSize: 16 }}>
-                  {erroMsg}
-                </Text>
-              </View>
-            ) : (
-              <ListaMotos
-                titulo="Localize uma moto em seu pátio"
-                motos={motos}
-                busca={busca}
-                setBusca={setBusca}
-                selected={selected}
-                onLocalizar={localizar}
-                onParar={parar}
-                mostrarFiltro={true}
-                permitirLocalizar={true}
-              />
-            )}
-          </>
+          <ListaMotos
+            titulo={t("searchMotorcycle.title")}
+            motos={motos}
+            busca={busca}
+            setBusca={setBusca}
+            selected={selected}
+            onLocalizar={localizar}
+            onParar={parar}
+            mostrarFiltro
+            permitirLocalizar
+          />
         )}
 
         <TouchableOpacity
@@ -220,7 +176,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         >
           <MaterialCommunityIcons name="close" size={20} color="#FBFBFB" />
           <Text style={{ color: "#FBFBFB", fontSize: 16, marginLeft: 6 }}>
-            Fechar
+            {t("zoneModal.close")}
           </Text>
         </TouchableOpacity>
 

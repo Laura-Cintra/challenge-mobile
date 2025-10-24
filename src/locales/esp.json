@@ -72,5 +72,28 @@
     "warning": "Esta acción no se podrá deshacer.",
     "delete": "Eliminar",
     "cancel": "Cancelar"
+  },
+  "searchMotorcycle": {
+    "title": "Localiza una motocicleta en tu patio",
+    "status": {
+      "connected": "Conectado",
+      "connecting": "Conectando...",
+      "disconnected": "Desconectado"
+    },
+    "errorNoMotorcycle": "Ninguna motocicleta registrada en este patio.",
+    "errorNotFound": "Ninguna motocicleta encontrada para tu patio.",
+    "errorLoad": "Error al cargar motocicletas. Verifica la conexión.",
+    "mqttNotConnected": "MQTT no conectado",
+    "locating": "Localizando motocicleta {{placa}}",
+    "stopping": "Deteniendo localización de la motocicleta {{placa}}"
+  },
+  "motorcycleList": {
+    "placeholderLicensePlate": "Escribe la placa o el modelo",
+    "placeholderChassi": "Escribe el chasis o el modelo",
+    "notFound": "Motocicleta no encontrada",
+    "iot": "Garrapato",
+    "chassi": "Chasis",
+    "locate": "Localizar",
+    "stop": "Detener"
   }
 }
