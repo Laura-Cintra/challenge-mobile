@@ -197,7 +197,7 @@ export default function RegistrarMoto() {
                 </Text>
                 <Text style={[styles.detailText, { color: colors.textSecondary }]}>
                   {t("registerMotorcycle.currentZone", {
-                    zona: zonasMap[zona]?.nome || t("registerMotorcycle.undefinedZone"),
+                    zona: t(`zones.${zona}`) || t("registerMotorcycle.undefinedZone"),
                   })}
                 </Text>
               </View>
