@@ -132,13 +132,22 @@
     "placeholderName": "Digite seu nome",
     "placeholderEmail": "Digite seu e-mail",
     "placeholderPassword": "Digite sua senha",
+    "selectPlaceholder": "Selecione {{campo}}...",
     "registerButton": "Cadastrar",
     "alreadyHaveAccount": "Já possui conta?",
     "login": "Fazer login",
-    "fillInFields": "Preencha todos os campos.",
+    "fillInFields": "Preencha todos os campos!",
     "invalidEmail": "Por favor, insira um e-mail válido.",
     "shortPassword": "A senha deve ter pelo menos 6 caracteres.",
     "success": "Cadastro realizado com sucesso!",
     "error": "Erro ao cadastrar. Tente novamente."
+  },
+  "login": {
+    "title": "Login",
+    "loginButton": "Entrar",
+    "dontHaveAccount": "Não possui conta?",
+    "registerHere": "Cadastre-se",
+    "success": "Login realizado com sucesso!",
+    "error": "Erro inesperado ao logar. Tente novamente mais tarde."
   }
 }

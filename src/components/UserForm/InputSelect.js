@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useState } from "react";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function InputSelectDropdown({
   label,
@@ -11,6 +12,7 @@ export default function InputSelectDropdown({
   zIndex = 1000,
 }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,7 +42,9 @@ export default function InputSelectDropdown({
         textStyle={{
           color: colors.text,
         }}
-        placeholder={`Selecione ${label.toLowerCase()}...`}
+        placeholder={t("registration.selectPlaceholder", {
+          campo: label.toLowerCase(),
+        })}
         placeholderStyle={{ color: colors.placeholder }}
       />
     </View>

@@ -17,15 +17,16 @@ import { AntDesign } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const navigation = useNavigation();
   const { login } = useUser();
   const { colors, theme } = useTheme();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -33,28 +34,24 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setModalMessage("Preencha todos os campos!");
+      setModalMessage(t("registration.fillInFields"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
     setIsLoading(true);
-
     try {
       const response = await loginUser(email, password);
 
       if (response) {
         await login(response);
-        setModalMessage("Login realizado com sucesso!");
+        setModalMessage(t("login.success"));
         setIsSuccess(true);
         setModalVisible(true);
       }
     } catch (error) {
-      const errorMessage =
-        error?.mensagem ||
-        "Erro inesperado ao logar. Tente novamente mais tarde.";
-
+      const errorMessage = error?.mensagem || t("login.error");
       setModalMessage(errorMessage);
       setIsSuccess(false);
       setModalVisible(true);
@@ -73,11 +70,13 @@ export default function Login() {
         </View>
 
         <View style={styles.form}>
-          <Text style={[styles.formTitle, { color: colors.text }]}>Login</Text>
+          <Text style={[styles.formTitle, { color: colors.text }]}>
+            {t("login.title")}
+          </Text>
 
           <FormInput
-            label="E-mail"
-            placeholder="Digite seu e-mail"
+            label={t("registration.email")}
+            placeholder={t("registration.placeholderEmail")}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -85,8 +84,8 @@ export default function Login() {
           />
 
           <FormInput
-            label="Senha"
-            placeholder="Digite sua senha"
+            label={t("registration.password")}
+            placeholder={t("registration.placeholderPassword")}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -102,17 +101,17 @@ export default function Login() {
               <ActivityIndicator size="small" color={colors.white} />
             ) : (
               <Text style={[styles.buttonText, { color: colors.white }]}>
-                Entrar
+                {t("login.loginButton")}
               </Text>
             )}
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
             <Text style={[styles.linkText, { color: colors.text }]}>
-              Não possui conta?
+              {t("login.dontHaveAccount")}
               <Text style={[styles.link, { color: colors.primary }]}>
                 {" "}
-                Cadastre-se
+                {t("login.registerHere")}
               </Text>
             </Text>
           </TouchableOpacity>
