@@ -122,5 +122,23 @@
     "placeholderChassis": "Digite o número do chassi",
     "placeholderLicensePlate": "Digite a placa",
     "continue": "Prosseguir"
+  },
+  "registration": {
+    "title": "Cadastro",
+    "name": "Nome",
+    "email": "E-mail",
+    "password": "Senha",
+    "patio": "Pátio",
+    "placeholderName": "Digite seu nome",
+    "placeholderEmail": "Digite seu e-mail",
+    "placeholderPassword": "Digite sua senha",
+    "registerButton": "Cadastrar",
+    "alreadyHaveAccount": "Já possui conta?",
+    "login": "Fazer login",
+    "fillInFields": "Preencha todos os campos.",
+    "invalidEmail": "Por favor, insira um e-mail válido.",
+    "shortPassword": "A senha deve ter pelo menos 6 caracteres.",
+    "success": "Cadastro realizado com sucesso!",
+    "error": "Erro ao cadastrar. Tente novamente."
   }
 }

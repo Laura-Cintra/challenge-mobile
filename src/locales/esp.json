@@ -122,5 +122,23 @@
     "placeholderChassis": "Escribe el número del chasis",
     "placeholderLicensePlate": "Escribe la placa",
     "continue": "Continuar"
+  },
+  "registration": {
+    "title": "Registro",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "patio": "Patio",
+    "placeholderName": "Escribe tu nombre",
+    "placeholderEmail": "Escribe tu correo electrónico",
+    "placeholderPassword": "Escribe tu contraseña",
+    "registerButton": "Registrarse",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "login": "Iniciar Sesión",
+    "fillInFields": "Rellena todos los campos.",
+    "invalidEmail": "Por favor, introduce un correo electrónico válido.",
+    "shortPassword": "La contraseña debe tener al menos 6 caracteres.",
+    "success": "¡Registro realizado con éxito!",
+    "error": "Error al registrar. Inténtalo de nuevo."
   }
 }

@@ -11,11 +11,13 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function CadastroForm() {
   const navigation = useNavigation();
   const { login } = useUser();
   const { colors, theme } = useTheme();
+  const { t } = useTranslation();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,26 +29,17 @@ export default function CadastroForm() {
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailRegex.test(email);
-  };
-
-  const isValidPassword = (password) => {
-    return password.length >= 6;
-  };
+  const isValidEmail = (email) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+  const isValidPassword = (password) => password.length >= 6;
 
   useEffect(() => {
     const fetchPatios = async () => {
       try {
         const patios = await getPatios();
-        const formattedPatios = patios.map((patio) => ({
-          value: patio.id.toString(),
-          label: patio.nome,
-        }));
-        setPatiosDisponiveis(formattedPatios);
+        const formatted = patios.map((p) => ({ value: p.id.toString(), label: p.nome }));
+        setPatiosDisponiveis(formatted);
       } catch (error) {
-        console.error("Erro ao carregar os pátios:", error);
+        console.error("Erro ao carregar pátios:", error);
       }
     };
     fetchPatios();
@@ -54,21 +47,21 @@ export default function CadastroForm() {
 
   const handleCadastro = async () => {
     if (!name || !email || !password || !patio) {
-      setModalMessage("Preencha todos os campos.");
+      setModalMessage(t("registration.fillInFields"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
     if (!isValidEmail(email)) {
-      setModalMessage("Por favor, insira um e-mail válido.");
+      setModalMessage(t("registration.invalidEmail"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
     if (!isValidPassword(password)) {
-      setModalMessage("A senha deve ter pelo menos 6 caracteres.");
+      setModalMessage(t("registration.shortPassword"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
@@ -77,7 +70,7 @@ export default function CadastroForm() {
     try {
       const userData = {
         nome: name,
-        email: email,
+        email,
         senha: password,
         idPatio: parseInt(patio),
       };
@@ -85,16 +78,14 @@ export default function CadastroForm() {
       const novoUser = await createUser(userData);
       login(novoUser);
 
-      setModalMessage("Cadastro realizado com sucesso!");
+      setModalMessage(t("registration.success"));
       setIsSuccess(true);
       setModalVisible(true);
 
-      setTimeout(() => {
-        navigation.replace("MainApp");
-      }, 1000);
+      setTimeout(() => navigation.replace("MainApp"), 1000);
     } catch (error) {
       console.log("Erro no cadastro:", error.message);
-      setModalMessage("Erro ao cadastrar. Tente novamente.");
+      setModalMessage(t("registration.error"));
       setIsSuccess(false);
       setModalVisible(true);
     }
@@ -110,21 +101,19 @@ export default function CadastroForm() {
         </View>
 
         <View style={styles.form}>
-          <Text style={[styles.formTitle, { color: colors.text }]}>
-            Cadastro
-          </Text>
+          <Text style={[styles.formTitle, { color: colors.text }]}>{t("registration.title")}</Text>
 
           <FormInput
-            label="Nome"
-            placeholder="Digite seu nome"
+            label={t("registration.name")}
+            placeholder={t("registration.placeholderName")}
             value={name}
             onChangeText={setName}
             icon={<AntDesign name="user" size={20} color={colors.secundary} />}
           />
 
           <FormInput
-            label="E-mail"
-            placeholder="Digite seu e-mail"
+            label={t("registration.email")}
+            placeholder={t("registration.placeholderEmail")}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -132,8 +121,8 @@ export default function CadastroForm() {
           />
 
           <FormInput
-            label="Senha"
-            placeholder="Digite sua senha"
+            label={t("registration.password")}
+            placeholder={t("registration.placeholderPassword")}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -141,7 +130,7 @@ export default function CadastroForm() {
           />
 
           <InputSelectDropdown
-            label="Pátio"
+            label={t("registration.patio")}
             selectedValue={patio}
             onValueChange={(value) => setPatio(value)}
             items={patiosDisponiveis}
@@ -152,16 +141,16 @@ export default function CadastroForm() {
             onPress={handleCadastro}
           >
             <Text style={[styles.buttonText, { color: colors.white }]}>
-              Cadastrar
+              {t("registration.registerButton")}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={[styles.linkText, { color: colors.text }]}>
-              Já possui conta?
+              {t("registration.alreadyHaveAccount")}
               <Text style={[styles.link, { color: colors.primary }]}>
                 {" "}
-                Fazer login
+                {t("registration.login")}
               </Text>
             </Text>
           </TouchableOpacity>
