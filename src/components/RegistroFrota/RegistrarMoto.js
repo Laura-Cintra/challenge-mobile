@@ -6,10 +6,12 @@ import { getMotos, createMoto } from "../../services/actions";
 import { useUser } from "../../providers/UserContext";
 import { zonasMap } from "../../data/zonas";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function RegistrarMoto() {
   const { user } = useUser();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,6 @@ export default function RegistrarMoto() {
 
   const [erroPlaca, setErroPlaca] = useState(false);
   const [erroCarrapato, setErroCarrapato] = useState(false);
-
   const [finalizado, setFinalizado] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -36,26 +37,20 @@ export default function RegistrarMoto() {
       try {
         if (step === 1 && loading) {
           try {
-            if (Math.random() < 0.3) {
-              throw new Error("Falha na leitura da placa/chassi");
-            }
-
+            if (Math.random() < 0.3) throw new Error(t("registerMotorcycle.errorReading"));
             const motos = await getMotos();
-            if (!motos || motos.length === 0) {
-              throw new Error("Nenhuma moto encontrada no banco.");
-            }
-            await new Promise((res) => setTimeout(res, 1000));
+            if (!motos || motos.length === 0) throw new Error(t("registerMotorcycle.noneFound"));
 
+            await new Promise((res) => setTimeout(res, 1000));
             const aleatoria = motos[Math.floor(Math.random() * motos.length)];
             setPlaca(aleatoria.placa || aleatoria.chassi || "");
-
             setLoading(false);
 
             setTimeout(() => {
               setStep(2);
               setLoading(true);
             }, 1000);
-          } catch (error) {
+          } catch {
             await new Promise((res) => setTimeout(res, 1000));
             setErroPlaca(true);
             setLoading(false);
@@ -69,17 +64,13 @@ export default function RegistrarMoto() {
               : { placa: placa.trim().toUpperCase(), idPatio: user.idPatio };
 
             const vinculo = await createMoto(body);
-
             setCarrapato(vinculo.idCarrapato);
             setModelo(vinculo.modelo);
             setZona(vinculo.zona);
+
             await new Promise((res) => setTimeout(res, 1000));
-
             setLoading(false);
-
-            setTimeout(() => {
-              setStep(3);
-            }, 1000);
+            setTimeout(() => setStep(3), 1000);
           } catch (error) {
             const mensagemApi =
               error.response?.data?.mensagem ||
@@ -87,19 +78,17 @@ export default function RegistrarMoto() {
               error.response?.data?.erro ||
               error.mensagem ||
               error.message ||
-              "Erro desconhecido ao criar moto.";
+              t("registerMotorcycle.unknownError");
 
             setModalMessage(mensagemApi);
             setErroCarrapato(true);
-            await new Promise((res) => setTimeout(res, 1000));
             setLoading(false);
             setStep(3);
           }
         }
-      } catch (error) {
+      } catch {
         if (step === 1) setErroPlaca(true);
         if (step === 2) setErroCarrapato(true);
-
         setLoading(false);
       }
     };
@@ -110,22 +99,20 @@ export default function RegistrarMoto() {
   const handleProsseguirPlaca = () => {
     if (semPlaca) {
       if (!chassi.trim()) {
-        setModalMessage("Digite o número do chassi.");
+        setModalMessage(t("registerMotorcycle.enterChassis"));
         setModalVisible(true);
         return;
       }
     } else {
       if (!placa.trim()) {
-        setModalMessage("Digite uma placa válida.");
+        setModalMessage(t("registerMotorcycle.enterLicensePlate"));
         setModalVisible(true);
         return;
       }
 
-      const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(
-        placa.trim().toUpperCase()
-      );
+      const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(placa.trim().toUpperCase());
       if (!validarPlaca) {
-        setModalMessage("Formato inválido (use ABC1A23).");
+        setModalMessage(t("editMotorcycle.invalidLicensePlate"));
         setModalVisible(true);
         return;
       }
@@ -164,18 +151,18 @@ export default function RegistrarMoto() {
       {!finalizado ? (
         <>
           <Text style={[styles.title, { color: colors.title }]}>
-            Registro de Nova Moto
+            {t("registerMotorcycle.title")}
           </Text>
 
           {step >= 1 && (
             <RegistroCampo
-              label="Placa"
+              label={t("editMotorcycle.licensePlate")}
               isFeminine={true}
               valor={semPlaca ? chassi : placa}
               setValor={semPlaca ? setChassi : setPlaca}
               erro={erroPlaca}
               loading={loading && step === 1}
-              placeholder="Digite a placa"
+              placeholder={t("registrationField.placeholderLicensePlate")}
               onProsseguir={handleProsseguirPlaca}
               permiteSemPlaca
               semPlaca={semPlaca}
@@ -198,69 +185,51 @@ export default function RegistrarMoto() {
 
           {step === 3 && !erroCarrapato ? (
             <View style={styles.successBox}>
-              <View
-                style={[
-                  styles.checkCircle,
-                  { backgroundColor: colors.primary },
-                ]}
-              >
+              <View style={[styles.checkCircle, { backgroundColor: colors.primary }]}>
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
               <View>
                 <Text style={[styles.successFinal, { color: colors.text }]}>
-                  Moto identificada com sucesso!
+                  {t("registerMotorcycle.success")}
                 </Text>
-                <Text
-                  style={[styles.detailText, { color: colors.textSecondary }]}
-                >
-                  Modelo: {modelo}
+                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                  {t("registerMotorcycle.model", { modelo })}
                 </Text>
-                <Text
-                  style={[styles.detailText, { color: colors.textSecondary }]}
-                >
-                  Zona atual: {zonasMap[zona]?.nome || "Zona não definida"}
+                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                  {t("registerMotorcycle.currentZone", {
+                    zona: zonasMap[zona]?.nome || t("registerMotorcycle.undefinedZone"),
+                  })}
                 </Text>
               </View>
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                  style={[
-                    styles.button,
-                    { backgroundColor: colors.primary, flex: 1 },
-                  ]}
+                  style={[styles.button, { backgroundColor: colors.primary, flex: 1 }]}
                   onPress={handleRegistrarFrota}
                 >
-                  <Text style={styles.buttonText}>Registrar outra</Text>
+                  <Text style={styles.buttonText}>{t("registerMotorcycle.registerAnother")}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[
-                    styles.button,
-                    { backgroundColor: colors.inative, flex: 1 },
-                  ]}
+                  style={[styles.button, { backgroundColor: colors.inative, flex: 1 }]}
                   onPress={handleFinalizar}
                 >
-                  <Text style={styles.buttonText}>Finalizar</Text>
+                  <Text style={styles.buttonText}>{t("registerMotorcycle.finish")}</Text>
                 </TouchableOpacity>
               </View>
             </View>
           ) : step === 3 && erroCarrapato ? (
             <View style={styles.errorBox}>
               <Text style={[styles.errorTitle, { color: colors.modalRed }]}>
-                Erro ao identificar moto
+                {t("registerMotorcycle.errorIdentifying")}
               </Text>
-              <Text style={[styles.errorMessage, { color: colors.text }]}>
-                {modalMessage}
-              </Text>
+              <Text style={[styles.errorMessage, { color: colors.text }]}>{modalMessage}</Text>
 
               <TouchableOpacity
-                style={[
-                  styles.button,
-                  { backgroundColor: colors.modalRed, marginTop: 15 },
-                ]}
+                style={[styles.button, { backgroundColor: colors.modalRed, marginTop: 15 }]}
                 onPress={handleFinalizar}
               >
-                <Text style={styles.buttonText}>Quitar operação</Text>
+                <Text style={styles.buttonText}>{t("registerMotorcycle.clearOperation")}</Text>
               </TouchableOpacity>
             </View>
           ) : null}
@@ -268,13 +237,10 @@ export default function RegistrarMoto() {
       ) : (
         <View style={styles.successBox}>
           <TouchableOpacity
-            style={[
-              styles.button,
-              { backgroundColor: colors.primary, width: "70%" },
-            ]}
+            style={[styles.button, { backgroundColor: colors.primary, width: "70%" }]}
             onPress={handleRegistrarFrota}
           >
-            <Text style={styles.buttonText}>Registrar Frota</Text>
+            <Text style={styles.buttonText}>{t("registerMotorcycle.registerFleet")}</Text>
           </TouchableOpacity>
         </View>
       )}

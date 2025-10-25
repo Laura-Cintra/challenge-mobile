@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useTheme } from "../../providers/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function RegistroCampo({
   label = "Placa",
@@ -23,40 +24,31 @@ export default function RegistroCampo({
   setSemPlaca,
 }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   // Se a moto não tiver placa, o rótulo passa a ser "Chassi"
-  const displayLabel = semPlaca ? "Chassi" : label;
+  const displayLabel = semPlaca ? t("motorcycleList.chassi") : label;
   const displayIsFeminine = semPlaca ? false : isFeminine;
-
-  const labelCapitalized =
-    displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1).toLowerCase();
-  const article = displayIsFeminine ? "a" : "o";
+  const artigo = displayIsFeminine ? "a" : "o";
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: colors.white, shadowColor: colors.text },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: colors.white, shadowColor: colors.text }]}>
       <Text style={[styles.title, { color: colors.text }]}>
         {loading
-          ? `Identificando ${labelCapitalized}...`
+          ? t("registrationField.identifying", { campo: displayLabel })
           : erro
-          ? `Erro ao ler ${article} ${displayLabel.toLowerCase()}, insira abaixo:`
+          ? t("registrationField.errorReading", { artigo, campo: displayLabel.toLowerCase() })
           : valor
-          ? `${labelCapitalized} ${
-              displayIsFeminine ? "identificada" : "identificado"
-            }:`
-          : `Identificando ${labelCapitalized}...`}
+          ? t(displayIsFeminine ? "registrationField.identified" : "registrationField.identifiedMale", {
+              campo: displayLabel,
+            })
+          : t("registrationField.identifying", { campo: displayLabel })}
       </Text>
 
       {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
       {!loading && valor && !erro && (
-        <Text style={[styles.success, { color: colors.primary }]}>
-          ✓ {valor}
-        </Text>
+        <Text style={[styles.success, { color: colors.primary }]}>✓ {valor}</Text>
       )}
 
       {erro && (
@@ -65,7 +57,7 @@ export default function RegistroCampo({
             <View style={styles.checkboxContainer}>
               <Checkbox value={semPlaca} onValueChange={setSemPlaca} />
               <Text style={[styles.checkboxLabel, { color: colors.text }]}>
-                Moto sem placa
+                {t("registrationField.motorcycleWithoutPlate")}
               </Text>
             </View>
           )}
@@ -73,13 +65,13 @@ export default function RegistroCampo({
           <TextInput
             style={[
               styles.input,
-              {
-                borderColor: colors.border,
-                backgroundColor: colors.background,
-                color: colors.text,
-              },
+              { borderColor: colors.border, backgroundColor: colors.background, color: colors.text },
             ]}
-            placeholder={semPlaca ? "Digite o número do chassi" : placeholder}
+            placeholder={
+              semPlaca
+                ? t("registrationField.placeholderChassis")
+                : t("registrationField.placeholderLicensePlate")
+            }
             value={valor}
             onChangeText={setValor}
             autoCapitalize="characters"
@@ -90,7 +82,7 @@ export default function RegistroCampo({
             style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={onProsseguir}
           >
-            <Text style={styles.buttonText}>Prosseguir</Text>
+            <Text style={styles.buttonText}>{t("registrationField.continue")}</Text>
           </TouchableOpacity>
         </>
       )}

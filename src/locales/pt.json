@@ -95,5 +95,32 @@
     "chassi": "Chassi",
     "locate": "Localizar",
     "stop": "Parar"
+  },
+  "registerMotorcycle": {
+    "title": "Registro de Nova Moto",
+    "errorReading": "Falha na leitura da placa/chassi",
+    "noneFound": "Nenhuma moto encontrada no banco.",
+    "unknownError": "Erro desconhecido ao criar moto.",
+    "enterChassis": "Digite o número do chassi.",
+    "enterLicensePlate": "Digite uma placa válida.",
+    "success": "Moto identificada com sucesso!",
+    "model": "Modelo: {{modelo}}",
+    "currentZone": "Zona atual: {{zona}}",
+    "undefinedZone": "Zona não definida",
+    "registerAnother": "Registrar outra",
+    "finish": "Finalizar",
+    "errorIdentifying": "Erro ao identificar moto",
+    "clearOperation": "Quitar operação",
+    "registerFleet": "Registrar Frota"
+  },
+  "registrationField": {
+    "motorcycleWithoutPlate": "Moto sem placa",
+    "identifying": "Identificando {{campo}}...",
+    "errorReading": "Erro ao ler {{artigo}} {{campo}}, insira abaixo:",
+    "identified": "{{campo}} identificada:",
+    "identifiedMale": "{{campo}} identificado:",
+    "placeholderChassis": "Digite o número do chassi",
+    "placeholderLicensePlate": "Digite a placa",
+    "continue": "Prosseguir"
   }
 }
