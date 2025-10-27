@@ -22,7 +22,6 @@
     "model": "Modelo",
     "zone": "Zona",
     "save": "Salvar",
-    "cancel": "Cancelar",
     "licensePlateRequired": "Placa é obrigatória.",
     "modelRequired": "Modelo é obrigatório.",
     "zoneRequired": "Zona é obrigatória.",
@@ -56,7 +55,6 @@
   },
   "profile": {
     "edit": "Editar",
-    "delete": "Excluir",
     "shortcuts": "Atalhos",
     "dashboard": "Dashboard",
     "viewParking": "Ver Pátio",

@@ -198,7 +198,7 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
               style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles.buttonText}>{t("editMotorcycle.cancel")}</Text>
+              <Text style={styles.buttonText}>{t("confirmDeletion.cancel")}</Text>
             </TouchableOpacity>
           </View>
         </View>

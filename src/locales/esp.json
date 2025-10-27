@@ -22,7 +22,6 @@
     "model": "Modelo",
     "zone": "Zona",
     "save": "Guardar",
-    "cancel": "Cancelar",
     "licensePlateRequired": "La Placa es obligatoria.",
     "modelRequired": "El Modelo es obligatorio.",
     "zoneRequired": "La Zona es obligatoria.",
@@ -56,7 +55,6 @@
   },
   "profile": {
     "edit": "Editar",
-    "delete": "Eliminar",
     "shortcuts": "Atajos",
     "dashboard": "Panel de Control",
     "viewParking": "Ver Patio",

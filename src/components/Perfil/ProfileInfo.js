@@ -81,7 +81,7 @@ export default function ProfileInfo() {
           >
             <Feather name="trash-2" size={20} color={colors.modalRed} />
             <Text style={[styles.actionText, { color: colors.text }]}>
-              {t("profile.delete")}
+              {t("confirmDeletion.delete")}
             </Text>
           </TouchableOpacity>
         </View>
