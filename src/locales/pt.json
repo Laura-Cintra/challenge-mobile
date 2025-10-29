@@ -147,5 +147,15 @@
     "registerHere": "Cadastre-se",
     "success": "Login realizado com sucesso!",
     "error": "Erro inesperado ao logar. Tente novamente mais tarde."
+  },
+  "notifications": {
+    "motorcycleRegistered": {
+      "title": "Moto registrada com sucesso!",
+      "body": "A moto {{placa}} foi adicionada à frota."
+    },
+    "zoneUpdated": {
+      "title": "Zona atualizada",
+      "body": "A moto {{placa}} foi movida para a zona {{zona}}."
+    }
   }
 }
