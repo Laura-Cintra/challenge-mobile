@@ -4,9 +4,9 @@ import RegistroCampo from "./RegistroCampo";
 import MessageModal from "../MessageModal";
 import { getMotos, createMoto } from "../../services/actions";
 import { useUser } from "../../providers/UserContext";
-import { zonasMap } from "../../data/zonas";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { solicitarPermissaoNotificacao, dispararNotificacao } from "../../services/notifications";
 
 export default function RegistrarMoto() {
   const { user } = useUser();
@@ -29,6 +29,21 @@ export default function RegistrarMoto() {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+
+  useEffect(() => {
+    solicitarPermissaoNotificacao();
+  }, []);
+
+  useEffect(() => {
+    if (step === 3 && !erroCarrapato && !finalizado && placa) {
+      dispararNotificacao(
+        t("notifications.motorcycleRegistered.title"),
+        t("notifications.motorcycleRegistered.body", {
+          placa: placa.toUpperCase(),
+        })
+      );
+    }
+  }, [step, erroCarrapato, finalizado, placa]);
 
   useEffect(() => {
     if (finalizado) return;

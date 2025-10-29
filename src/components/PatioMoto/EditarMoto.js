@@ -14,6 +14,7 @@ import { getModelos } from "../../services/actions";
 import { useTheme } from "../../providers/ThemeContext";
 import InputSelectDropdown from "../UserForm/InputSelect";
 import { useTranslation } from "react-i18next";
+import { solicitarPermissaoNotificacao, dispararNotificacao } from "../../services/notifications";
 
 export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const { colors } = useTheme();
@@ -33,6 +34,10 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    solicitarPermissaoNotificacao();
+  }, []);
 
   useEffect(() => {
     if (visible) carregarModelos();
@@ -120,6 +125,17 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
         setModalMessage(t("editMotorcycle.success"));
         setIsSuccess(true);
         setModalVisible(true);
+
+        if (zona !== moto.zona) {
+          const novaZonaNome = t(`zones.${zona}`);
+          await dispararNotificacao(
+            t("notifications.zoneUpdated.title"),
+            t("notifications.zoneUpdated.body", {
+              placa: placa.toUpperCase(),
+              zona: novaZonaNome,
+            })
+          );
+        }
 
         setTimeout(() => {
           setModalVisible(false);
