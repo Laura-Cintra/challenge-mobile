@@ -11,11 +11,13 @@ export default function GraficoZonas({ motos }) {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const contagem = zonasLista.map((zona) => {
-      const total = motos.filter((moto) => moto.zona === zona.id).length;
-      return { ...zona, total };
-    });
-    setDadosZonas(contagem);
+    if (motos){
+      const contagem = zonasLista.map((zona) => {
+        const total = motos.filter((moto) => moto.zona === zona.id).length;
+        return { ...zona, total };
+      });
+      setDadosZonas(contagem);
+    }
   }, [motos]);
 
   const dadosGrafico = dadosZonas.map((zona) => ({

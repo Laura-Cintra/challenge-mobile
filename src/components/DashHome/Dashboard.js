@@ -61,7 +61,7 @@ export default function Dashboard() {
         </View>
       </View>
 
-      <GraficoZonas motos={motos} />
+      <GraficoZonas motos={motos.length > 0 ? motos : []} />
 
       <TouchableOpacity
         style={[styles.buttonSearch, { backgroundColor: colors.primary }]}
