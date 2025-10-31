@@ -5,6 +5,7 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
+import { MotiView } from "moti";
 import { useNavigation } from "@react-navigation/native";
 import logo from "../../assets/logo.png";
 import logoDark from "../../assets/logo-dark.png";
@@ -28,22 +29,40 @@ export default function MenuSuperior() {
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.background }}>
-      <View style={[styles.header, { borderColor: colors.border }]}>
+      <MotiView
+        from={{ opacity: 0, translateY: -15 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ type: "timing", duration: 400 }}
+        style={[styles.header, { borderColor: colors.border }]}
+      >
         <TouchableOpacity onPress={handleHome}>
-          <Image
-            source={theme === "light" ? logo : logoDark}
-            style={styles.logo}
-            resizeMode="contain"
-          />
+          <MotiView
+            from={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "timing", duration: 300 }}
+          >
+            <Image
+              source={theme === "light" ? logo : logoDark}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </MotiView>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={handleLogout}>
-          <Image
-            source={theme === "light" ? logoutIcon : logoutIconDark}
-            style={styles.logoutIcon}
-            resizeMode="contain"
-          />
+          <MotiView
+            from={{ rotate: "200deg" }}
+            animate={{ rotate: "360deg" }}
+            transition={{ type: "timing", duration: 600 }}
+          >
+            <Image
+              source={theme === "light" ? logoutIcon : logoutIconDark}
+              style={styles.logoutIcon}
+              resizeMode="contain"
+            />
+          </MotiView>
         </TouchableOpacity>
-      </View>
+      </MotiView>
     </SafeAreaView>
   );
 }

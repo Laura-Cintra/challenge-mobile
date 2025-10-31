@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MotiView } from "moti";
 
 import Home from "../pages/Home";
 import MotoPark from "../pages/MotoPark";
@@ -53,7 +54,19 @@ export default function Menu() {
                 ? icons.lightFocused
                 : icons.light
               : icons.dark;
-          return <TabIcon focused={focused} icon={icon} iconFocused={icon} />;
+          return (
+            <MotiView
+              from={{ opacity: 0, translateY: 30 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ 
+                type: "timing", 
+                duration: 300, 
+                delay: route.name === "Home" ? 0 : 150,
+              }}
+            >
+              <TabIcon focused={focused} icon={icon} iconFocused={icon} />
+            </MotiView>
+          );
         },
       })}
     >
