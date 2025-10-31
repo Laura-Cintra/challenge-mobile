@@ -34,6 +34,7 @@ export default function Menu() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
+        animation: "fade",
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: colors.background,

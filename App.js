@@ -16,11 +16,11 @@ function Routes() {
   const { user } = useUser();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: "fade" }}>
       {!user ? (
         <>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Cadastro" component={Cadastro} />
+          <Stack.Screen name="Login" component={Login} options={{ animation: "default" }}/>
+          <Stack.Screen name="Cadastro" component={Cadastro} options={{ animation: "default" }}/>
         </>
       ) : (
         <Stack.Screen name="MainApp" component={Menu} />
