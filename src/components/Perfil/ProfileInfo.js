@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   },
   patioItemText: {
     fontSize: 14.5,
-    fontWeight: "300",
+    fontWeight: "400",
     lineHeight: 22,
   },
   atalhoContainer: {
