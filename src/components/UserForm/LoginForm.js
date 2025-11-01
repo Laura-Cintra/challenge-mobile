@@ -18,6 +18,7 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText, MotiImage } from "moti";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -65,57 +66,107 @@ export default function Login() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.body}>
-        <View style={styles.header}>
-          <Image source={logoSource} style={styles.logo} resizeMode="contain" />
-        </View>
-
-        <View style={styles.form}>
-          <Text style={[styles.formTitle, { color: colors.text }]}>
-            {t("login.title")}
-          </Text>
-
-          <FormInput
-            label={t("registration.email")}
-            placeholder={t("registration.placeholderEmail")}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            icon={<Fontisto name="email" size={20} color={colors.secundary} />}
+        <MotiView
+          from={{ opacity: 0, translateY: -20 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ type: "timing", duration: 600 }}
+          style={styles.header}
+        >
+          <MotiImage
+            source={logoSource}
+            style={styles.logo}
+            from={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", delay: 150 }}
+            resizeMode="contain"
           />
+        </MotiView>
 
-          <FormInput
-            label={t("registration.password")}
-            placeholder={t("registration.placeholderPassword")}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
-          />
-
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.secundary }]}
-            onPress={handleLogin}
-            disabled={isLoading}
+        <MotiView
+          from={{ opacity: 0, translateY: 20 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ delay: 400, type: "timing", duration: 500 }}
+          style={styles.form}
+        >
+          <MotiText
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 450 }}
+            style={[styles.formTitle, { color: colors.text }]}
           >
-            {isLoading ? (
-              <ActivityIndicator size="small" color={colors.white} />
-            ) : (
-              <Text style={[styles.buttonText, { color: colors.white }]}>
-                {t("login.loginButton")}
-              </Text>
-            )}
-          </TouchableOpacity>
+            {t("login.title")}
+          </MotiText>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
-            <Text style={[styles.linkText, { color: colors.text }]}>
-              {t("login.dontHaveAccount")}
-              <Text style={[styles.link, { color: colors.primary }]}>
-                {" "}
-                {t("login.registerHere")}
+          <MotiView
+            from={{ opacity: 0, translateY: 15 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 600 }}
+          >
+            <FormInput
+              label={t("registration.email")}
+              placeholder={t("registration.placeholderEmail")}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              icon={
+                <Fontisto name="email" size={20} color={colors.secundary} />
+              }
+            />
+          </MotiView>
+
+          <MotiView
+            from={{ opacity: 0, translateY: 15 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 800 }}
+          >
+            <FormInput
+              label={t("registration.password")}
+              placeholder={t("registration.placeholderPassword")}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              icon={
+                <AntDesign name="lock" size={21} color={colors.secundary} />
+              }
+            />
+          </MotiView>
+
+          <MotiView
+            from={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1000, type: "spring" }}
+          >
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.secundary }]}
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator size="small" color={colors.white} />
+              ) : (
+                <Text style={[styles.buttonText, { color: colors.white }]}>
+                  {t("login.loginButton")}
+                </Text>
+              )}
+            </TouchableOpacity>
+          </MotiView>
+
+          <MotiView
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1200 }}
+          >
+            <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+              <Text style={[styles.linkText, { color: colors.text }]}>
+                {t("login.dontHaveAccount")}
+                <Text style={[styles.link, { color: colors.primary }]}>
+                  {" "}
+                  {t("login.registerHere")}
+                </Text>
               </Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </MotiView>
+        </MotiView>
       </View>
 
       <MessageModal
