@@ -13,6 +13,7 @@ import { useUser } from "../../providers/UserContext";
 import { updateUserApi } from "../../services/actions";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView } from "moti";
 
 export default function editProfileModal({ visible, onClose }) {
   const { user, updateUser } = useUser();
@@ -71,14 +72,24 @@ export default function editProfileModal({ visible, onClose }) {
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles(colors).overlay}>
+    <Modal visible={visible} animationType="fade" transparent>
+      <MotiView
+        from={{ opacity: 0, translateY: -50 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        exit={{ opacity: 0, translateY: -50 }}
+        transition={{ type: "timing", duration: 350 }}
+        style={styles(colors).overlay}
+      >
         <View style={styles(colors).modalContainer}>
           <TouchableOpacity
             style={styles(colors).closeButton}
             onPress={onClose}
           >
-            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
+            <MaterialCommunityIcons
+              name="close"
+              size={22}
+              color={colors.text}
+            />
           </TouchableOpacity>
 
           <Text style={styles(colors).title}>{t("editProfile.title")}</Text>
@@ -102,7 +113,9 @@ export default function editProfileModal({ visible, onClose }) {
             keyboardType="email-address"
           />
 
-          <Text style={styles(colors).label}>{t("editProfile.newPassword")}</Text>
+          <Text style={styles(colors).label}>
+            {t("editProfile.newPassword")}
+          </Text>
           <TextInput
             style={styles(colors).input}
             value={senha}
@@ -126,21 +139,31 @@ export default function editProfileModal({ visible, onClose }) {
 
           <View style={styles(colors).buttonsRow}>
             <TouchableOpacity
-              style={[styles(colors).button, { backgroundColor: colors.secundary }]}
+              style={[
+                styles(colors).button,
+                { backgroundColor: colors.secundary },
+              ]}
               onPress={handleSalvar}
             >
-              <Text style={styles(colors).buttonText}>{t("editMotorcycle.save")}</Text>
+              <Text style={styles(colors).buttonText}>
+                {t("editMotorcycle.save")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles(colors).button, { backgroundColor: colors.inative }]}
+              style={[
+                styles(colors).button,
+                { backgroundColor: colors.inative },
+              ]}
               onPress={onClose}
             >
-              <Text style={styles(colors).buttonText}>{t("confirmDeletion.cancel")}</Text>
+              <Text style={styles(colors).buttonText}>
+                {t("confirmDeletion.cancel")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </MotiView>
 
       <MessageModal
         visible={modalVisible}

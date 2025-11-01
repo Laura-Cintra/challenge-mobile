@@ -14,7 +14,11 @@ import { getModelos } from "../../services/actions";
 import { useTheme } from "../../providers/ThemeContext";
 import InputSelectDropdown from "../UserForm/InputSelect";
 import { useTranslation } from "react-i18next";
-import { solicitarPermissaoNotificacao, dispararNotificacao } from "../../services/notifications";
+import {
+  solicitarPermissaoNotificacao,
+  dispararNotificacao,
+} from "../../services/notifications";
+import { MotiView } from "moti";
 
 export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   const { colors } = useTheme();
@@ -152,11 +156,23 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles.overlay}>
-        <View style={[styles.modalContainer, { backgroundColor: colors.white }]}>
+    <Modal visible={visible} animationType="fade" transparent>
+      <MotiView
+        from={{ opacity: 0, translateY: -50 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        exit={{ opacity: 0, translateY: -50 }}
+        transition={{ type: "timing", duration: 350 }}
+        style={styles.overlay}
+      >
+        <View
+          style={[styles.modalContainer, { backgroundColor: colors.white }]}
+        >
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <MaterialCommunityIcons name="close" size={22} color={colors.text} />
+            <MaterialCommunityIcons
+              name="close"
+              size={22}
+              color={colors.text}
+            />
           </TouchableOpacity>
 
           <Text style={[styles.title, { color: colors.text }]}>
@@ -214,11 +230,13 @@ export default function EditarMotoModal({ visible, onClose, moto, onSave }) {
               style={[styles.button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles.buttonText}>{t("confirmDeletion.cancel")}</Text>
+              <Text style={styles.buttonText}>
+                {t("confirmDeletion.cancel")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </MotiView>
 
       <MessageModal
         visible={modalVisible}
