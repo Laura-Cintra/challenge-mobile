@@ -17,6 +17,7 @@ import { deleteUserApi, getPatioById } from "../../services/actions";
 import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function ProfileInfo() {
   const { user, logout } = useUser();
@@ -55,16 +56,72 @@ export default function ProfileInfo() {
 
   const logoSource = theme === "light" ? perfil : perfilWhite;
 
+  const atalhos = [
+    {
+      key: "dashboard",
+      onPress: () => navigation.navigate("Home"),
+      icon: <Foundation name="graph-bar" size={28} color={colors.secundary} />,
+      label: t("profile.dashboard"),
+    },
+    {
+      key: "motoPark",
+      onPress: () => navigation.navigate("MotoPark"),
+      icon: <FontAwesome5 name="parking" size={28} color={colors.secundary} />,
+      label: t("profile.viewParking"),
+    },
+    {
+      key: "registrar",
+      onPress: () => navigation.navigate("RegistrarFrota"),
+      icon: (
+        <MaterialIcons
+          name="add-circle-outline"
+          size={28}
+          color={colors.secundary}
+        />
+      ),
+      label: t("profile.registerMotorcycle"),
+    },
+    {
+      key: "localizar",
+      onPress: () => setModalVisible(true),
+      icon: <MaterialIcons name="search" size={28} color={colors.secundary} />,
+      label: t("profile.locateMotorcycle"),
+    },
+  ];
+
   return (
     <View style={{ backgroundColor: colors.background, height: "100%" }}>
-      <View style={styles.profileContainer}>
+      <MotiView
+        from={{ opacity: 0, translateY: -8 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ type: "timing", duration: 450 }}
+        style={styles.profileContainer}
+      >
         <Image source={logoSource} style={styles.profileImg} />
-        <Text style={[styles.name, { color: colors.text }]}>{user?.nome}</Text>
-        <Text style={[styles.email, { color: colors.textSecondary }]}>
-          {user?.email}
-        </Text>
+        <MotiText
+          from={{ opacity: 0, translateY: 6 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ delay: 120, type: "timing", duration: 350 }}
+          style={[styles.name, { color: colors.text }]}
+        >
+          {user?.nome}
+        </MotiText>
 
-        <View style={styles.actionButtons}>
+        <MotiText
+          from={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 180, type: "timing", duration: 300 }}
+          style={[styles.email, { color: colors.textSecondary }]}
+        >
+          {user?.email}
+        </MotiText>
+
+        <MotiView
+          from={{ opacity: 0, translateY: 6 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ delay: 240, type: "timing", duration: 350 }}
+          style={styles.actionButtons}
+        >
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() => setEditarVisible(true)}
@@ -84,11 +141,18 @@ export default function ProfileInfo() {
               {t("confirmDeletion.delete")}
             </Text>
           </TouchableOpacity>
-        </View>
-      </View>
+        </MotiView>
+      </MotiView>
 
-      <View style={[styles.patioContainer, { borderColor: colors.border }]}>
-        <View style={[styles.patioHeader, { backgroundColor: colors.secundary }]}>
+      <MotiView
+        from={{ opacity: 0, translateY: 6 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ delay: 340, type: "timing", duration: 380 }}
+        style={[styles.patioContainer, { borderColor: colors.border }]}
+      >
+        <View
+          style={[styles.patioHeader, { backgroundColor: colors.secundary }]}
+        >
           <Entypo name="location-pin" size={24} color="#FBFBFB" />
           <Text style={styles.patioTitle}>
             {t("profile.parking", { nome: user?.nomePatio || "—" })}
@@ -98,68 +162,59 @@ export default function ProfileInfo() {
         <View style={[styles.patioDiv, { backgroundColor: colors.white }]}>
           <Text style={[styles.patioText, { color: colors.text }]}>
             {t("profile.address")}:{" "}
-            <Text style={[styles.patioItemText, { color: colors.textSecondary }]}>
+            <Text
+              style={[styles.patioItemText, { color: colors.textSecondary }]}
+            >
               {patioDetails?.endereco || "—"}
             </Text>
           </Text>
           <Text style={[styles.patioText, { color: colors.text }]}>
             {t("profile.motorcyclesInParking")}:{" "}
-            <Text style={[styles.patioItemText, { color: colors.textSecondary }]}>
+            <Text
+              style={[styles.patioItemText, { color: colors.textSecondary }]}
+            >
               {patioDetails?.motos?.length || 0}
             </Text>
           </Text>
         </View>
-      </View>
+      </MotiView>
 
+      {/* Atalhos */}
       <View style={styles.atalhoContainer}>
-        <Text style={[styles.atalhoTitle, { color: colors.title }]}>
+        <MotiText
+          from={{ opacity: 0, translateY: 6 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ delay: 420, type: "timing", duration: 380 }}
+          style={[styles.atalhoTitle, { color: colors.title }]}
+        >
           {t("profile.shortcuts")}
-        </Text>
+        </MotiText>
 
         <View style={styles.atalhoIcons}>
-          <TouchableOpacity
-            style={[styles.icon, { backgroundColor: colors.white }]}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Foundation name="graph-bar" size={28} color={colors.secundary} />
-            <Text style={[styles.iconText, { color: colors.text }]}>
-              {t("profile.dashboard")}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.icon, { backgroundColor: colors.white }]}
-            onPress={() => navigation.navigate("MotoPark")}
-          >
-            <FontAwesome5 name="parking" size={28} color={colors.secundary} />
-            <Text style={[styles.iconText, { color: colors.text }]}>
-              {t("profile.viewParking")}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.icon, { backgroundColor: colors.white }]}
-            onPress={() => navigation.navigate("RegistrarFrota")}
-          >
-            <MaterialIcons
-              name="add-circle-outline"
-              size={28}
-              color={colors.secundary}
-            />
-            <Text style={[styles.iconText, { color: colors.text }]}>
-              {t("profile.registerMotorcycle")}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.icon, { backgroundColor: colors.white }]}
-            onPress={() => setModalVisible(true)}
-          >
-            <MaterialIcons name="search" size={28} color={colors.secundary} />
-            <Text style={[styles.iconText, { color: colors.text }]}>
-              {t("profile.locateMotorcycle")}
-            </Text>
-          </TouchableOpacity>
+          {atalhos.map((a, i) => (
+            <MotiView
+              key={a.key}
+              from={{ opacity: 0, translateY: 10, scale: 0.98 }}
+              animate={{ opacity: 1, translateY: 0, scale: 1 }}
+              transition={{
+                delay: 480 + i * 80,
+                type: "timing",
+                duration: 360,
+              }}
+              style={{ width: "48%" }}
+            >
+              <TouchableOpacity
+                style={[styles.icon, { backgroundColor: colors.white }]}
+                onPress={a.onPress}
+                activeOpacity={0.8}
+              >
+                {a.icon}
+                <Text style={[styles.iconText, { color: colors.text }]}>
+                  {a.label}
+                </Text>
+              </TouchableOpacity>
+            </MotiView>
+          ))}
         </View>
       </View>
 
@@ -192,6 +247,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 40,
+    marginBottom: 10,
   },
   name: {
     fontSize: 22,
@@ -244,7 +300,7 @@ const styles = StyleSheet.create({
   },
   patioItemText: {
     fontSize: 14.5,
-    fontWeight: "light",
+    fontWeight: "300",
     lineHeight: 22,
   },
   atalhoContainer: {
@@ -265,7 +321,7 @@ const styles = StyleSheet.create({
   icon: {
     padding: 20,
     alignItems: "center",
-    width: "48%",
+    width: "100%",
     borderRadius: 10,
     marginBottom: 10,
   },
@@ -273,17 +329,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: "center",
     fontSize: 13,
-  },
-  confirmDeleteButton: {
-    marginTop: 15,
-    backgroundColor: "#e74c3c",
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  confirmDeleteText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 15,
   },
 });
