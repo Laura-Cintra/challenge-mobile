@@ -136,7 +136,7 @@ export default function editProfileModal({ visible, onClose }) {
               style={[styles(colors).button, { backgroundColor: colors.inative }]}
               onPress={onClose}
             >
-              <Text style={styles(colors).buttonText}>{t("editMotorcycle.cancel")}</Text>
+              <Text style={styles(colors).buttonText}>{t("confirmDeletion.cancel")}</Text>
             </TouchableOpacity>
           </View>
         </View>

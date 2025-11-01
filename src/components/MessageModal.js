@@ -1,5 +1,6 @@
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import colors from "../theme/colors";
+import { MotiView } from "moti";
 
 export default function MessageModal({ visible, message, isSuccess, onClose }) {
   return (
@@ -10,7 +11,11 @@ export default function MessageModal({ visible, message, isSuccess, onClose }) {
       onRequestClose={onClose}
     >
       <View style={styles.modalContainer}>
-        <View
+        <MotiView
+          from={{ opacity: 0, scale: 0.8, translateY: 10 }}
+          animate={{ opacity: 1, scale: 1, translateY: 0 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ type: "timing", duration: 90 }}
           style={[
             styles.modalContent,
             isSuccess ? styles.successModal : styles.errorModal,
@@ -20,7 +25,7 @@ export default function MessageModal({ visible, message, isSuccess, onClose }) {
           <TouchableOpacity style={styles.modalButton} onPress={onClose}>
             <Text style={styles.modalButtonText}>OK</Text>
           </TouchableOpacity>
-        </View>
+        </MotiView>
       </View>
     </Modal>
   );

@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function ConfirmarExclusaoModal({
   visible,
@@ -15,47 +16,59 @@ export default function ConfirmarExclusaoModal({
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
-        <View
-          style={[styles.modalContainer, { backgroundColor: colors.white }]}
-        >
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <MaterialCommunityIcons
-              name="close"
-              size={22}
-              color={colors.text}
-            />
-          </TouchableOpacity>
-
-          <Text style={[styles.title, { color: colors.text }]}>
-            {t("confirmDeletion.title")}
-          </Text>
-          <Text style={[styles.message, { color: colors.text }]}>
-            {mensagem}
-          </Text>
-          <Text style={[styles.messageWarn, { color: colors.modalRed }]}>
-            {t("confirmDeletion.warning")}
-          </Text>
-
-          <View style={styles.buttonsRow}>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.modalRed }]}
-              onPress={onConfirm}
-            >
-              <Text style={[styles.buttonText, { color: colors.white }]}>
-                {t("confirmDeletion.delete")}
-              </Text>
+        {visible && (
+          <MotiView
+            from={{ opacity: 0, translateY: 40 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            exit={{ opacity: 0, translateY: 40 }}
+            transition={{ type: "timing", duration: 350 }}
+            style={[styles.modalContainer, { backgroundColor: colors.white }]}
+          >
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <MaterialCommunityIcons
+                name="close"
+                size={22}
+                color={colors.text}
+              />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.inative }]}
-              onPress={onClose}
+            <MotiText
+              from={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 100 }}
+              style={[styles.title, { color: colors.text }]}
             >
-              <Text style={[styles.buttonText, { color: colors.white }]}>
-                {t("confirmDeletion.cancel")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+              {t("confirmDeletion.title")}
+            </MotiText>
+
+            <Text style={[styles.message, { color: colors.text }]}>
+              {mensagem}
+            </Text>
+            <Text style={[styles.messageWarn, { color: colors.modalRed }]}>
+              {t("confirmDeletion.warning")}
+            </Text>
+
+            <View style={styles.buttonsRow}>
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.modalRed }]}
+                onPress={onConfirm}
+              >
+                <Text style={[styles.buttonText, { color: colors.white }]}>
+                  {t("confirmDeletion.delete")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.inative }]}
+                onPress={onClose}
+              >
+                <Text style={[styles.buttonText, { color: colors.white }]}>
+                  {t("confirmDeletion.cancel")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </MotiView>
+        )}
       </View>
     </Modal>
   );
