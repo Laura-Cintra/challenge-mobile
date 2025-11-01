@@ -37,7 +37,10 @@ export default function RegistroCampo({
       from={{ opacity: 0, translateY: 20 }}
       animate={{ opacity: 1, translateY: 0 }}
       transition={{ type: "timing", duration: 500 }}
-      style={[styles.container, { backgroundColor: colors.white, shadowColor: colors.text }]}
+      style={[
+        styles.container,
+        { backgroundColor: colors.white, shadowColor: colors.text },
+      ]}
     >
       <MotiText
         from={{ opacity: 0, translateY: -5 }}
@@ -48,11 +51,19 @@ export default function RegistroCampo({
         {loading
           ? t("registrationField.identifying", { campo: displayLabel })
           : erro
-          ? t("registrationField.errorReading", { artigo, campo: displayLabel.toLowerCase() })
-          : valor
-          ? t(displayIsFeminine ? "registrationField.identified" : "registrationField.identifiedMale", {
-              campo: displayLabel,
+          ? t("registrationField.errorReading", {
+              artigo,
+              campo: displayLabel.toLowerCase(),
             })
+          : valor
+          ? t(
+              displayIsFeminine
+                ? "registrationField.identified"
+                : "registrationField.identifiedMale",
+              {
+                campo: displayLabel,
+              }
+            )
           : t("registrationField.identifying", { campo: displayLabel })}
       </MotiText>
 
@@ -128,7 +139,9 @@ export default function RegistroCampo({
               style={[styles.button, { backgroundColor: colors.primary }]}
               onPress={onProsseguir}
             >
-              <Text style={styles.buttonText}>{t("registrationField.continue")}</Text>
+              <Text style={styles.buttonText}>
+                {t("registrationField.continue")}
+              </Text>
             </TouchableOpacity>
           </MotiView>
         </>

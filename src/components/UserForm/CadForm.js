@@ -34,7 +34,10 @@ export default function CadastroForm() {
     const fetchPatios = async () => {
       try {
         const patios = await getPatios();
-        const formatted = patios.map((p) => ({ value: p.id.toString(), label: p.nome }));
+        const formatted = patios.map((p) => ({
+          value: p.id.toString(),
+          label: p.nome,
+        }));
         setPatiosDisponiveis(formatted);
       } catch (error) {
         console.error("Erro ao carregar pátios:", error);
@@ -129,35 +132,53 @@ export default function CadastroForm() {
             {t("registration.title")}
           </MotiText>
 
-          <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 600 }}>
+          <MotiView
+            from={{ opacity: 0, translateY: 15 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 600 }}
+          >
             <FormInput
               label={t("registration.name")}
               placeholder={t("registration.placeholderName")}
               value={name}
               onChangeText={setName}
-              icon={<AntDesign name="user" size={20} color={colors.secundary} />}
+              icon={
+                <AntDesign name="user" size={20} color={colors.secundary} />
+              }
             />
           </MotiView>
 
-          <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 750 }}>
+          <MotiView
+            from={{ opacity: 0, translateY: 15 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 750 }}
+          >
             <FormInput
               label={t("registration.email")}
               placeholder={t("registration.placeholderEmail")}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
-              icon={<Fontisto name="email" size={20} color={colors.secundary} />}
+              icon={
+                <Fontisto name="email" size={20} color={colors.secundary} />
+              }
             />
           </MotiView>
 
-          <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 900 }}>
+          <MotiView
+            from={{ opacity: 0, translateY: 15 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 900 }}
+          >
             <FormInput
               label={t("registration.password")}
               placeholder={t("registration.placeholderPassword")}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
-              icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
+              icon={
+                <AntDesign name="lock" size={21} color={colors.secundary} />
+              }
             />
           </MotiView>
 
@@ -168,7 +189,11 @@ export default function CadastroForm() {
             items={patiosDisponiveis}
           />
 
-          <MotiView from={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1200, type: "spring" }}>
+          <MotiView
+            from={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1200, type: "spring" }}
+          >
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.secundary }]}
               onPress={handleCadastro}
@@ -179,7 +204,11 @@ export default function CadastroForm() {
             </TouchableOpacity>
           </MotiView>
 
-          <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1400 }}>
+          <MotiView
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1400 }}
+          >
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text style={[styles.linkText, { color: colors.text }]}>
                 {t("registration.alreadyHaveAccount")}

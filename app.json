@@ -10,7 +10,7 @@
     "scheme": "SmartPatioApp",
     "notification": {
       "icon": "./assets/notification-icon.png",
-      "color": "#800080"
+      "color": "#ffffff"
     },
     "splash": {
       "image": "./assets/splash-icon.png",

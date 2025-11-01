@@ -96,10 +96,17 @@ export default function ZonaModal({
           transition={{ delay: 400 }}
         >
           <TouchableOpacity
-            style={[styles.fecharBotao, { backgroundColor: colors.primary, marginBottom: 15 }]}
+            style={[
+              styles.fecharBotao,
+              { backgroundColor: colors.primary, marginBottom: 15 },
+            ]}
             onPress={onClose}
           >
-            <MaterialCommunityIcons name="close" size={20} color={colors.white} />
+            <MaterialCommunityIcons
+              name="close"
+              size={20}
+              color={colors.white}
+            />
             <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>
               {t("zoneModal.close")}
             </Text>

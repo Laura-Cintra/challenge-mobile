@@ -85,17 +85,20 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         const patio = await getPatioById(user.idPatio);
         const motosDoPatio = patio?.motos ?? [];
         setMotos(motosDoPatio);
-        if (motosDoPatio.length === 0) setErroMsg(t("searchMotorcycle.errorNoMotorcycle"));
+        if (motosDoPatio.length === 0)
+          setErroMsg(t("searchMotorcycle.errorNoMotorcycle"));
         return;
       }
       const todas = await getMotos();
       let motosDoPatio = todas.filter((m) => m.idPatio === user?.idPatio);
       if (motosDoPatio.length === 0 && user?.nomePatio) {
         motosDoPatio = todas.filter(
-          (m) => (m.nomePatio ?? "").toLowerCase() === user.nomePatio.toLowerCase()
+          (m) =>
+            (m.nomePatio ?? "").toLowerCase() === user.nomePatio.toLowerCase()
         );
       }
-      if (motosDoPatio.length === 0) setErroMsg(t("searchMotorcycle.errorNotFound"));
+      if (motosDoPatio.length === 0)
+        setErroMsg(t("searchMotorcycle.errorNotFound"));
       setMotos(motosDoPatio);
     } catch {
       setErroMsg(t("searchMotorcycle.errorLoad"));
@@ -140,7 +143,9 @@ export default function ProcurarMotoModal({ visible, onClose }) {
     <Modal visible={visible} animationType="slide">
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={[styles.statusBox, { backgroundColor: colors.white }]}>
-          <Text style={{ color: connected ? "green" : "red", fontWeight: "bold" }}>
+          <Text
+            style={{ color: connected ? "green" : "red", fontWeight: "bold" }}
+          >
             MQTT:{" "}
             {connected
               ? t("searchMotorcycle.status.connected")
@@ -151,9 +156,15 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         </View>
 
         {loading ? (
-          <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 50 }} />
+          <ActivityIndicator
+            size="large"
+            color={colors.primary}
+            style={{ marginTop: 50 }}
+          />
         ) : erroMsg ? (
-          <Text style={{ color: colors.text, textAlign: "center", marginTop: 30 }}>
+          <Text
+            style={{ color: colors.text, textAlign: "center", marginTop: 30 }}
+          >
             {erroMsg}
           </Text>
         ) : (
@@ -171,7 +182,10 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         )}
 
         <TouchableOpacity
-          style={[styles.closeButton, { backgroundColor: colors.primary, marginBottom: 15 }]}
+          style={[
+            styles.closeButton,
+            { backgroundColor: colors.primary, marginBottom: 15 },
+          ]}
           onPress={onClose}
         >
           <MaterialCommunityIcons name="close" size={20} color="#FBFBFB" />

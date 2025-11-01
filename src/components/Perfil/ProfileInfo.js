@@ -18,6 +18,7 @@ import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { MotiView, MotiText } from "moti";
+import AboutAppButton from "../SobreApp/SobreApp";
 
 export default function ProfileInfo() {
   const { user, logout } = useUser();
@@ -179,7 +180,6 @@ export default function ProfileInfo() {
         </View>
       </MotiView>
 
-      {/* Atalhos */}
       <View style={styles.atalhoContainer}>
         <MotiText
           from={{ opacity: 0, translateY: 6 }}

@@ -26,7 +26,11 @@ export default function Menu() {
 
   const iconMap = {
     Home: { light: home, lightFocused: homeWhite, dark: homeWhite },
-    MotoPark: { light: motoPark, lightFocused: motoParkWhite, dark: motoParkWhite },
+    MotoPark: {
+      light: motoPark,
+      lightFocused: motoParkWhite,
+      dark: motoParkWhite,
+    },
     RegistrarFrota: { light: moto, lightFocused: motoWhite, dark: motoWhite },
     Perfil: { light: perfil, lightFocused: perfilWhite, dark: perfilWhite },
   };
@@ -58,9 +62,9 @@ export default function Menu() {
             <MotiView
               from={{ opacity: 0, translateY: 30 }}
               animate={{ opacity: 1, translateY: 0 }}
-              transition={{ 
-                type: "timing", 
-                duration: 300, 
+              transition={{
+                type: "timing",
+                duration: 300,
                 delay: route.name === "Home" ? 0 : 150,
               }}
             >

@@ -41,7 +41,11 @@ export default function ListaMotos({
 
   return (
     <View style={{ flex: 1 }}>
-      {titulo && <Text style={[styles.modalTitle, { color: colors.text }]}>{titulo}</Text>}
+      {titulo && (
+        <Text style={[styles.modalTitle, { color: colors.text }]}>
+          {titulo}
+        </Text>
+      )}
 
       {mostrarFiltro && (
         <TextInput
@@ -55,7 +59,11 @@ export default function ListaMotos({
           onChangeText={setBusca}
           style={[
             styles.searchInput,
-            { borderColor: colors.border, backgroundColor: colors.white, color: colors.text },
+            {
+              borderColor: colors.border,
+              backgroundColor: colors.white,
+              color: colors.text,
+            },
           ]}
         />
       )}
@@ -68,7 +76,9 @@ export default function ListaMotos({
 
       <FlatList
         data={motosFiltradas}
-        keyExtractor={(item, i) => item?.idCarrapato || item?.id?.toString() || i.toString()}
+        keyExtractor={(item, i) =>
+          item?.idCarrapato || item?.id?.toString() || i.toString()
+        }
         renderItem={({ item, index }) => (
           <MotiView
             from={{ opacity: 0, translateY: 20 }}
@@ -102,7 +112,9 @@ export default function ListaMotos({
               )}
 
               {item?.modelo && (
-                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.deviceText, { color: colors.textSecondary }]}
+                >
                   {t("editMotorcycle.model")}: {item.modelo}
                 </Text>
               )}
@@ -112,22 +124,32 @@ export default function ListaMotos({
               {permitirLocalizar &&
                 (selected === item?.placa ? (
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: colors.modalRed }]}
+                    style={[
+                      styles.button,
+                      { backgroundColor: colors.modalRed },
+                    ]}
                     onPress={() => onParar(item)}
                   >
-                    <Text style={styles.buttonText}>{t("motorcycleList.stop")}</Text>
+                    <Text style={styles.buttonText}>
+                      {t("motorcycleList.stop")}
+                    </Text>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
                     style={[styles.button, { backgroundColor: colors.primary }]}
                     onPress={() => onLocalizar(item)}
                   >
-                    <Text style={styles.buttonText}>{t("motorcycleList.locate")}</Text>
+                    <Text style={styles.buttonText}>
+                      {t("motorcycleList.locate")}
+                    </Text>
                   </TouchableOpacity>
                 ))}
 
               {permitirEditar && (
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => onEdit(item)}>
+                <TouchableOpacity
+                  style={{ marginLeft: 10 }}
+                  onPress={() => onEdit(item)}
+                >
                   <MaterialCommunityIcons
                     name="pencil-outline"
                     size={20}
@@ -137,7 +159,10 @@ export default function ListaMotos({
               )}
 
               {permitirExcluir && (
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => onDelete(item)}>
+                <TouchableOpacity
+                  style={{ marginLeft: 10 }}
+                  onPress={() => onDelete(item)}
+                >
                   <Feather name="trash-2" size={20} color={colors.modalRed} />
                 </TouchableOpacity>
               )}
