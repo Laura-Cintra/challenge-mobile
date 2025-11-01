@@ -18,7 +18,7 @@ import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { MotiView, MotiText } from "moti";
-import AboutAppButton from "../SobreApp/SobreApp";
+import SobreApp from "../SobreApp";
 
 export default function ProfileInfo() {
   const { user, logout } = useUser();
@@ -92,6 +92,9 @@ export default function ProfileInfo() {
 
   return (
     <View style={{ backgroundColor: colors.background, height: "100%" }}>
+      <View style={{ position: "absolute", top: 15, left: 20, zIndex: 10 }}>
+        <SobreApp />
+      </View>
       <MotiView
         from={{ opacity: 0, translateY: -8 }}
         animate={{ opacity: 1, translateY: 0 }}
