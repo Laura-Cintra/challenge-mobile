@@ -9,6 +9,7 @@ import {
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function ListaMotos({
   titulo,
@@ -68,8 +69,11 @@ export default function ListaMotos({
       <FlatList
         data={motosFiltradas}
         keyExtractor={(item, i) => item?.idCarrapato || item?.id?.toString() || i.toString()}
-        renderItem={({ item }) => (
-          <View
+        renderItem={({ item, index }) => (
+          <MotiView
+            from={{ opacity: 0, translateY: 20 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: index * 120, type: "timing", duration: 300 }}
             style={[
               styles.item,
               { backgroundColor: colors.white, shadowColor: colors.text },
@@ -77,9 +81,14 @@ export default function ListaMotos({
           >
             <View>
               {item?.idCarrapato && (
-                <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
+                <MotiText
+                  from={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 50 + index * 80 }}
+                  style={[styles.deviceText, { color: colors.textSecondary }]}
+                >
                   {t("motorcycleList.iot")}: {item.idCarrapato}
-                </Text>
+                </MotiText>
               )}
 
               {item?.zona === 3 ? (
@@ -91,6 +100,7 @@ export default function ListaMotos({
                   {t("editMotorcycle.licensePlate")}: {item?.placa}
                 </Text>
               )}
+
               {item?.modelo && (
                 <Text style={[styles.deviceText, { color: colors.textSecondary }]}>
                   {t("editMotorcycle.model")}: {item.modelo}
@@ -132,7 +142,7 @@ export default function ListaMotos({
                 </TouchableOpacity>
               )}
             </View>
-          </View>
+          </MotiView>
         )}
       />
     </View>
