@@ -98,7 +98,6 @@ export default function CadastroForm() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.body}>
-        {/* Cabeçalho animado */}
         <MotiView
           from={{ opacity: 0, translateY: -20 }}
           animate={{ opacity: 1, translateY: 0 }}
@@ -115,7 +114,6 @@ export default function CadastroForm() {
           />
         </MotiView>
 
-        {/* Formulário animado */}
         <MotiView
           from={{ opacity: 0, translateY: 20 }}
           animate={{ opacity: 1, translateY: 0 }}
@@ -131,7 +129,6 @@ export default function CadastroForm() {
             {t("registration.title")}
           </MotiText>
 
-          {/* Campos animados em sequência */}
           <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 600 }}>
             <FormInput
               label={t("registration.name")}

@@ -7,6 +7,7 @@ import EditarMotoModal from "./EditarMoto";
 import ConfirmarExclusaoModal from "../ConfirmarExclusaoModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function ZonaModal({
   visible,
@@ -27,17 +28,36 @@ export default function ZonaModal({
   const motosDaZona = motos.filter((moto) => moto.zona === zona?.id);
 
   return (
-    <Modal visible={visible} animationType="slide">
-      <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
-        <Text style={[styles.modalTitle, { color: colors.title }]}>
+    <Modal visible={visible} animationType="slide" transparent={false}>
+      <MotiView
+        from={{ opacity: 0, translateY: 30 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ type: "timing", duration: 500 }}
+        style={[styles.modalContent, { backgroundColor: colors.background }]}
+      >
+        <MotiText
+          from={{ opacity: 0, translateY: -10 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ delay: 100 }}
+          style={[styles.modalTitle, { color: colors.title }]}
+        >
           {zona ? t(`zones.${zona.id}`) : ""}
-        </Text>
-        <Text style={[styles.modalSubtitle, { color: colors.text }]}>
+        </MotiText>
+
+        <MotiText
+          from={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 200 }}
+          style={[styles.modalSubtitle, { color: colors.text }]}
+        >
           {t("zoneModal.total", { count: motosDaZona.length })}
-        </Text>
+        </MotiText>
 
         {motosDaZona.length === 0 ? (
-          <Text
+          <MotiText
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 300 }}
             style={{
               textAlign: "center",
               marginTop: 20,
@@ -45,7 +65,7 @@ export default function ZonaModal({
             }}
           >
             {t("zoneModal.noMotorcycle")}
-          </Text>
+          </MotiText>
         ) : (
           <ListaMotos
             titulo={null}
@@ -70,15 +90,21 @@ export default function ZonaModal({
           />
         )}
 
-        <TouchableOpacity
-          style={[styles.fecharBotao, { backgroundColor: colors.primary }]}
-          onPress={onClose}
+        <MotiView
+          from={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 400 }}
         >
-          <MaterialCommunityIcons name="close" size={20} color={colors.white} />
-          <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>
-            {t("zoneModal.close")}
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.fecharBotao, { backgroundColor: colors.primary, marginBottom: 15 }]}
+            onPress={onClose}
+          >
+            <MaterialCommunityIcons name="close" size={20} color={colors.white} />
+            <Text style={{ color: colors.white, fontSize: 16, marginLeft: 6 }}>
+              {t("zoneModal.close")}
+            </Text>
+          </TouchableOpacity>
+        </MotiView>
 
         <ConfirmarExclusaoModal
           visible={confirmVisible}
@@ -99,7 +125,7 @@ export default function ZonaModal({
           moto={motoSelecionada}
           onSave={editarMoto}
         />
-      </View>
+      </MotiView>
     </Modal>
   );
 }

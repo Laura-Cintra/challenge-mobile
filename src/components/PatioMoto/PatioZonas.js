@@ -5,6 +5,7 @@ import ZonaCard from "./ZonaCard";
 import ZonaModal from "./ZonaModal";
 import { zonasLista } from "../../data/zonas";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function PatioZonas() {
   const { colors } = useTheme();
@@ -23,18 +24,33 @@ export default function PatioZonas() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.title }]}>
+      <MotiText
+        from={{ opacity: 0, translateY: -10 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ type: "timing", duration: 500 }}
+        style={[styles.title, { color: colors.title }]}
+      >
         {t("parkingZones.title")}
-      </Text>
+      </MotiText>
 
       <View style={styles.grid}>
-        {lista.map((zona) => (
-          <ZonaCard
+        {lista.map((zona, index) => (
+          <MotiView
             key={zona.id}
-            zona={{ ...zona, nome: t(`zones.${zona.id}`) }}
-            onPress={abrirModalZona}
-            isDoubleSize={zona.id === 0}
-          />
+            from={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              type: "timing",
+              duration: 400,
+              delay: index * 100,
+            }}
+          >
+            <ZonaCard
+              zona={{ ...zona, nome: t(`zones.${zona.id}`) }}
+              onPress={abrirModalZona}
+              isDoubleSize={zona.id === 0}
+            />
+          </MotiView>
         ))}
       </View>
 

@@ -171,7 +171,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
         )}
 
         <TouchableOpacity
-          style={[styles.closeButton, { backgroundColor: colors.primary }]}
+          style={[styles.closeButton, { backgroundColor: colors.primary, marginBottom: 15 }]}
           onPress={onClose}
         >
           <MaterialCommunityIcons name="close" size={20} color="#FBFBFB" />
