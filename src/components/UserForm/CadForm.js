@@ -12,7 +12,7 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
-import { MotiView, MotiText } from "moti";
+import { MotiView, MotiText, MotiImage } from "moti";
 
 export default function CadastroForm() {
   const navigation = useNavigation();
@@ -30,18 +30,11 @@ export default function CadastroForm() {
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const isValidEmail = (email) =>
-    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
-  const isValidPassword = (password) => password.length >= 6;
-
   useEffect(() => {
     const fetchPatios = async () => {
       try {
         const patios = await getPatios();
-        const formatted = patios.map((p) => ({
-          value: p.id.toString(),
-          label: p.nome,
-        }));
+        const formatted = patios.map((p) => ({ value: p.id.toString(), label: p.nome }));
         setPatiosDisponiveis(formatted);
       } catch (error) {
         console.error("Erro ao carregar pátios:", error);
@@ -49,6 +42,10 @@ export default function CadastroForm() {
     };
     fetchPatios();
   }, []);
+
+  const isValidEmail = (email) =>
+    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+  const isValidPassword = (password) => password.length >= 6;
 
   const handleCadastro = async () => {
     if (!name || !email || !password || !patio) {
@@ -101,93 +98,80 @@ export default function CadastroForm() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.body}>
+        {/* Cabeçalho animado */}
+        <MotiView
+          from={{ opacity: 0, translateY: -20 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ type: "timing", duration: 600 }}
+          style={styles.header}
+        >
+          <MotiImage
+            source={logoSource}
+            style={styles.logo}
+            from={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", delay: 150 }}
+            resizeMode="contain"
+          />
+        </MotiView>
+
+        {/* Formulário animado */}
         <MotiView
           from={{ opacity: 0, translateY: 20 }}
           animate={{ opacity: 1, translateY: 0 }}
-          transition={{ type: "timing", duration: 700 }}
-          style={styles.header}
+          transition={{ delay: 400, type: "timing", duration: 500 }}
+          style={styles.form}
         >
-          <Image source={logoSource} style={styles.logo} resizeMode="contain" />
-        </MotiView>
-
-        <View style={styles.form}>
           <MotiText
-            from={{ opacity: 0, translateY: 20 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ delay: 200 }}
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 450 }}
             style={[styles.formTitle, { color: colors.text }]}
           >
             {t("registration.title")}
           </MotiText>
 
-          {[
-            {
-              comp: (
-                <FormInput
-                  label={t("registration.name")}
-                  placeholder={t("registration.placeholderName")}
-                  value={name}
-                  onChangeText={setName}
-                  icon={
-                    <AntDesign name="user" size={20} color={colors.secundary} />
-                  }
-                />
-              ),
-            },
-            {
-              comp: (
-                <FormInput
-                  label={t("registration.email")}
-                  placeholder={t("registration.placeholderEmail")}
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  icon={
-                    <Fontisto name="email" size={20} color={colors.secundary} />
-                  }
-                />
-              ),
-            },
-            {
-              comp: (
-                <FormInput
-                  label={t("registration.password")}
-                  placeholder={t("registration.placeholderPassword")}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                  icon={
-                    <AntDesign name="lock" size={21} color={colors.secundary} />
-                  }
-                />
-              ),
-            },
-            {
-              comp: (
-                <InputSelectDropdown
-                  label={t("registration.patio")}
-                  selectedValue={patio}
-                  onValueChange={(value) => setPatio(value)}
-                  items={patiosDisponiveis}
-                />
-              ),
-            },
-          ].map((item, index) => (
-            <MotiView
-              key={index}
-              from={{ opacity: 0, translateY: 20 }}
-              animate={{ opacity: 1, translateY: 0 }}
-              transition={{ delay: 400 + index * 150 }}
-            >
-              {item.comp}
-            </MotiView>
-          ))}
+          {/* Campos animados em sequência */}
+          <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 600 }}>
+            <FormInput
+              label={t("registration.name")}
+              placeholder={t("registration.placeholderName")}
+              value={name}
+              onChangeText={setName}
+              icon={<AntDesign name="user" size={20} color={colors.secundary} />}
+            />
+          </MotiView>
 
-          <MotiView
-            from={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1000, type: "timing", duration: 400 }}
-          >
+          <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 750 }}>
+            <FormInput
+              label={t("registration.email")}
+              placeholder={t("registration.placeholderEmail")}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              icon={<Fontisto name="email" size={20} color={colors.secundary} />}
+            />
+          </MotiView>
+
+          <MotiView from={{ opacity: 0, translateY: 15 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 900 }}>
+            <FormInput
+              label={t("registration.password")}
+              placeholder={t("registration.placeholderPassword")}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
+            />
+          </MotiView>
+
+          <InputSelectDropdown
+            label={t("registration.patio")}
+            selectedValue={patio}
+            onValueChange={setPatio}
+            items={patiosDisponiveis}
+          />
+
+          <MotiView from={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1200, type: "spring" }}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.secundary }]}
               onPress={handleCadastro}
@@ -198,11 +182,7 @@ export default function CadastroForm() {
             </TouchableOpacity>
           </MotiView>
 
-          <MotiView
-            from={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1200 }}
-          >
+          <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1400 }}>
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text style={[styles.linkText, { color: colors.text }]}>
                 {t("registration.alreadyHaveAccount")}
@@ -213,7 +193,7 @@ export default function CadastroForm() {
               </Text>
             </TouchableOpacity>
           </MotiView>
-        </View>
+        </MotiView>
       </View>
 
       <MessageModal
