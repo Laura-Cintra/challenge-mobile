@@ -9,6 +9,7 @@ import {
 import Checkbox from "expo-checkbox";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function RegistroCampo({
   label = "Placa",
@@ -32,8 +33,18 @@ export default function RegistroCampo({
   const artigo = displayIsFeminine ? "a" : "o";
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.white, shadowColor: colors.text }]}>
-      <Text style={[styles.title, { color: colors.text }]}>
+    <MotiView
+      from={{ opacity: 0, translateY: 20 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ type: "timing", duration: 500 }}
+      style={[styles.container, { backgroundColor: colors.white, shadowColor: colors.text }]}
+    >
+      <MotiText
+        from={{ opacity: 0, translateY: -5 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ delay: 150, type: "timing" }}
+        style={[styles.title, { color: colors.text }]}
+      >
         {loading
           ? t("registrationField.identifying", { campo: displayLabel })
           : erro
@@ -43,50 +54,86 @@ export default function RegistroCampo({
               campo: displayLabel,
             })
           : t("registrationField.identifying", { campo: displayLabel })}
-      </Text>
+      </MotiText>
 
-      {loading && <ActivityIndicator size="large" color={colors.primary} />}
+      {loading && (
+        <MotiView
+          from={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring" }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </MotiView>
+      )}
 
       {!loading && valor && !erro && (
-        <Text style={[styles.success, { color: colors.primary }]}>✓ {valor}</Text>
+        <MotiText
+          from={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "timing", duration: 300 }}
+          style={[styles.success, { color: colors.primary }]}
+        >
+          ✓ {valor}
+        </MotiText>
       )}
 
       {erro && (
         <>
           {permiteSemPlaca && (
-            <View style={styles.checkboxContainer}>
+            <MotiView
+              from={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 150 }}
+              style={styles.checkboxContainer}
+            >
               <Checkbox value={semPlaca} onValueChange={setSemPlaca} />
               <Text style={[styles.checkboxLabel, { color: colors.text }]}>
                 {t("registrationField.motorcycleWithoutPlate")}
               </Text>
-            </View>
+            </MotiView>
           )}
 
-          <TextInput
-            style={[
-              styles.input,
-              { borderColor: colors.border, backgroundColor: colors.background, color: colors.text },
-            ]}
-            placeholder={
-              semPlaca
-                ? t("registrationField.placeholderChassis")
-                : t("registrationField.placeholderLicensePlate")
-            }
-            value={valor}
-            onChangeText={setValor}
-            autoCapitalize="characters"
-            placeholderTextColor={colors.placeholder}
-          />
-
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary }]}
-            onPress={onProsseguir}
+          <MotiView
+            from={{ opacity: 0, translateY: 10 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 200 }}
           >
-            <Text style={styles.buttonText}>{t("registrationField.continue")}</Text>
-          </TouchableOpacity>
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  borderColor: colors.border,
+                  backgroundColor: colors.background,
+                  color: colors.text,
+                },
+              ]}
+              placeholder={
+                semPlaca
+                  ? t("registrationField.placeholderChassis")
+                  : t("registrationField.placeholderLicensePlate")
+              }
+              value={valor}
+              onChangeText={setValor}
+              autoCapitalize="characters"
+              placeholderTextColor={colors.placeholder}
+            />
+          </MotiView>
+
+          <MotiView
+            from={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", delay: 300 }}
+          >
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.primary }]}
+              onPress={onProsseguir}
+            >
+              <Text style={styles.buttonText}>{t("registrationField.continue")}</Text>
+            </TouchableOpacity>
+          </MotiView>
         </>
       )}
-    </View>
+    </MotiView>
   );
 }
 

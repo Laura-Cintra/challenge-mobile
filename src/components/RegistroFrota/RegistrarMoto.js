@@ -6,7 +6,11 @@ import { getMotos, createMoto } from "../../services/actions";
 import { useUser } from "../../providers/UserContext";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
-import { solicitarPermissaoNotificacao, dispararNotificacao } from "../../services/notifications";
+import {
+  solicitarPermissaoNotificacao,
+  dispararNotificacao,
+} from "../../services/notifications";
+import { MotiView, MotiText } from "moti";
 
 export default function RegistrarMoto() {
   const { user } = useUser();
@@ -52,9 +56,11 @@ export default function RegistrarMoto() {
       try {
         if (step === 1 && loading) {
           try {
-            if (Math.random() < 0.3) throw new Error(t("registerMotorcycle.errorReading"));
+            if (Math.random() < 0.2)
+              throw new Error(t("registerMotorcycle.errorReading"));
             const motos = await getMotos();
-            if (!motos || motos.length === 0) throw new Error(t("registerMotorcycle.noneFound"));
+            if (!motos || motos.length === 0)
+              throw new Error(t("registerMotorcycle.noneFound"));
 
             await new Promise((res) => setTimeout(res, 1000));
             const aleatoria = motos[Math.floor(Math.random() * motos.length)];
@@ -125,7 +131,9 @@ export default function RegistrarMoto() {
         return;
       }
 
-      const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(placa.trim().toUpperCase());
+      const validarPlaca = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(
+        placa.trim().toUpperCase()
+      );
       if (!validarPlaca) {
         setModalMessage(t("editMotorcycle.invalidLicensePlate"));
         setModalVisible(true);
@@ -165,9 +173,14 @@ export default function RegistrarMoto() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {!finalizado ? (
         <>
-          <Text style={[styles.title, { color: colors.title }]}>
+          <MotiText
+            from={{ opacity: 0, translateY: -10 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ type: "timing", duration: 600 }}
+            style={[styles.title, { color: colors.title }]}
+          >
             {t("registerMotorcycle.title")}
-          </Text>
+          </MotiText>
 
           {step >= 1 && (
             <RegistroCampo
@@ -199,65 +212,113 @@ export default function RegistrarMoto() {
           )}
 
           {step === 3 && !erroCarrapato ? (
-            <View style={styles.successBox}>
-              <View style={[styles.checkCircle, { backgroundColor: colors.primary }]}>
+            <MotiView
+              from={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 250, type: "spring" }}
+              style={styles.successBox}
+            >
+              <View
+                style={[
+                  styles.checkCircle,
+                  { backgroundColor: colors.primary },
+                ]}
+              >
                 <Text style={styles.checkIcon}>✓</Text>
               </View>
               <View>
                 <Text style={[styles.successFinal, { color: colors.text }]}>
                   {t("registerMotorcycle.success")}
                 </Text>
-                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.detailText, { color: colors.textSecondary }]}
+                >
                   {t("registerMotorcycle.model", { modelo })}
                 </Text>
-                <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                <Text
+                  style={[styles.detailText, { color: colors.textSecondary }]}
+                >
                   {t("registerMotorcycle.currentZone", {
-                    zona: t(`zones.${zona}`) || t("registerMotorcycle.undefinedZone"),
+                    zona:
+                      t(`zones.${zona}`) ||
+                      t("registerMotorcycle.undefinedZone"),
                   })}
                 </Text>
               </View>
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: colors.primary, flex: 1 }]}
+                  style={[
+                    styles.button,
+                    { backgroundColor: colors.primary, flex: 1 },
+                  ]}
                   onPress={handleRegistrarFrota}
                 >
-                  <Text style={styles.buttonText}>{t("registerMotorcycle.registerAnother")}</Text>
+                  <Text style={styles.buttonText}>
+                    {t("registerMotorcycle.registerAnother")}
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: colors.inative, flex: 1 }]}
+                  style={[
+                    styles.button,
+                    { backgroundColor: colors.inative, flex: 1 },
+                  ]}
                   onPress={handleFinalizar}
                 >
-                  <Text style={styles.buttonText}>{t("registerMotorcycle.finish")}</Text>
+                  <Text style={styles.buttonText}>
+                    {t("registerMotorcycle.finish")}
+                  </Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </MotiView>
           ) : step === 3 && erroCarrapato ? (
-            <View style={styles.errorBox}>
+            <MotiView
+              from={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 300, type: "spring" }}
+              style={styles.errorBox}
+            >
               <Text style={[styles.errorTitle, { color: colors.modalRed }]}>
                 {t("registerMotorcycle.errorIdentifying")}
               </Text>
-              <Text style={[styles.errorMessage, { color: colors.text }]}>{modalMessage}</Text>
+              <Text style={[styles.errorMessage, { color: colors.text }]}>
+                {modalMessage}
+              </Text>
 
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.modalRed, marginTop: 15 }]}
+                style={[
+                  styles.button,
+                  { backgroundColor: colors.modalRed, marginTop: 15 },
+                ]}
                 onPress={handleFinalizar}
               >
-                <Text style={styles.buttonText}>{t("registerMotorcycle.clearOperation")}</Text>
+                <Text style={styles.buttonText}>
+                  {t("registerMotorcycle.clearOperation")}
+                </Text>
               </TouchableOpacity>
-            </View>
+            </MotiView>
           ) : null}
         </>
       ) : (
-        <View style={styles.successBox}>
+        <MotiView
+          from={{ opacity: 0, translateY: -10 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ type: "timing", duration: 300 }}
+          style={styles.successBox}
+        >
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary, width: "70%" }]}
+            style={[
+              styles.button,
+              { backgroundColor: colors.primary, width: "70%" },
+            ]}
             onPress={handleRegistrarFrota}
           >
-            <Text style={styles.buttonText}>{t("registerMotorcycle.registerFleet")}</Text>
+            <Text style={styles.buttonText}>
+              {t("registerMotorcycle.registerFleet")}
+            </Text>
           </TouchableOpacity>
-        </View>
+        </MotiView>
       )}
 
       <MessageModal
