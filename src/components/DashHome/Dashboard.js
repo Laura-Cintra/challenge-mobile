@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useTheme } from "../../providers/ThemeContext";
 import GraficoZonas from "./GraficoZonas";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -21,14 +22,23 @@ export default function Dashboard() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.title }]}>
-        {t("dashboard.greeting", { nome: user?.nome })}
-      </Text>
-      <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-        {t("dashboard.subtitle")}
-      </Text>
+      <MotiView
+        from={{ opacity: 0, translateY: -20 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ type: "timing", duration: 500 }}
+      >
+        <Text style={[styles.title, { color: colors.title }]}>
+          {t("dashboard.greeting", { nome: user?.nome })}
+        </Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+          {t("dashboard.subtitle")}
+        </Text>
+      </MotiView>
 
-      <View
+      <MotiView
+        from={{ opacity: 0, translateY: -20 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ delay: 300, type: "timing", duration: 500 }}
         style={[
           styles.atalho,
           { backgroundColor: colors.card, borderColor: colors.border },
@@ -41,9 +51,15 @@ export default function Dashboard() {
           </Text>
 
           <View>
-            <Text style={[styles.total, { color: colors.secundary }]}>
+            <MotiText
+              from={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 500, type: "timing", duration: 400 }}
+              style={[styles.total, { color: colors.secundary }]}
+            >
               {total}
-            </Text>
+            </MotiText>
+
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.secundary }]}
               onPress={() => navigation.navigate("RegistrarFrota")}
@@ -59,7 +75,7 @@ export default function Dashboard() {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </MotiView>
 
       <GraficoZonas motos={motos.length > 0 ? motos : []} />
 

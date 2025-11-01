@@ -4,6 +4,7 @@ import { BarChart } from "react-native-gifted-charts";
 import { zonasLista } from "../../data/zonas";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function GraficoZonas({ motos }) {
   const [dadosZonas, setDadosZonas] = useState([]);
@@ -11,7 +12,7 @@ export default function GraficoZonas({ motos }) {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (motos){
+    if (motos) {
       const contagem = zonasLista.map((zona) => {
         const total = motos.filter((moto) => moto.zona === zona.id).length;
         return { ...zona, total };
@@ -30,10 +31,16 @@ export default function GraficoZonas({ motos }) {
   }));
 
   return (
-    <View style={styles.container}>
+    <MotiView
+      from={{ opacity: 0, translateY: 20 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ type: "timing", duration: 400 }}
+      style={styles.container}
+    >
       <Text style={[styles.title, { color: colors.title }]}>
         {t("dashboard.zonesChart")}
       </Text>
+
       <BarChart
         data={dadosGrafico}
         barWidth={28}
@@ -42,6 +49,7 @@ export default function GraficoZonas({ motos }) {
         noOfSections={4}
         yAxisThickness={0}
         isAnimated
+        animationDuration={800}
         barBorderRadius={4}
         rulesColor={colors.textSecondary}
         yAxisTextStyle={{ color: colors.text }}
@@ -49,16 +57,22 @@ export default function GraficoZonas({ motos }) {
       />
 
       <View style={styles.legenda}>
-        {dadosZonas.map((zona) => (
-          <View key={zona.id} style={styles.legendaItem}>
+        {dadosZonas.map((zona, index) => (
+          <MotiView
+            key={zona.id}
+            from={{ opacity: 0, translateY: 15 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 300 + index * 100 }}
+            style={styles.legendaItem}
+          >
             <View style={[styles.legendaCor, { backgroundColor: zona.cor }]} />
             <Text style={[styles.legendaTexto, { color: colors.text }]}>
               {t(`zones.${zona.id}`)}
             </Text>
-          </View>
+          </MotiView>
         ))}
       </View>
-    </View>
+    </MotiView>
   );
 }
 
