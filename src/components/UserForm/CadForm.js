@@ -12,6 +12,7 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import MessageModal from "../MessageModal";
 import { useTheme } from "../../providers/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { MotiView, MotiText } from "moti";
 
 export default function CadastroForm() {
   const navigation = useNavigation();
@@ -29,14 +30,18 @@ export default function CadastroForm() {
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const isValidEmail = (email) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+  const isValidEmail = (email) =>
+    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
   const isValidPassword = (password) => password.length >= 6;
 
   useEffect(() => {
     const fetchPatios = async () => {
       try {
         const patios = await getPatios();
-        const formatted = patios.map((p) => ({ value: p.id.toString(), label: p.nome }));
+        const formatted = patios.map((p) => ({
+          value: p.id.toString(),
+          label: p.nome,
+        }));
         setPatiosDisponiveis(formatted);
       } catch (error) {
         console.error("Erro ao carregar pátios:", error);
@@ -96,64 +101,118 @@ export default function CadastroForm() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.body}>
-        <View style={styles.header}>
+        <MotiView
+          from={{ opacity: 0, translateY: 20 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ type: "timing", duration: 700 }}
+          style={styles.header}
+        >
           <Image source={logoSource} style={styles.logo} resizeMode="contain" />
-        </View>
+        </MotiView>
 
         <View style={styles.form}>
-          <Text style={[styles.formTitle, { color: colors.text }]}>{t("registration.title")}</Text>
-
-          <FormInput
-            label={t("registration.name")}
-            placeholder={t("registration.placeholderName")}
-            value={name}
-            onChangeText={setName}
-            icon={<AntDesign name="user" size={20} color={colors.secundary} />}
-          />
-
-          <FormInput
-            label={t("registration.email")}
-            placeholder={t("registration.placeholderEmail")}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            icon={<Fontisto name="email" size={20} color={colors.secundary} />}
-          />
-
-          <FormInput
-            label={t("registration.password")}
-            placeholder={t("registration.placeholderPassword")}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            icon={<AntDesign name="lock" size={21} color={colors.secundary} />}
-          />
-
-          <InputSelectDropdown
-            label={t("registration.patio")}
-            selectedValue={patio}
-            onValueChange={(value) => setPatio(value)}
-            items={patiosDisponiveis}
-          />
-
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.secundary }]}
-            onPress={handleCadastro}
+          <MotiText
+            from={{ opacity: 0, translateY: 20 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: 200 }}
+            style={[styles.formTitle, { color: colors.text }]}
           >
-            <Text style={[styles.buttonText, { color: colors.white }]}>
-              {t("registration.registerButton")}
-            </Text>
-          </TouchableOpacity>
+            {t("registration.title")}
+          </MotiText>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={[styles.linkText, { color: colors.text }]}>
-              {t("registration.alreadyHaveAccount")}
-              <Text style={[styles.link, { color: colors.primary }]}>
-                {" "}
-                {t("registration.login")}
+          {[
+            {
+              comp: (
+                <FormInput
+                  label={t("registration.name")}
+                  placeholder={t("registration.placeholderName")}
+                  value={name}
+                  onChangeText={setName}
+                  icon={
+                    <AntDesign name="user" size={20} color={colors.secundary} />
+                  }
+                />
+              ),
+            },
+            {
+              comp: (
+                <FormInput
+                  label={t("registration.email")}
+                  placeholder={t("registration.placeholderEmail")}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  icon={
+                    <Fontisto name="email" size={20} color={colors.secundary} />
+                  }
+                />
+              ),
+            },
+            {
+              comp: (
+                <FormInput
+                  label={t("registration.password")}
+                  placeholder={t("registration.placeholderPassword")}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  icon={
+                    <AntDesign name="lock" size={21} color={colors.secundary} />
+                  }
+                />
+              ),
+            },
+            {
+              comp: (
+                <InputSelectDropdown
+                  label={t("registration.patio")}
+                  selectedValue={patio}
+                  onValueChange={(value) => setPatio(value)}
+                  items={patiosDisponiveis}
+                />
+              ),
+            },
+          ].map((item, index) => (
+            <MotiView
+              key={index}
+              from={{ opacity: 0, translateY: 20 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ delay: 400 + index * 150 }}
+            >
+              {item.comp}
+            </MotiView>
+          ))}
+
+          <MotiView
+            from={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1000, type: "timing", duration: 400 }}
+          >
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.secundary }]}
+              onPress={handleCadastro}
+            >
+              <Text style={[styles.buttonText, { color: colors.white }]}>
+                {t("registration.registerButton")}
               </Text>
-            </Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </MotiView>
+
+          <MotiView
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1200 }}
+          >
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={[styles.linkText, { color: colors.text }]}>
+                {t("registration.alreadyHaveAccount")}
+                <Text style={[styles.link, { color: colors.primary }]}>
+                  {" "}
+                  {t("registration.login")}
+                </Text>
+              </Text>
+            </TouchableOpacity>
+          </MotiView>
         </View>
       </View>
 
