@@ -24,8 +24,12 @@ export default function SobreApp() {
               Versão: {Constants.expoConfig?.version || "1.0.0"}
             </Text>
 
-            <Text style={[styles.text, { color: colors.textSecondary }]}>
-              Commit: {commitData.commit}
+            <Text style={[styles.text, { color: colors.text }]}>
+              Commit:
+            </Text>
+
+            <Text style={[styles.text, { color: colors.textSecondary, fontSize: 14 }]}>
+                {commitData.commit}
             </Text>
 
             <TouchableOpacity
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modal: {
-    width: "80%",
+    width: "85%",
     borderRadius: 10,
     padding: 20,
     alignItems: "center",
@@ -62,6 +66,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     marginBottom: 5,
+    textAlign: "center",
   },
   closeButton: {
     marginTop: 15,
