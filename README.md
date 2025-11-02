@@ -38,6 +38,9 @@ O **SmartPátio** é um aplicativo mobile desenvolvido em React Native Expo, com
   - Dados do pátio (endereço, quantidade atual de motos)
 - Opções de editar perfil ou excluir conta
 - Atalhos de navegação para as funções do aplicativo
+- Botão “ℹ️ Sobre o App” — exibe uma janela modal com:
+  - A versão do aplicativo
+  - O **hash do commit** de referência
 
 ### **Página de Login**
 - Autenticação de usuários já cadastrados
@@ -50,17 +53,39 @@ O **SmartPátio** é um aplicativo mobile desenvolvido em React Native Expo, com
 - Campos de entrada: nome, e-mail, senha e endereço do pátio (select com pátios registrados no sistema)
 - Armazenamento seguro e integração direta com a API
 
-## 🛠 2. Tecnologias Utilizadas
+---
 
-- **React Native** 
+## 📱 2. Funcionalidades Adicionadas
+  1. 🔔 Notificações Locais
+  * Envio de notificações automáticas ao:
+
+    * Editar a zona de uma moto
+    * Registrar uma moto no pátio
+
+  2. 🌍 Internacionalização
+
+  * Permite alternar o idioma entre Português e Espanhol
+  * O idioma pode ser trocado com um botão de bandeira no topo da tela.
+
+  3. 🎨 Tema Claro/Escuro
+
+  * Alternância de tema global com ThemeContext
+  * Ícone no topo permite alternar entre o modo Light e Dark
+
+## 🛠 3. Tecnologias Utilizadas
+
+- **React Native** (Expo)
+- - **Axios** (requisições HTTP)
 - **AsyncStorage**
 - **React Navigation**
 - **Expo Vector Icons**
-- **Axios**
+- **expo-notifications**
+- **i18next**
+- **Moti** (animações)
 
 ---
 
-## 📂 3. Estrutura de Pastas
+## 📂 4. Estrutura de Pastas
 ```bash
 challenge-mobile/
 │── assets/                  # Imagens, ícones e recursos estáticos
@@ -81,7 +106,9 @@ challenge-mobile/
 │   │   ├── UseMotos.js
 │   │   └── UserContext.js
 │   ├── services/            # Comunicação com a API
-│   │   └── actions.js
+│   │   ├── actions.js
+│   │   ├── notifications.js     # Funções de notificação local
+│   │   └── commit.json          # Hash do commit gerado automaticamente
 │   └── theme/               # Configurações de tema (cores, estilos)
 │       ├── colors.js
 │       └── themeColors.js
@@ -93,7 +120,7 @@ challenge-mobile/
 ```
 --- 
 
-## 🚀 4. Como rodar o projeto
+## 🚀 5. Como rodar o projeto
 
 1. Clone este repositório:
 
@@ -117,17 +144,14 @@ npm start
 4. Escaneie o QR Code com o app Expo Go no seu celular
 ---
 
-## 📊 5. Execução do BD para as requisições
+## 📦 6. Publicação
 
-1. Clone o repositório .NET e siga as instruções de configuração das credenciais do BD:
-
-```bash
-git clone https://github.com/ViniciuSaeSouza/Mottu-CSharp.git
-```
+* App publicado via Firebase App Distribution
+[📥 Baixar smartpatio.apk](smartpatio.apk)
 
 ---
 
-## 🔌6. Execução do IoT no Wokwi
+## 🔌7. Execução do IoT no Wokwi
 
 1. Clone o repositório IOT e siga as instruções do documento:
 
@@ -136,7 +160,7 @@ git clone https://github.com/ViniciuSaeSouza/Mottu-IoT.git
 ```
 ---
 
-## 7. Integrantes
+## 8. Integrantes
 
 | Nome                              | RM     | GitHub                                             |
 | --------------------------------- | ------ | -------------------------------------------------- |
