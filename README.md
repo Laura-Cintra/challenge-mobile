@@ -147,6 +147,7 @@ npm start
 ## 📦 6. Publicação
 
 * App publicado via Firebase App Distribution
+  
 [📥 Baixar smartpatio.apk](smartpatio.apk)
 
 ---
