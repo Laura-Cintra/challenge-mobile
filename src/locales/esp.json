@@ -138,7 +138,8 @@
     "invalidEmail": "Por favor, introduce un correo electrónico válido.",
     "shortPassword": "La contraseña debe tener al menos 6 caracteres.",
     "success": "¡Registro realizado con éxito!",
-    "error": "Error al registrar. Inténtalo de nuevo."
+    "error": "Error al registrar. Inténtalo de nuevo.",
+    "loadingPatios": "Cargando patios..."
   },
   "login": {
     "title": "Inicio de Sesión",

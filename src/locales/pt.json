@@ -138,7 +138,8 @@
     "invalidEmail": "Por favor, insira um e-mail válido.",
     "shortPassword": "A senha deve ter pelo menos 6 caracteres.",
     "success": "Cadastro realizado com sucesso!",
-    "error": "Erro ao cadastrar. Tente novamente."
+    "error": "Erro ao cadastrar. Tente novamente.",
+    "loadingPatios": "Carregando pátios..."
   },
   "login": {
     "title": "Login",
