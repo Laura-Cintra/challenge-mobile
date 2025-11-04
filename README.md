@@ -141,7 +141,12 @@ npm install
 npm start
 ```
 
-4. Escaneie o QR Code com o app Expo Go no seu celular
+4. Rode o comando de Pré-Build pro arquivo commit.json ser gerado
+```bash
+npm run prebuild
+```
+
+5. Escaneie o QR Code com o app Expo Go no seu celular
 ---
 
 ## 📦 6. Publicação
