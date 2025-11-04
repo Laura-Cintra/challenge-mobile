@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "scheme": "SmartPatioApp",
+    "scheme": "smartpatio",
     "notification": {
       "icon": "./assets/notification-icon.png",
       "color": "#ffffff"
@@ -32,19 +32,19 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "useNextNotificationsApi": true,
       "package": "com.smartpatio.challenge"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "47dfff5d-6f0f-4c3c-a0d3-d0f6aae051ad"
+        "projectId": "18d77085-95a0-4519-b49c-8f4a06c1f39b"
       }
     }
   }
