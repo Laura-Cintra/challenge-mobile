@@ -1,11 +1,7 @@
 import axios from "axios";
-import { Platform } from "react-native";
 import { zonasMap } from "../data/zonas";
 
-const API_BASE_URL =
-  Platform.OS === "android"
-    ? "http://10.0.2.2:8080/api" // emulador Android
-    : "http://localhost:8080/api"; // iOS simulator
+const API_BASE_URL = "https://mottu-3-6-7.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
