@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modal: {
-    width: "85%",
+    width: "87%",
     borderRadius: 10,
     padding: 20,
     alignItems: "center",

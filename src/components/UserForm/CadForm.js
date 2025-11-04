@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../providers/UserContext";
 import { createUser, getPatios } from "../../services/actions";
@@ -25,6 +31,7 @@ export default function CadastroForm() {
   const [password, setPassword] = useState("");
   const [patio, setPatio] = useState("");
   const [patiosDisponiveis, setPatiosDisponiveis] = useState([]);
+  const [loadingPatios, setLoadingPatios] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -33,6 +40,7 @@ export default function CadastroForm() {
   useEffect(() => {
     const fetchPatios = async () => {
       try {
+        setLoadingPatios(true);
         const patios = await getPatios();
         const formatted = patios.map((p) => ({
           value: p.id.toString(),
@@ -41,6 +49,8 @@ export default function CadastroForm() {
         setPatiosDisponiveis(formatted);
       } catch (error) {
         console.error("Erro ao carregar pátios:", error);
+      } finally {
+        setLoadingPatios(false);
       }
     };
     fetchPatios();
@@ -182,12 +192,21 @@ export default function CadastroForm() {
             />
           </MotiView>
 
-          <InputSelectDropdown
-            label={t("registration.patio")}
-            selectedValue={patio}
-            onValueChange={setPatio}
-            items={patiosDisponiveis}
-          />
+          {loadingPatios ? (
+            <View style={{ alignItems: "center", marginTop: 20 }}>
+              <ActivityIndicator size="large" color={colors.secundary} />
+              <Text style={{ color: colors.textSecondary, marginTop: 8 }}>
+                {t("registration.loadingPatios") || "Carregando pátios..."}
+              </Text>
+            </View>
+          ) : (
+            <InputSelectDropdown
+              label={t("registration.patio")}
+              selectedValue={patio}
+              onValueChange={setPatio}
+              items={patiosDisponiveis}
+            />
+          )}
 
           <MotiView
             from={{ opacity: 0, scale: 0.9 }}
