@@ -51,7 +51,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
   const conectarMqtt = () => {
     setIsConnecting(true);
     const clientId = "SmartPatio_" + Math.random().toString(16).substr(2, 8);
-    const client = new Client("broker.hivemq.com", 8000, "/mqtt", clientId);
+    const client = new Client("broker.hivemq.com", 8884, "/mqtt", clientId);
 
     client.onConnectionLost = (responseObject) => {
       if (responseObject.errorCode !== 0) setConnected(false);
@@ -71,7 +71,7 @@ export default function ProcurarMotoModal({ visible, onClose }) {
       timeout: 10,
       keepAliveInterval: 30,
       cleanSession: true,
-      useSSL: false,
+      useSSL: true,
     });
 
     setMqttClient(client);
