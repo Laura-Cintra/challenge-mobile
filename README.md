@@ -168,8 +168,8 @@ git clone https://github.com/ViniciuSaeSouza/Mottu-IoT.git
 
 ## 8. Integrantes
 
-| Nome                              | RM     | GitHub                                             |
-| --------------------------------- | ------ | -------------------------------------------------- |
-| **Laura de Oliveira Cintra**      | 558843 | [@Laura-Cintra](https://github.com/Laura-Cintra)   |
-| **Maria Eduarda Alves da Paixão** | 558832 | [@MariaEdPaixao](https://github.com/MariaEdPaixao) |
-| **Vinícius Saes de Souza**        | 554456 | [@ViniciuSaeSouza](https://github.com/ViniciuSaeSouza) |
+| Nome                              | RM     | Turma  | GitHub                                             |
+| --------------------------------- | ------ | ------ | -------------------------------------------------- |
+| **Laura de Oliveira Cintra**      | 558843 | 2TDSPJ | [@Laura-Cintra](https://github.com/Laura-Cintra)   |
+| **Maria Eduarda Alves da Paixão** | 558832 | 2TDSPJ | [@MariaEdPaixao](https://github.com/MariaEdPaixao) |
+| **Vinícius Saes de Souza**        | 554456 | 2TDSPY | [@ViniciuSaeSouza](https://github.com/ViniciuSaeSouza) |
